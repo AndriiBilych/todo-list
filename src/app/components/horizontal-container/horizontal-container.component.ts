@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
+import {TodoModel} from '../../models/TodoModel';
 
 @Component({
   selector: 'app-horizontal-container',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./horizontal-container.component.css']
 })
 export class HorizontalContainerComponent implements OnInit {
+  // tslint:disable-next-line:variable-name no-input-rename
+  @Input('todos') _todos: TodoModel[][];
 
   constructor() { }
 
