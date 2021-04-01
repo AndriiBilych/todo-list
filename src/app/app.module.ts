@@ -4,10 +4,16 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { HorizontalContainerComponent } from './components/horizontal-container/horizontal-container.component';
+import { VerticalContainerComponent } from './components/vertical-container/vertical-container.component';
+import { ControlPanelComponent } from './components/control-panel/control-panel.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    HorizontalContainerComponent,
+    VerticalContainerComponent,
+    ControlPanelComponent
   ],
   imports: [
     BrowserModule,
