@@ -1,17 +1,17 @@
-.verticalContainer {
-  display: inline-block;
-  text-align: center;
+.vertical_container {
   background-color: aquamarine;
   padding: 0 10px 0 10px;
   margin: 14px 6px;
   overflow: auto;
   height: 95%;
+  width: 250px;
 }
 
-p {
-  text-align: center;
-}
-
-.text {
+.task {
+  margin: 8px 0px;
+  text-align: left;
+  word-wrap: break-word;
+  background-color: whitesmoke;
   color: dodgerblue;
 }
+
