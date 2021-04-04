@@ -13,5 +13,23 @@
   word-wrap: break-word;
   background-color: whitesmoke;
   color: dodgerblue;
+  display: flex;
+  justify-content: space-between;
 }
+
+.remove_task {
+  border: none;
+  background: none;
+  margin-bottom: auto;
+}
+
+.add_task {
+  border: none;
+  background-color: whitesmoke;
+  margin-bottom: 8px;
+  padding: 6px 12px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
 
