@@ -1,5 +1,5 @@
 <div class="vertical_container">
-  <div *ngFor="let todo of _todos; index as i" class="task">{{todo.title}}<button (click)="_todos.splice(i, 1)" class="remove_task">x</button></div>
+  <div *ngFor="let todo of _list.tasks; index as i" class="task">{{todo.title}}<button (click)="_list.tasks.splice(i, 1)" class="remove_task">x</button></div>
 
   <ng-container *ngIf="!isAddingTask; else addingTaskForm">
     <button (click)="isAddingTask = !isAddingTask" class="add_task">+</button>

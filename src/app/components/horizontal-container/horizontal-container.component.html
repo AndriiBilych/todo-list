@@ -1,3 +1,12 @@
 <div class="horizontal_container">
-    <app-vertical-container *ngFor="let todo of _todos" [todos]="todo"></app-vertical-container>
+  <app-vertical-container *ngFor="let list of _board.lists" [list]="list"></app-vertical-container>
+
+<!--  <ng-container *ngIf="!isAddingList; else addingListForm">-->
+    <button (click)="isAddingList = !isAddingList; pushToArray('test list')" class="add_list">+</button>
+<!--  </ng-container>-->
+
+<!--  <ng-template #addingListForm>-->
+<!--    <app-task-creation (stateChangeEvent)="isAddingList = $event" (valueEvent)="pushToArray($event)"></app-task-creation>-->
+<!--  </ng-template>-->
 </div>
+

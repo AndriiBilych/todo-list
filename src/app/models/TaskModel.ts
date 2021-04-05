@@ -1,13 +1,13 @@
-export class TodoModel {
+export class TaskModel {
   userId: number;
   id: number;
   title: string;
   completed: boolean;
 
-  constructor(title, comp) {
+  constructor(title) {
     this.userId = 0;
     this.id = 0;
     this.title = title;
-    this.completed = comp;
+    this.completed = false;
   }
 }

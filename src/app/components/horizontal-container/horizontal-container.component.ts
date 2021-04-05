@@ -1,5 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {TodoModel} from '../../models/TodoModel';
+import {BoardModel} from '../../models/BoardModel';
+import {TaskModel} from '../../models/TaskModel';
+import {ListModel} from '../../models/ListModel';
 
 @Component({
   selector: 'app-horizontal-container',
@@ -8,14 +10,22 @@ import {TodoModel} from '../../models/TodoModel';
 })
 export class HorizontalContainerComponent implements OnInit {
   // tslint:disable-next-line:variable-name no-input-rename
-  @Input('todos') _todos: TodoModel[][];
+  @Input('board') _board: BoardModel;
 
-  constructor() { }
+  isAddingList: boolean;
+
+  constructor() {
+    this.isAddingList = false;
+  }
 
   ngOnInit(): void {
   }
 
   array(n: number): number[] {
     return Array(n);
+  }
+
+  pushToArray(text: string): void {
+    this._board.lists.push(new ListModel(text));
   }
 }

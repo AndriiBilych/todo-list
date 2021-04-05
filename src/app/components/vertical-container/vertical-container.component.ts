@@ -1,5 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {TodoModel} from '../../models/TodoModel';
+import {TaskModel} from '../../models/TaskModel';
+import {ListModel} from '../../models/ListModel';
 
 @Component({
   selector: 'app-vertical-container',
@@ -9,7 +10,7 @@ import {TodoModel} from '../../models/TodoModel';
 export class VerticalContainerComponent implements OnInit {
 
   // tslint:disable-next-line:variable-name no-input-rename
-  @Input('todos') _todos: TodoModel[];
+  @Input('list') _list: ListModel;
   isAddingTask: boolean;
 
   constructor() {
@@ -24,6 +25,6 @@ export class VerticalContainerComponent implements OnInit {
   }
 
   pushToArray(text: string): void {
-    this._todos.push(new TodoModel(text, false));
+    this._list.tasks.push(new TaskModel(text));
   }
 }

@@ -9,6 +9,7 @@ import { VerticalContainerComponent } from './components/vertical-container/vert
 import { ControlPanelComponent } from './components/control-panel/control-panel.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { TaskCreationComponent } from './components/task-creation/task-creation.component';
+import { ListCreationComponent } from './components/list-creation/list-creation.component';
 
 @NgModule({
   declarations: [
@@ -16,7 +17,8 @@ import { TaskCreationComponent } from './components/task-creation/task-creation.
     HorizontalContainerComponent,
     VerticalContainerComponent,
     ControlPanelComponent,
-    TaskCreationComponent
+    TaskCreationComponent,
+    ListCreationComponent
   ],
   imports: [
     BrowserModule,

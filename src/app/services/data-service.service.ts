@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import {TodoModel} from '../models/TodoModel';
+import {TaskModel} from '../models/TaskModel';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +12,7 @@ export class DataService {
 
   constructor(private http: HttpClient) { }
 
-  getTodos(): Observable<TodoModel[]> {
-    return this.http.get<TodoModel[]>(`${this.todosUrl}`);
+  getTodos(): Observable<TaskModel[]> {
+    return this.http.get<TaskModel[]>(`${this.todosUrl}`);
   }
 }
