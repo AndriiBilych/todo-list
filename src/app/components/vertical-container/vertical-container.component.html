@@ -6,7 +6,7 @@
   </ng-container>
 
   <ng-template #addingTaskForm>
-    <input type="text" [(ngModel)]="textToAdd">
-    <button (click)="isAddingTask = !isAddingTask; pushToArray(false)" class="add_task">+</button>
+    <app-task-creation (stateChangeEvent)="isAddingTask = $event" (valueEvent)="pushToArray($event)"></app-task-creation>
   </ng-template>
 </div>
+

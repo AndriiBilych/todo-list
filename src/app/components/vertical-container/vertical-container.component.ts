@@ -11,7 +11,6 @@ export class VerticalContainerComponent implements OnInit {
   // tslint:disable-next-line:variable-name no-input-rename
   @Input('todos') _todos: TodoModel[];
   isAddingTask: boolean;
-  textToAdd: string;
 
   constructor() {
     this.isAddingTask = false;
@@ -24,8 +23,7 @@ export class VerticalContainerComponent implements OnInit {
     return Array(n);
   }
 
-  pushToArray(comp: boolean): void {
-    this._todos.push(new TodoModel(this.textToAdd, comp));
-    this.textToAdd = '';
+  pushToArray(text: string): void {
+    this._todos.push(new TodoModel(text, false));
   }
 }
