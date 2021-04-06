@@ -1,26 +1,36 @@
 .list {
   background-color: aquamarine;
   padding: 0 10px 0 10px;
-  margin: 0px 6px;
+  margin: 0 6px;
   overflow: auto;
-  height: 95%;
+  height: fit-content;
+  max-height: 90%;
   width: 250px;
+  border-radius: 0 0 12px 12px;
 }
 
 .task {
   margin-top: 8px;
+  padding: 5px;
   text-align: left;
+  font-size: 16px;
   word-wrap: break-word;
   background-color: whitesmoke;
   color: dodgerblue;
   display: flex;
   justify-content: space-between;
+  border-radius: 5px;
 }
 
 .remove_task {
+  display: none;
   border: none;
   background: none;
   margin-bottom: auto;
+}
+
+.task:hover .remove_task {
+  display: flex;
 }
 
 .add_task {
@@ -31,5 +41,6 @@
   font-size: 16px;
   font-weight: bold;
   margin-top: 8px;
+  border-radius: 3px;
 }
 

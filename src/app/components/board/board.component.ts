@@ -18,16 +18,26 @@ export class BoardComponent implements OnInit {
   constructor(private readonly controlPanelService: ControlPanelService) {
     this.isAddingList = false;
     this.personalBoard = new BoardModel('Personal map');
-    this.personalBoard.lists.push(new ListModel('Main list'));
-    this.personalBoard.lists[0].tasks.push(new TaskModel('Main task'));
-    this.personalBoard.lists[0].tasks.push(new TaskModel('Primary task'));
-    this.personalBoard.lists[0].tasks.push(new TaskModel('Secondary task'));
+    this.personalBoard.lists.push(new ListModel('Groceries'));
+    this.personalBoard.lists[0].tasks.push(new TaskModel('Bread', false));
+    this.personalBoard.lists[0].tasks.push(new TaskModel('Eggs', true));
+    this.personalBoard.lists[0].tasks.push(new TaskModel('Cheese', true));
     this.board = this.personalBoard;
   }
 
   ngOnInit(): void {
     this.controlPanelService.boardValue$.subscribe(
-      data => this.board = data
+      data => {
+        this.personalBoard = this.board;
+        this.board = data;
+        console.log(this.personalBoard);
+      }
+    );
+
+    this.controlPanelService.populateFlag$.subscribe(
+      flag => {
+        if (flag) { this.board = this.personalBoard; }
+      }
     );
   }
 

@@ -4,10 +4,10 @@ export class TaskModel {
   title: string;
   completed: boolean;
 
-  constructor(title) {
+  constructor(title, bool) {
     this.userId = 0;
     this.id = 0;
     this.title = title;
-    this.completed = false;
+    this.completed = bool;
   }
 }

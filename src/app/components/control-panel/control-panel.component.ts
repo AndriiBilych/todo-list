@@ -7,13 +7,20 @@ import {ControlPanelService} from '../../services/control-panel.service';
   styleUrls: ['./control-panel.component.css']
 })
 export class ControlPanelComponent implements OnInit {
+  personalBoardLoaded = true;
 
   constructor(private readonly controlPanelService: ControlPanelService) { }
 
   ngOnInit(): void {
   }
 
-  populateBoard(): void {
+  populateBoardWithFakeData(): void {
     this.controlPanelService.getDataForBoard();
+    this.personalBoardLoaded = false;
+  }
+
+  populateBoardWithPersonalData(): void {
+    this.controlPanelService.sendFlag();
+    this.personalBoardLoaded = true;
   }
 }

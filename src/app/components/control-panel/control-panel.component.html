@@ -1,4 +1,4 @@
 <div class="panel">
-<!--  <button>Personal board</button>-->
-  <button (click)="populateBoard()">Load data from JSONPlaceholder</button>
+  <button [disabled]="personalBoardLoaded" (click)="populateBoardWithPersonalData()">Load user board</button>
+  <button [disabled]="!personalBoardLoaded" (click)="populateBoardWithFakeData()">Load board from JSONPlaceholder</button>
 </div>

@@ -10,12 +10,15 @@ import {ListModel} from '../models/ListModel';
 export class ControlPanelService {
   // tslint:disable-next-line:variable-name
   private _boardSource = new Subject<BoardModel>();
+  // tslint:disable-next-line:variable-name
+  private _populationCommandSource = new Subject<boolean>();
   boardValue$ = this._boardSource.asObservable();
+  populateFlag$ = this._populationCommandSource.asObservable();
 
   constructor(private readonly dataService: DataService) { }
 
   getDataForBoard(): void {
-    this._boardSource.next(null);
+    // this._boardSource.next(null);
 
     // tslint:disable-next-line:prefer-const
     let board = new BoardModel('JSONPlaceholder');
@@ -30,5 +33,9 @@ export class ControlPanelService {
     });
 
     this._boardSource.next(board);
+  }
+
+  sendFlag(): void {
+    this._populationCommandSource.next(true);
   }
 }

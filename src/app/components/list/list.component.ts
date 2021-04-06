@@ -25,6 +25,6 @@ export class ListComponent implements OnInit {
   }
 
   pushToArray(text: string): void {
-    this._list.tasks.push(new TaskModel(text));
+    this._list.tasks.push(new TaskModel(text, true));
   }
 }

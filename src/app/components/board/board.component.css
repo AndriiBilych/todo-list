@@ -27,6 +27,7 @@ svg {
   font-size: 16px;
   font-weight: bold;
   height: fit-content;
+  border-radius: 3px;
 }
 
 .list_label {
@@ -37,6 +38,7 @@ svg {
   margin-left: 6px;
   background-color: aquamarine;
   padding: 5px 10px;
+  border-radius: 12px 12px 0 0;
 }
 
 .remove_list {
