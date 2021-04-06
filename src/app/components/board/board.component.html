@@ -1,5 +1,8 @@
-<div class="horizontal_container">
-  <app-vertical-container *ngFor="let list of _board.lists" [list]="list"></app-vertical-container>
+<div class="board">
+  <div *ngFor="let list of _board.lists; index as i">
+    <div class="list_label">{{list.title}} <button (click)="_board.lists.splice(i, 1)" class="remove_list">x</button></div>
+    <app-list [list]="list"></app-list>
+  </div>
 
 <!--  <ng-container *ngIf="!isAddingList; else addingListForm">-->
     <button (click)="isAddingList = !isAddingList; pushToArray('test list')" class="add_list">+</button>

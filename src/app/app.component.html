@@ -1,6 +1,6 @@
 <ng-container *ngIf="board != null; else loadingTemplate">
   <app-control-panel></app-control-panel>
-  <app-horizontal-container [board]="board"></app-horizontal-container>
+  <app-board [board]="board"></app-board>
 </ng-container>
 
 <ng-template #loadingTemplate>

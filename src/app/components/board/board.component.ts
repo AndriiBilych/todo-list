@@ -4,11 +4,11 @@ import {TaskModel} from '../../models/TaskModel';
 import {ListModel} from '../../models/ListModel';
 
 @Component({
-  selector: 'app-horizontal-container',
-  templateUrl: './horizontal-container.component.html',
-  styleUrls: ['./horizontal-container.component.css']
+  selector: 'app-board',
+  templateUrl: './board.component.html',
+  styleUrls: ['./board.component.css']
 })
-export class HorizontalContainerComponent implements OnInit {
+export class BoardComponent implements OnInit {
   // tslint:disable-next-line:variable-name no-input-rename
   @Input('board') _board: BoardModel;
 

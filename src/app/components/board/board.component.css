@@ -1,0 +1,33 @@
+.board {
+  overflow: auto;
+  width: 100%;
+  height: calc(100vh - 55px);
+  display: flex;
+  justify-content: flex-start;
+}
+
+.add_list {
+  border: none;
+  background-color: whitesmoke;
+  margin: 8px 6px;
+  padding: 6px 12px;
+  font-size: 16px;
+  font-weight: bold;
+  height: fit-content;
+}
+
+.list_label {
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  margin-right: 6px;
+  margin-left: 6px;
+  background-color: aquamarine;
+  padding: 5px 10px;
+}
+
+.remove_list {
+  border: none;
+  background: none;
+  margin-bottom: auto;
+}

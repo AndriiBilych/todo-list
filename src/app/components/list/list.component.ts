@@ -3,11 +3,11 @@ import {TaskModel} from '../../models/TaskModel';
 import {ListModel} from '../../models/ListModel';
 
 @Component({
-  selector: 'app-vertical-container',
-  templateUrl: './vertical-container.component.html',
-  styleUrls: ['./vertical-container.component.css']
+  selector: 'app-list',
+  templateUrl: './list.component.html',
+  styleUrls: ['./list.component.css']
 })
-export class VerticalContainerComponent implements OnInit {
+export class ListComponent implements OnInit {
 
   // tslint:disable-next-line:variable-name no-input-rename
   @Input('list') _list: ListModel;

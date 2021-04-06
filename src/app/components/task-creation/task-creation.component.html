@@ -1,2 +1,2 @@
-<input id="textInput" type="text" [(ngModel)]="text">
+<input #textInput class="input_task" type="text" [(ngModel)]="text">
 <button class="add_task" (click)="emitTaskCreatedEvent()">+</button>

@@ -1,12 +1,9 @@
 .panel {
   overflow: hidden;
   background-color: dodgerblue;
-  padding: 0 8px 0 8px;
+  padding: 8px;
 }
 
-.task {
-  color: cyan;
-  font-size: 16px;
-  font-weight: bold;
-  font-family: "Segoe UI Black", monospace;
+button {
+  margin-right: 8px;
 }
