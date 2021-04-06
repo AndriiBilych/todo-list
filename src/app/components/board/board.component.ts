@@ -1,7 +1,8 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {BoardModel} from '../../models/BoardModel';
 import {TaskModel} from '../../models/TaskModel';
 import {ListModel} from '../../models/ListModel';
+import {ControlPanelService} from '../../services/control-panel.service';
 
 @Component({
   selector: 'app-board',
@@ -9,16 +10,25 @@ import {ListModel} from '../../models/ListModel';
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
-  // tslint:disable-next-line:variable-name no-input-rename
-  @Input('board') _board: BoardModel;
+  board: BoardModel;
+  personalBoard: BoardModel;
 
   isAddingList: boolean;
 
-  constructor() {
+  constructor(private readonly controlPanelService: ControlPanelService) {
     this.isAddingList = false;
+    this.personalBoard = new BoardModel('Personal map');
+    this.personalBoard.lists.push(new ListModel('Main list'));
+    this.personalBoard.lists[0].tasks.push(new TaskModel('Main task'));
+    this.personalBoard.lists[0].tasks.push(new TaskModel('Primary task'));
+    this.personalBoard.lists[0].tasks.push(new TaskModel('Secondary task'));
+    this.board = this.personalBoard;
   }
 
   ngOnInit(): void {
+    this.controlPanelService.boardValue$.subscribe(
+      data => this.board = data
+    );
   }
 
   array(n: number): number[] {
@@ -26,6 +36,6 @@ export class BoardComponent implements OnInit {
   }
 
   pushToArray(text: string): void {
-    this._board.lists.push(new ListModel(text));
+    this.board.lists.push(new ListModel(text));
   }
 }

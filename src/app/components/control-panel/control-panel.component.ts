@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {ControlPanelService} from '../../services/control-panel.service';
 
 @Component({
   selector: 'app-control-panel',
@@ -7,9 +8,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ControlPanelComponent implements OnInit {
 
-  constructor() { }
+  constructor(private readonly controlPanelService: ControlPanelService) { }
 
   ngOnInit(): void {
   }
 
+  populateBoard(): void {
+    this.controlPanelService.getDataForBoard();
+  }
 }
