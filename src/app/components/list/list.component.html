@@ -3,9 +3,11 @@
     {{todo.title}}
     <button (click)="_list.tasks.splice(i, 1)" class="remove_task">x</button>
   </div>
+</div>
 
+<div class="list_footer">
   <ng-container *ngIf="!isAddingTask; else addingTaskForm">
-    <button (click)="isAddingTask = !isAddingTask" class="add_task">+</button>
+    <button (click)="isAddingTask = !isAddingTask" class="add_task">+ Add another task</button>
   </ng-container>
 
   <ng-template #addingTaskForm>

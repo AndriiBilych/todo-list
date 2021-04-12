@@ -4,8 +4,14 @@
   margin: 0 6px;
   overflow: auto;
   height: fit-content;
-  max-height: 90%;
+  max-height: 85%;
   width: 250px;
+}
+
+.list_footer {
+  background-color: aquamarine;
+  padding: 0 10px 0 10px;
+  margin: 0 6px;
   border-radius: 0 0 12px 12px;
 }
 
@@ -35,12 +41,9 @@
 
 .add_task {
   border: none;
-  background-color: whitesmoke;
+  background-color: aquamarine;
   margin-bottom: 8px;
-  padding: 6px 12px;
-  font-size: 16px;
-  font-weight: bold;
+  padding: 6px;
   margin-top: 8px;
-  border-radius: 3px;
 }
 
