@@ -1,0 +1,60 @@
+[
+  {
+    "lists": [
+      {
+        "tasks": [
+          {
+            "userId": 0,
+            "id": 0,
+            "title": "Bread",
+            "completed": true
+          },
+          {
+            "userId": 0,
+            "id": 0,
+            "title": "Butter",
+            "completed": true
+          },
+          {
+            "userId": 0,
+            "id": 0,
+            "title": "Eggs",
+            "completed": false
+          }
+        ],
+        "title": "Groceries"
+      }
+    ],
+    "title": "First board",
+    "id": 0
+  },
+  {
+    "lists": [
+      {
+        "tasks": [
+          {
+            "userId": 0,
+            "id": 0,
+            "title": "Vacuum living room",
+            "completed": true
+          },
+          {
+            "userId": 0,
+            "id": 0,
+            "title": "Cook food",
+            "completed": true
+          },
+          {
+            "userId": 0,
+            "id": 0,
+            "title": "Buy fruits",
+            "completed": false
+          }
+        ],
+        "title": "Todo"
+      }
+    ],
+    "title": "Second board",
+    "id": 1
+  }
+]

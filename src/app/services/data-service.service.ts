@@ -1,18 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import {HttpClient, HttpHeaders, HttpParams} from '@angular/common/http';
 import {TaskModel} from '../models/TaskModel';
+import {BoardModel} from '../models/BoardModel';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-  todosUrl = 'https://jsonplaceholder.typicode.com/todos';
-  // todosLimit:string = '?_limit=5';
+  JSONUrl = 'assets/boards.json';
+  JSONTitlesUrl = 'assets/boardsTitles.json';
 
   constructor(private http: HttpClient) { }
 
-  getTodos(): Observable<TaskModel[]> {
-    return this.http.get<TaskModel[]>(`${this.todosUrl}`);
+  getBoards(): Observable<BoardModel[]> {
+    return this.http.get<BoardModel[]>(`${this.JSONUrl}`);
+  }
+
+  getTitles(): Observable<{ title: string, id: number }[]> {
+    return this.http.get<{ title: string, id: number }[]>(`${this.JSONTitlesUrl}`);
   }
 }

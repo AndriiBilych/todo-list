@@ -3,6 +3,7 @@ import {BoardModel} from '../../models/BoardModel';
 import {TaskModel} from '../../models/TaskModel';
 import {ListModel} from '../../models/ListModel';
 import {ControlPanelService} from '../../services/control-panel.service';
+import {DataService} from '../../services/data-service.service';
 
 @Component({
   selector: 'app-board',
@@ -11,34 +12,29 @@ import {ControlPanelService} from '../../services/control-panel.service';
 })
 export class BoardComponent implements OnInit {
   board: BoardModel;
-  personalBoard: BoardModel;
+  currentIndex: number;
 
   isAddingList: boolean;
 
-  constructor(private readonly controlPanelService: ControlPanelService) {
+  constructor(
+    private readonly controlPanelService: ControlPanelService,
+    private readonly dataService: DataService
+  ) {
     this.isAddingList = false;
-    this.personalBoard = new BoardModel('Personal map');
-    this.personalBoard.lists.push(new ListModel('Groceries'));
-    this.personalBoard.lists[0].tasks.push(new TaskModel('Bread', false));
-    this.personalBoard.lists[0].tasks.push(new TaskModel('Eggs', true));
-    this.personalBoard.lists[0].tasks.push(new TaskModel('Cheese', true));
-    this.board = this.personalBoard;
+    this.board = null;
+    this.currentIndex = 0;
   }
 
   ngOnInit(): void {
-    this.controlPanelService.boardValue$.subscribe(
-      data => {
-        this.personalBoard = this.board;
-        this.board = data;
-        console.log(this.personalBoard);
-      }
-    );
+    this.controlPanelService.index$.subscribe( index => {
+      this.currentIndex = index;
+      this.dataService.getBoards().subscribe( data => this.board = data[index]);
+    });
 
-    this.controlPanelService.populateFlag$.subscribe(
-      flag => {
-        if (flag) { this.board = this.personalBoard; }
-      }
-    );
+    this.dataService.getBoards().subscribe( data => {
+      this.board = data[this.currentIndex];
+      this.controlPanelService.setIndex(this.currentIndex);
+    });
   }
 
   array(n: number): number[] {

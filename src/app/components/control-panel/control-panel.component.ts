@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {ControlPanelService} from '../../services/control-panel.service';
+import { ControlPanelService } from '../../services/control-panel.service';
+import { DataService } from '../../services/data-service.service';
 
 @Component({
   selector: 'app-control-panel',
@@ -7,20 +8,29 @@ import {ControlPanelService} from '../../services/control-panel.service';
   styleUrls: ['./control-panel.component.css']
 })
 export class ControlPanelComponent implements OnInit {
-  personalBoardLoaded = true;
+  titles: { title: string, id: number }[];
+  selectedIndex: number;
 
-  constructor(private readonly controlPanelService: ControlPanelService) { }
+  constructor(
+    private readonly controlPanelService: ControlPanelService,
+    private readonly dataService: DataService
+  ) {
+    this.titles = null;
+    this.selectedIndex = 0;
+  }
 
   ngOnInit(): void {
+    this.controlPanelService.index$.subscribe( index => {
+      this.selectedIndex = index;
+    });
+
+    this.dataService.getTitles().subscribe( data => {
+      this.titles = data;
+    });
   }
 
-  populateBoardWithFakeData(): void {
-    this.controlPanelService.getDataForBoard();
-    this.personalBoardLoaded = false;
-  }
-
-  populateBoardWithPersonalData(): void {
-    this.controlPanelService.sendFlag();
-    this.personalBoardLoaded = true;
+  onClick(i: number): void {
+    console.log('clicked ' + i);
+    this.controlPanelService.setIndex(i);
   }
 }
