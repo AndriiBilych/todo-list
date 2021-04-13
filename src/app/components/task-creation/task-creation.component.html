@@ -1,12 +1,12 @@
 <div class="task-creation-component">
   <ng-container *ngIf="!_isAddingTask; else addingTaskForm">
-    <button #buttonRef (click)="_isAddingTask = !_isAddingTask" class="open_form_to_add_task">+ Add another task</button>
+    <button #openAddTaskFormRef (click)="_isAddingTask = !_isAddingTask" class="open_form_to_add_task">+ Add another task</button>
   </ng-container>
 
   <ng-template #addingTaskForm>
     <div class="form_add_task">
-      <input #textInput class="input_task" type="text" [(ngModel)]="text">
-      <button class="add_task" (click)="emitTaskCreatedEvent()">+</button>
+      <input #textInput class="input_task" type="text" [(ngModel)]="text" (keypress)="onEnterPressed($event)">
+      <button #addTaskRef class="add_task" (click)="emitTaskCreatedEvent()">+</button>
     </div>
   </ng-template>
 </div>

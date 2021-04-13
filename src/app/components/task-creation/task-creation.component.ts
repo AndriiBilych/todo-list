@@ -1,17 +1,29 @@
-import {Component, Output, EventEmitter, Input, ViewChild, ElementRef, AfterViewInit, Renderer2, OnInit, HostListener} from '@angular/core';
+import {
+  Component,
+  Output,
+  EventEmitter,
+  Input,
+  ViewChild,
+  ElementRef,
+  Renderer2,
+  OnInit,
+  HostListener
+} from '@angular/core';
+import {isNotNullOrUndefined} from 'codelyzer/util/isNotNullOrUndefined';
 
 @Component({
   selector: 'app-task-creation',
   templateUrl: './task-creation.component.html',
   styleUrls: ['./task-creation.component.css']
 })
-export class TaskCreationComponent implements OnInit, AfterViewInit {
+export class TaskCreationComponent implements OnInit {
 
   // tslint:disable-next-line:variable-name no-input-rename
   @Input('isAddingTask') _isAddingTask = false;
   @Output() valueEvent = new EventEmitter();
   @ViewChild('textInput') textInputRef: ElementRef;
-  @ViewChild('buttonRef') buttonRef: ElementRef;
+  @ViewChild('openAddTaskFormRef') openAddTaskFormRef: ElementRef;
+  @ViewChild('addTaskRef') addTaskRef: ElementRef;
 
   text: string;
 
@@ -21,12 +33,11 @@ export class TaskCreationComponent implements OnInit, AfterViewInit {
       && !targetElement.classList.contains('open_form_to_add_task')
       && !targetElement.classList.contains('input_task')) {
       const openForms = this.elementRef.nativeElement.querySelectorAll('button.add_task');
-      const countOfOpenForms = openForms.length;
-      if (countOfOpenForms > 0) {
-        openForms.forEach(el => {
-          el.click();
-        });
+      if (openForms.length > 0) {
+        openForms.forEach(el => el.click());
       }
+    } else if (targetElement.classList.contains('open_form_to_add_task') && isNotNullOrUndefined(this.textInputRef)) {
+        this.textInputRef.nativeElement.focus();
     }
   }
 
@@ -37,11 +48,7 @@ export class TaskCreationComponent implements OnInit, AfterViewInit {
     this.text = '';
   }
 
-  ngAfterViewInit(): void {
-    // this.textInputRef.nativeElement.focus();
-
-    // TODO search all active components and close and after open self
-  }
+  ngOnInit(): void {}
 
   emitTaskCreatedEvent(): void {
     this._isAddingTask = !this._isAddingTask;
@@ -49,6 +56,10 @@ export class TaskCreationComponent implements OnInit, AfterViewInit {
     this.text = '';
   }
 
-  ngOnInit(): void {
+  onEnterPressed(event): void {
+    if (event.key === 'Enter') {
+      this.valueEvent.emit(this.text);
+      this.text = '';
+    }
   }
 }

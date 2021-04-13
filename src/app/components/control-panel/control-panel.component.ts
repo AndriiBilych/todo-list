@@ -30,7 +30,6 @@ export class ControlPanelComponent implements OnInit {
   }
 
   onClick(i: number): void {
-    console.log('clicked ' + i);
     this.controlPanelService.setIndex(i);
   }
 }
