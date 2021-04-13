@@ -1,4 +1,4 @@
-import {Component, Output, EventEmitter, Input, ViewChild, ElementRef, AfterViewInit, Renderer2, OnInit} from '@angular/core';
+import {Component, Output, EventEmitter, Input, ViewChild, ElementRef, AfterViewInit, Renderer2, OnInit, HostListener} from '@angular/core';
 
 @Component({
   selector: 'app-task-creation',
@@ -15,7 +15,25 @@ export class TaskCreationComponent implements OnInit, AfterViewInit {
 
   text: string;
 
-  constructor() {
+  @HostListener(`document:click`, ['$event.target'])
+  clickedOut(targetElement: HTMLElement): void {
+    if (!targetElement.classList.contains('add_task')
+      && !targetElement.classList.contains('open_form_to_add_task')
+      && !targetElement.classList.contains('input_task')) {
+      const openForms = this.elementRef.nativeElement.querySelectorAll('button.add_task');
+      const countOfOpenForms = openForms.length;
+      if (countOfOpenForms > 0) {
+        openForms.forEach(el => {
+          el.click();
+        });
+      }
+    }
+  }
+
+  constructor(
+    private readonly renderer: Renderer2,
+    private elementRef: ElementRef
+  ) {
     this.text = '';
   }
 
