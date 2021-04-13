@@ -4,20 +4,14 @@
       {
         "tasks": [
           {
-            "userId": 0,
-            "id": 0,
             "title": "Bread",
             "completed": true
           },
           {
-            "userId": 0,
-            "id": 0,
             "title": "Butter",
             "completed": true
           },
           {
-            "userId": 0,
-            "id": 0,
             "title": "Eggs",
             "completed": false
           }
@@ -33,25 +27,45 @@
       {
         "tasks": [
           {
-            "userId": 0,
-            "id": 0,
             "title": "Vacuum living room",
             "completed": true
           },
           {
-            "userId": 0,
-            "id": 0,
             "title": "Cook food",
             "completed": true
-          },
-          {
-            "userId": 0,
-            "id": 0,
-            "title": "Buy fruits",
-            "completed": false
           }
         ],
         "title": "Todo"
+      },
+      {
+        "tasks": [
+          {
+            "title": "Buy a chair",
+            "completed": true
+          },
+          {
+            "title": "Check the beds",
+            "completed": true
+          },
+          {
+            "title": "Eat some cheese strips",
+            "completed": true
+          },
+          {
+            "title": "Buy a table",
+            "completed": true
+          }
+        ],
+        "title": "Ikea"
+      },
+      {
+        "tasks": [
+          {
+            "title": "Send email",
+            "completed": true
+          }
+        ],
+        "title": "Work"
       }
     ],
     "title": "Second board",

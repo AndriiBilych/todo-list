@@ -1,17 +1,12 @@
 <ng-container *ngIf="board != null; else loadingTemplate">
   <div class="board">
-    <div *ngFor="let list of board.lists; index as i">
-      <div class="list_label">{{list.title}} <button (click)="board.lists.splice(i, 1)" class="remove_list">x</button></div>
-      <app-list [list]="list"></app-list>
-    </div>
-
-  <!--  <ng-container *ngIf="!isAddingList; else addingListForm">-->
+    <ngx-simplebar [options]="options">
+      <div *ngFor="let list of board.lists; index as i">
+        <div class="list_label">{{list.title}} <button (click)="board.lists.splice(i, 1)" class="remove_list">x</button></div>
+        <app-list [list]="list"></app-list>
+      </div>
       <button (click)="isAddingList = !isAddingList; pushToArray('test list')" class="add_list">+</button>
-  <!--  </ng-container>-->
-
-  <!--  <ng-template #addingListForm>-->
-  <!--    <app-task-creation (stateChangeEvent)="isAddingList = $event" (valueEvent)="pushToArray($event)"></app-task-creation>-->
-  <!--  </ng-template>-->
+    </ngx-simplebar>
   </div>
 </ng-container>
 

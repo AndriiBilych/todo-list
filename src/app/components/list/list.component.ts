@@ -8,13 +8,16 @@ import {ListModel} from '../../models/ListModel';
   styleUrls: ['./list.component.css']
 })
 export class ListComponent implements OnInit {
+  options = { autoHide: false};
 
   // tslint:disable-next-line:variable-name no-input-rename
   @Input('list') _list: ListModel;
   isAddingTask: boolean;
+  // private SimpleBar: any;
 
   constructor() {
     this.isAddingTask = false;
+    // this.SimpleBar(document.querySelector('.scroll-content'), { autoHide: true });
   }
 
   ngOnInit(): void {

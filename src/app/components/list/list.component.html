@@ -1,8 +1,10 @@
 <div class="list">
-  <div *ngFor="let todo of _list.tasks; index as i" class="task">
-    {{todo.title}}
-    <button (click)="_list.tasks.splice(i, 1)" class="remove_task">x</button>
-  </div>
+  <ngx-simplebar [options]="options">
+    <div *ngFor="let todo of _list.tasks; index as i" class="task">
+      {{todo.title}}
+      <button (click)="_list.tasks.splice(i, 1)" class="remove_task">x</button>
+    </div>
+  </ngx-simplebar>
 </div>
 
 <div class="list_footer">

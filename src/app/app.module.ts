@@ -7,9 +7,10 @@ import { AppComponent } from './app.component';
 import { BoardComponent } from './components/board/board.component';
 import { ListComponent } from './components/list/list.component';
 import { ControlPanelComponent } from './components/control-panel/control-panel.component';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TaskCreationComponent } from './components/task-creation/task-creation.component';
 import { ListCreationComponent } from './components/list-creation/list-creation.component';
+import { SimplebarAngularModule } from 'simplebar-angular';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { ListCreationComponent } from './components/list-creation/list-creation.
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    SimplebarAngularModule
   ],
   providers: [],
   bootstrap: [AppComponent]

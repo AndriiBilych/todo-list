@@ -11,6 +11,7 @@ import {DataService} from '../../services/data-service.service';
   styleUrls: ['./board.component.css']
 })
 export class BoardComponent implements OnInit {
+  options = { autoHide: false};
   board: BoardModel;
   currentIndex: number;
 

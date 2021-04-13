@@ -1,9 +1,11 @@
 .board {
   overflow: auto;
-  width: 100%;
-  height: calc(100vh - 55px);
-  display: flex;
+  height: calc(100vh - 60px);
   justify-content: flex-start;
+}
+
+ngx-simplebar {
+  height: inherit;
 }
 
 svg {
@@ -39,6 +41,7 @@ svg {
   background-color: aquamarine;
   padding: 5px 10px;
   border-radius: 12px 12px 0 0;
+  width: 250px;
 }
 
 .remove_list {
