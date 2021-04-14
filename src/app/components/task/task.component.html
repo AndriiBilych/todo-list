@@ -1,0 +1,11 @@
+<div class="task">
+  <ng-container *ngIf="!isModifyingTask; else textInput">
+  <div class="task_title" (click)="isModifyingTask = !isModifyingTask">{{textValue}}</div>
+  </ng-container>
+
+  <ng-template #textInput>
+    <app-input-form (textValue)="isModifyingTask = !isModifyingTask; textValue = $event.length > 0 ? $event : textValue"></app-input-form>
+  </ng-template>
+
+  <button (click)="removeAction.emit()" class="remove_task_button">X</button>
+</div>

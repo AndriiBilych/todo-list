@@ -33,27 +33,17 @@ ngx-simplebar {
 .task {
   margin-top: 8px;
   padding: 5px;
-  text-align: left;
   font-size: 16px;
-  word-wrap: break-word;
   background-color: whitesmoke;
   color: dodgerblue;
   display: flex;
   justify-content: space-between;
   border-radius: 5px;
-  /*text-decoration: line-through;*/
 }
 
 .task_buttons_container {
   display: flex;
   justify-content: space-between;
-}
-
-.remove_task_button {
-  display: none;
-  border: none;
-  background: none;
-  margin-bottom: auto;
 }
 
 .input_task_element {
@@ -63,10 +53,6 @@ ngx-simplebar {
 .input_task_button {
   background-color: red;
   padding: 10px;
-}
-
-.task:hover .remove_task_button {
-  display: flex;
 }
 
 .remove_list {

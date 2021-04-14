@@ -1,6 +1,5 @@
-import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
-import {TaskModel} from '../../models/TaskModel';
-import {ListModel} from '../../models/ListModel';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import { ListModel } from '../../models/ListModel';
 
 @Component({
   selector: 'app-list',
@@ -30,7 +29,7 @@ export class ListComponent implements OnInit {
 
   pushToArray(text: string): void {
     if (text.length > 0) {
-      this._list.tasks.push(new TaskModel(text, true));
+      this._list.tasks.push(text);
     }
   }
 }

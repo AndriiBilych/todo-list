@@ -10,14 +10,12 @@
 
 <div class="list">
   <ngx-simplebar [options]="options">
-    <div *ngFor="let todo of _list.tasks; index as i" class="task">
-      {{todo.title}}
-      <div class="task_buttons_container">
-        <input type="checkbox" class="input_task_element">
-<!--        <div class="input_task_button"></div>-->
-        <button (click)="_list.tasks.splice(i, 1)" class="remove_task_button">X</button>
-      </div>
-    </div>
+      <app-task
+        *ngFor="let task of _list.tasks; index as i"
+        [textValue]="task"
+        (removeClicked)="_list.tasks.splice(i, 1)"
+        class="task"
+      ></app-task>
   </ngx-simplebar>
 </div>
 

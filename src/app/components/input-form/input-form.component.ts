@@ -1,5 +1,4 @@
 import {Component, OnInit, EventEmitter, Output, ViewChild, ElementRef, AfterViewInit, HostListener} from '@angular/core';
-import {isNotNullOrUndefined} from 'codelyzer/util/isNotNullOrUndefined';
 
 @Component({
   selector: 'app-input-form',
@@ -12,8 +11,8 @@ export class InputFormComponent implements OnInit, AfterViewInit {
   @ViewChild('textInput') textInputRef: ElementRef;
   text: string;
 
-  @HostListener(`document:click`, ['$event.target'])
-  clickedOut(targetElement: HTMLElement): void {
+  // @HostListener(`document:click`, ['$event.target'])
+  // clickedOut(targetElement: HTMLElement): void {
     // if (!targetElement.classList.contains('add_task')
     //   && !targetElement.classList.contains('open_form_to_add_task')
     //   && !targetElement.classList.contains('input_task')) {
@@ -24,7 +23,9 @@ export class InputFormComponent implements OnInit, AfterViewInit {
     // } else if (targetElement.classList.contains('list_title') && isNotNullOrUndefined(this.textInputRef)) {
     //   this.textInputRef.nativeElement.focus();
     // }
-  }
+  // }
+
+  // @HostListener('textInput:oninput')
 
   constructor(
     private elementRef: ElementRef
@@ -48,6 +49,10 @@ export class InputFormComponent implements OnInit, AfterViewInit {
       this.textValue.emit(this.text);
       this.text = '';
     }
+    // else if (this.text.length > 8) {
+      // this.text += '\n';
+      // console.log('a word length is longer than 10');
+    // }
   }
 
 }

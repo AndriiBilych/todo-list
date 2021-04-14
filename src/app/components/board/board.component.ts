@@ -1,9 +1,8 @@
-import {Component, OnInit} from '@angular/core';
-import {BoardModel} from '../../models/BoardModel';
-import {TaskModel} from '../../models/TaskModel';
-import {ListModel} from '../../models/ListModel';
-import {ControlPanelService} from '../../services/control-panel.service';
-import {DataService} from '../../services/data-service.service';
+import { Component, OnInit } from '@angular/core';
+import { BoardModel } from '../../models/BoardModel';
+import { ListModel } from '../../models/ListModel';
+import { ControlPanelService } from '../../services/control-panel.service';
+import { DataService } from '../../services/data-service.service';
 
 @Component({
   selector: 'app-board',

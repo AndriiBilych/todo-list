@@ -3,18 +3,9 @@
     "lists": [
       {
         "tasks": [
-          {
-            "title": "Bread",
-            "completed": true
-          },
-          {
-            "title": "Butter",
-            "completed": true
-          },
-          {
-            "title": "Eggs",
-            "completed": false
-          }
+            "Bread",
+            "Butter",
+            "Eggs"
         ],
         "title": "Groceries"
       }
@@ -26,44 +17,23 @@
     "lists": [
       {
         "tasks": [
-          {
-            "title": "Vacuum living room",
-            "completed": true
-          },
-          {
-            "title": "Cook food",
-            "completed": true
-          }
+            "Vacuum living room",
+            "Cook food"
         ],
         "title": "Todo"
       },
       {
         "tasks": [
-          {
-            "title": "Buy a chair",
-            "completed": true
-          },
-          {
-            "title": "Check the beds",
-            "completed": true
-          },
-          {
-            "title": "Eat some cheese strips",
-            "completed": true
-          },
-          {
-            "title": "Buy a table",
-            "completed": true
-          }
+            "Buy a chair",
+            "Check the beds",
+            "Eat some cheese strips",
+            "Buy a table"
         ],
         "title": "Ikea"
       },
       {
         "tasks": [
-          {
-            "title": "Send email",
-            "completed": true
-          }
+            "Send email"
         ],
         "title": "Work"
       }

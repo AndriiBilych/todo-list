@@ -1,7 +1,6 @@
-import {TaskModel} from './TaskModel';
 
 export class ListModel {
-  tasks: TaskModel[];
+  tasks: string[];
   title: string;
 
   constructor(title) {

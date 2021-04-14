@@ -12,6 +12,7 @@ import { TaskCreationComponent } from './components/task-creation/task-creation.
 import { ListCreationComponent } from './components/list-creation/list-creation.component';
 import { SimplebarAngularModule } from 'simplebar-angular';
 import { InputFormComponent } from './components/input-form/input-form.component';
+import { TaskComponent } from './components/task/task.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { InputFormComponent } from './components/input-form/input-form.component
     ControlPanelComponent,
     TaskCreationComponent,
     ListCreationComponent,
-    InputFormComponent
+    InputFormComponent,
+    TaskComponent
   ],
   imports: [
     BrowserModule,
