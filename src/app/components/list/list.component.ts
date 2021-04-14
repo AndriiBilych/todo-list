@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter} from '@angular/core';
 import {TaskModel} from '../../models/TaskModel';
 import {ListModel} from '../../models/ListModel';
 
@@ -12,12 +12,13 @@ export class ListComponent implements OnInit {
 
   // tslint:disable-next-line:variable-name no-input-rename
   @Input('list') _list: ListModel;
+  @Output() closeListAction = new EventEmitter();
   isAddingTask: boolean;
-  // private SimpleBar: any;
+  isChangingName: boolean;
 
   constructor() {
     this.isAddingTask = false;
-    // this.SimpleBar(document.querySelector('.scroll-content'), { autoHide: true });
+    this.isChangingName = false;
   }
 
   ngOnInit(): void {

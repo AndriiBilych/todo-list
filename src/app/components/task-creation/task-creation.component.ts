@@ -5,7 +5,7 @@ import {
   Input,
   ViewChild,
   ElementRef,
-  Renderer2,
+  // Renderer2,
   OnInit,
   HostListener
 } from '@angular/core';
@@ -42,7 +42,7 @@ export class TaskCreationComponent implements OnInit {
   }
 
   constructor(
-    private readonly renderer: Renderer2,
+    // private readonly renderer: Renderer2,
     private elementRef: ElementRef
   ) {
     this.text = '';

@@ -1,0 +1,2 @@
+<input #textInput class="input_task" type="text" [(ngModel)]="text" (keypress)="onEnterPressed($event)">
+<button #addTaskRef class="add_task" (click)="emitTaskCreatedEvent()">+</button>

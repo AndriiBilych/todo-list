@@ -1,8 +1,22 @@
+<div class="list_label_container">
+  <ng-container *ngIf="!isChangingName; else titleInput">
+    <div class="list_title" (click)="isChangingName = !isChangingName">{{_list.title}}</div>
+  </ng-container>
+  <ng-template #titleInput>
+    <app-input-form (textValue)="isChangingName = !isChangingName; _list.title = $event.length > 0 ? $event : _list.title"></app-input-form>
+  </ng-template>
+  <button (click)="closeListAction.emit()" class="remove_list">X</button>
+</div>
+
 <div class="list">
   <ngx-simplebar [options]="options">
     <div *ngFor="let todo of _list.tasks; index as i" class="task">
       {{todo.title}}
-      <button (click)="_list.tasks.splice(i, 1)" class="remove_task">x</button>
+      <div class="task_buttons_container">
+        <input type="checkbox" class="input_task_element">
+<!--        <div class="input_task_button"></div>-->
+        <button (click)="_list.tasks.splice(i, 1)" class="remove_task_button">X</button>
+      </div>
     </div>
   </ngx-simplebar>
 </div>

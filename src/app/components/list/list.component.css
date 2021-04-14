@@ -10,6 +10,18 @@ ngx-simplebar {
   max-height: inherit;
 }
 
+.list_label_container {
+  margin-top: 8px;
+  display: flex;
+  justify-content: space-between;
+  margin-right: 6px;
+  margin-left: 6px;
+  background-color: aquamarine;
+  padding: 5px 10px;
+  border-radius: 12px 12px 0 0;
+  width: 250px;
+}
+
 .list_footer {
   background-color: aquamarine;
   padding: 0 10px 0 10px;
@@ -29,15 +41,41 @@ ngx-simplebar {
   display: flex;
   justify-content: space-between;
   border-radius: 5px;
+  /*text-decoration: line-through;*/
 }
 
-.remove_task {
+.task_buttons_container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.remove_task_button {
   display: none;
   border: none;
   background: none;
   margin-bottom: auto;
 }
 
-.task:hover .remove_task {
+.input_task_element {
+  visibility: hidden;
+}
+
+.input_task_button {
+  background-color: red;
+  padding: 10px;
+}
+
+.task:hover .remove_task_button {
   display: flex;
+}
+
+.remove_list {
+  display: none;
+  border: none;
+  background: none;
+  margin-bottom: auto;
+}
+
+.list_label_container:hover .remove_list {
+  display: block;
 }
