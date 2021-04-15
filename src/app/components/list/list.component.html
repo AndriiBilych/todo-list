@@ -3,7 +3,10 @@
     <div class="list_title" (click)="isChangingName = !isChangingName">{{_list.title}}</div>
   </ng-container>
   <ng-template #titleInput>
-    <app-input-form (textValue)="isChangingName = !isChangingName; _list.title = $event.length > 0 ? $event : _list.title"></app-input-form>
+    <app-input-form
+      (textValue)="isChangingName = !isChangingName; _list.title = $event.length > 0 ? $event : _list.title"
+    ></app-input-form>
+<!--      [textToShow]="_list.title"-->
   </ng-template>
   <button (click)="closeListAction.emit()" class="remove_list">X</button>
 </div>

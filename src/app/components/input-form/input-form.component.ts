@@ -1,4 +1,5 @@
-import {Component, OnInit, EventEmitter, Output, ViewChild, ElementRef, AfterViewInit, HostListener} from '@angular/core';
+import {Component, OnInit, EventEmitter, Output, ViewChild, ElementRef, AfterViewInit, HostListener, Input} from '@angular/core';
+import { isNotNullOrUndefined } from 'codelyzer/util/isNotNullOrUndefined';
 
 @Component({
   selector: 'app-input-form',
@@ -8,30 +9,25 @@ import {Component, OnInit, EventEmitter, Output, ViewChild, ElementRef, AfterVie
 export class InputFormComponent implements OnInit, AfterViewInit {
 
   @Output() textValue = new EventEmitter();
+  // tslint:disable-next-line:no-input-rename
+  @Input('textToShow') textToShow: string;
   @ViewChild('textInput') textInputRef: ElementRef;
-  text: string;
-
-  // @HostListener(`document:click`, ['$event.target'])
-  // clickedOut(targetElement: HTMLElement): void {
-    // if (!targetElement.classList.contains('add_task')
-    //   && !targetElement.classList.contains('open_form_to_add_task')
-    //   && !targetElement.classList.contains('input_task')) {
-    //   const openForms = this.elementRef.nativeElement.querySelectorAll('button.add_task');
-    //   if (openForms.length > 0) {
-    //     openForms.forEach(el => el.click());
-    //   }
-    // } else if (targetElement.classList.contains('list_title') && isNotNullOrUndefined(this.textInputRef)) {
-    //   this.textInputRef.nativeElement.focus();
-    // }
-  // }
-
-  // @HostListener('textInput:oninput')
+  @HostListener(`document:click`, ['$event.target'])
+  clickedOut(targetElement: HTMLElement): void {
+    let openForms;
+    if (!targetElement.classList.contains('add_task')
+      && !targetElement.classList.contains('task_title')
+      && !targetElement.classList.contains('input_task')) {
+      openForms = this.elementRef.nativeElement.querySelectorAll('button.add_task');
+      if (openForms.length > 0) {
+        openForms.forEach(el => el.click());
+      }
+    }
+  }
 
   constructor(
     private elementRef: ElementRef
-  ) {
-    this.text = '';
-  }
+  ) {}
 
   ngOnInit(): void {}
 
@@ -40,19 +36,12 @@ export class InputFormComponent implements OnInit, AfterViewInit {
   }
 
   emitTaskCreatedEvent(): void {
-    this.textValue.emit(this.text);
-    this.text = '';
+    this.textValue.emit(this.textToShow);
   }
 
   onEnterPressed(event): void {
     if (event.key === 'Enter') {
-      this.textValue.emit(this.text);
-      this.text = '';
+      this.textValue.emit(this.textToShow);
     }
-    // else if (this.text.length > 8) {
-      // this.text += '\n';
-      // console.log('a word length is longer than 10');
-    // }
   }
-
 }

@@ -4,7 +4,10 @@
   </ng-container>
 
   <ng-template #textInput>
-    <app-input-form (textValue)="isModifyingTask = !isModifyingTask; textValue = $event.length > 0 ? $event : textValue"></app-input-form>
+    <app-input-form
+      (textValue)="isModifyingTask = !isModifyingTask; textValue = $event.length > 0 ? $event : textValue"
+      [textToShow]="textValue"
+    ></app-input-form>
   </ng-template>
 
   <button (click)="removeAction.emit()" class="remove_task_button">X</button>
