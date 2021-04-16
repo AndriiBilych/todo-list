@@ -1,5 +1,4 @@
 import {Component, OnInit, EventEmitter, Output, ViewChild, ElementRef, AfterViewInit, HostListener, Input} from '@angular/core';
-import { isNotNullOrUndefined } from 'codelyzer/util/isNotNullOrUndefined';
 
 @Component({
   selector: 'app-input-form',
@@ -8,15 +7,19 @@ import { isNotNullOrUndefined } from 'codelyzer/util/isNotNullOrUndefined';
 })
 export class InputFormComponent implements OnInit, AfterViewInit {
 
-  @Output() textValue = new EventEmitter();
+  @Output() textSubmissionAction = new EventEmitter();
   // tslint:disable-next-line:no-input-rename
   @Input('textToShow') textToShow: string;
+  // tslint:disable-next-line:no-input-rename
+  @Input('targetClass') targetClass: string;
   @ViewChild('textInput') textInputRef: ElementRef;
+  @ViewChild('addTaskRef') addTaskRef: ElementRef;
+
   @HostListener(`document:click`, ['$event.target'])
   clickedOut(targetElement: HTMLElement): void {
     let openForms;
     if (!targetElement.classList.contains('add_task')
-      && !targetElement.classList.contains('task_title')
+      && !targetElement.classList.contains(this.targetClass)
       && !targetElement.classList.contains('input_task')) {
       openForms = this.elementRef.nativeElement.querySelectorAll('button.add_task');
       if (openForms.length > 0) {
@@ -35,13 +38,10 @@ export class InputFormComponent implements OnInit, AfterViewInit {
     this.textInputRef.nativeElement.focus();
   }
 
-  emitTaskCreatedEvent(): void {
-    this.textValue.emit(this.textToShow);
-  }
-
   onEnterPressed(event): void {
     if (event.key === 'Enter') {
-      this.textValue.emit(this.textToShow);
+      this.textSubmissionAction.emit({ text: this.textToShow, keep: true });
+      this.textToShow = '';
     }
   }
 }

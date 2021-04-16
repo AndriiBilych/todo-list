@@ -5,8 +5,9 @@
 
   <ng-template #textInput>
     <app-input-form
-      (textValue)="isModifyingTask = !isModifyingTask; textValue = $event.length > 0 ? $event : textValue"
+      (textSubmissionAction)="isModifyingTask = !isModifyingTask; textValue = $event.text.length > 0 ? $event.text : textValue"
       [textToShow]="textValue"
+      [targetClass]="'task_title'"
     ></app-input-form>
   </ng-template>
 

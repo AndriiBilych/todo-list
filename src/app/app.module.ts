@@ -8,7 +8,6 @@ import { BoardComponent } from './components/board/board.component';
 import { ListComponent } from './components/list/list.component';
 import { ControlPanelComponent } from './components/control-panel/control-panel.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { TaskCreationComponent } from './components/task-creation/task-creation.component';
 import { SimplebarAngularModule } from 'simplebar-angular';
 import { InputFormComponent } from './components/input-form/input-form.component';
 import { TaskComponent } from './components/task/task.component';
@@ -19,7 +18,6 @@ import { TaskComponent } from './components/task/task.component';
     BoardComponent,
     ListComponent,
     ControlPanelComponent,
-    TaskCreationComponent,
     InputFormComponent,
     TaskComponent
   ],

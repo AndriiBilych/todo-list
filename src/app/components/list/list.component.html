@@ -4,9 +4,10 @@
   </ng-container>
   <ng-template #titleInput>
     <app-input-form
-      (textValue)="isChangingName = !isChangingName; _list.title = $event.length > 0 ? $event : _list.title"
+      (textSubmissionAction)="isChangingName = !isChangingName; _list.title = $event.text.length > 0 ? $event.text : _list.title"
+      [textToShow]="_list.title"
+      [targetClass]="'list_title'"
     ></app-input-form>
-<!--      [textToShow]="_list.title"-->
   </ng-template>
   <button (click)="closeListAction.emit()" class="remove_list">X</button>
 </div>
@@ -23,5 +24,15 @@
 </div>
 
 <div class="list_footer">
-  <app-task-creation (valueEvent)="pushToArray($event); isAddingTask = !isAddingTask"></app-task-creation>
+<!--  <app-task-creation (valueEvent)="pushToArray($event); isAddingTask = !isAddingTask"></app-task-creation>-->
+  <ng-container *ngIf="!isAddingTask; else taskInput">
+    <button (click)="isAddingTask = !isAddingTask" class="open_form_to_add_task">+ Add another task</button>
+  </ng-container>
+  <ng-template #taskInput>
+    <app-input-form
+      (textSubmissionAction)="pushToArray($event.text); isAddingTask = $event.keep"
+      [textToShow]="''"
+      [targetClass]="'open_form_to_add_task'"
+    ></app-input-form>
+  </ng-template>
 </div>
