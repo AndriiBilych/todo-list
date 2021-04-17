@@ -1,2 +1,4 @@
-<input #textInput name="input" class="input_task" type="text" [(ngModel)]="textToShow" (keypress)="onEnterPressed($event)">
-<button #addTaskRef (click)="textSubmissionAction.emit({ text: textToShow, keep: false })" class="add_task">+</button>
+<div class="input_form_container">
+  <input #textInput name="input" class="input_task" type="text" [(ngModel)]="textToShow" (keypress)="onEnterPressed($event)">
+  <button #addTaskRef (click)="textSubmissionAction.emit({ text: textToShow, keep: false })" class="add_task">+</button>
+</div>
