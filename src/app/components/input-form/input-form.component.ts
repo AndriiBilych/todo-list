@@ -40,15 +40,19 @@ export class InputFormComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
+  @HostListener('document:keydown.escape')
+  pressedEscape(): void {
+    this.addTaskRef.nativeElement.click();
+  }
+
   constructor(
     private elementRef: ElementRef
   ) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    // setTimeout makes the code inside asynchronous, which prevents NG0100: Expression has changed after it was checked error
+    // setTimeout makes the code inside asynchronous, which prevents "NG0100: Expression has changed after it was checked" error
     setTimeout(() => {
       if (InputFormComponent.inputForm !== null) {
         InputFormComponent.inputForm.addTaskRef.nativeElement.click();
