@@ -1,5 +1,5 @@
 .list {
-  background-color: aquamarine;
+  background-color: var(--secondaryColor);
   padding: 0 10px 0 10px;
   margin: 0 6px;
   max-height: calc(75vh + 20px);
@@ -10,20 +10,21 @@ ngx-simplebar {
   max-height: inherit;
 }
 
-.list_label_container {
+.list_header {
   margin-top: 8px;
   display: flex;
   justify-content: space-between;
   margin-right: 6px;
   margin-left: 6px;
-  background-color: aquamarine;
+  background-color: var(--secondaryColor);
+  color: var(--textColor);
   padding: 5px 10px;
   border-radius: 12px 12px 0 0;
   width: 250px;
 }
 
 .list_footer {
-  background-color: aquamarine;
+  background-color: var(--secondaryColor);
   padding: 0 10px 0 10px;
   margin: 0 6px;
   border-radius: 0 0 12px 12px;
@@ -34,8 +35,8 @@ ngx-simplebar {
   margin-top: 8px;
   padding: 5px;
   font-size: 16px;
-  background-color: whitesmoke;
-  color: dodgerblue;
+  background-color: var(--backgroundColor);
+  color: var(--textColor);
   display: flex;
   justify-content: space-between;
   border-radius: 5px;
@@ -50,11 +51,6 @@ ngx-simplebar {
   visibility: hidden;
 }
 
-.input_task_button {
-  background-color: red;
-  padding: 10px;
-}
-
 .remove_list {
   display: none;
   border: none;
@@ -62,13 +58,14 @@ ngx-simplebar {
   margin-bottom: auto;
 }
 
-.list_label_container:hover .remove_list {
+.list_header:hover .remove_list {
   display: block;
 }
 
 .open_form_to_add_task {
   border: none;
-  background-color: aquamarine;
+  background-color: var(--secondaryColor);
+  color: var(--textColor);
   margin-bottom: 8px;
   padding: 6px;
   margin-top: 8px;

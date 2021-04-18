@@ -23,7 +23,7 @@ svg {
 
 .add_list {
   border: none;
-  background-color: whitesmoke;
+  background-color: var(--secondaryColor);
   margin: 8px 6px;
   padding: 6px 12px;
   font-size: 16px;

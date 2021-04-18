@@ -10,7 +10,7 @@
 .remove_task_button {
   display: none;
   border: none;
-  background-color: whitesmoke;
+  background-color: var(--backgroundColor);
   margin-bottom: auto;
   position: fixed;
   margin-left: 215px;

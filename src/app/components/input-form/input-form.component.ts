@@ -1,11 +1,24 @@
-import {Component, OnInit, EventEmitter, Output, ViewChild, ElementRef, AfterViewInit, HostListener, Input} from '@angular/core';
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  ViewChild,
+  ElementRef,
+  AfterViewInit,
+  HostListener,
+  Input,
+  OnDestroy
+} from '@angular/core';
 
 @Component({
   selector: 'app-input-form',
   templateUrl: './input-form.component.html',
   styleUrls: ['./input-form.component.css']
 })
-export class InputFormComponent implements OnInit, AfterViewInit {
+export class InputFormComponent implements OnInit, AfterViewInit, OnDestroy {
+
+  static inputForm: InputFormComponent = null;
 
   @Output() textSubmissionAction = new EventEmitter();
   // tslint:disable-next-line:no-input-rename
@@ -17,11 +30,10 @@ export class InputFormComponent implements OnInit, AfterViewInit {
 
   @HostListener(`document:click`, ['$event.target'])
   clickedOut(targetElement: HTMLElement): void {
-    let openForms;
+    const openForms = this.elementRef.nativeElement.querySelectorAll('button.add_task');
     if (!targetElement.classList.contains('add_task')
       && !targetElement.classList.contains(this.targetClass)
       && !targetElement.classList.contains('input_task')) {
-      openForms = this.elementRef.nativeElement.querySelectorAll('button.add_task');
       if (openForms.length > 0) {
         openForms.forEach(el => el.click());
       }
@@ -32,9 +44,17 @@ export class InputFormComponent implements OnInit, AfterViewInit {
     private elementRef: ElementRef
   ) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+  }
 
   ngAfterViewInit(): void {
+    // setTimeout makes the code inside asynchronous, which prevents NG0100: Expression has changed after it was checked error
+    setTimeout(() => {
+      if (InputFormComponent.inputForm !== null) {
+        InputFormComponent.inputForm.addTaskRef.nativeElement.click();
+      }
+      InputFormComponent.inputForm = this;
+    });
     this.textInputRef.nativeElement.focus();
   }
 
@@ -43,5 +63,9 @@ export class InputFormComponent implements OnInit, AfterViewInit {
       this.textSubmissionAction.emit({ text: this.textToShow, keep: true });
       this.textToShow = '';
     }
+  }
+
+  ngOnDestroy(): void {
+    InputFormComponent.inputForm = null;
   }
 }

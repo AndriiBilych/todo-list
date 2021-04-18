@@ -1,15 +1,16 @@
 .panel {
   overflow: hidden;
-  background-color: dodgerblue;
+  background-color: var(--mainColor);
   padding: 8px;
 }
 
 .dropbtn {
-  background-color: whitesmoke;
+  background-color: var(--backgroundColor);
   padding: 10px;
   font-size: 16px;
   border: none;
   display: flex;
+  border-radius: 5px;
 }
 
 .dropdown {
@@ -20,7 +21,7 @@
 .dropdown-content {
   display: none;
   position: fixed;
-  background-color: #f1f1f1;
+  background-color: var(--backgroundColor);
   min-width: 160px;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   z-index: 1;
@@ -43,7 +44,7 @@
 }
 
 .dropdown:hover .dropbtn {
-  background-color: #3e8e41;
+  background-color: var(--darkColor);
 }
 
 svg {

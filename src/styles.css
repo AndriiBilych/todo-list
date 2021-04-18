@@ -1,4 +1,11 @@
 @import '~simplebar/dist/simplebar.css';
+:root {
+  --mainColor: #6878DE;
+  --secondaryColor: #55F1D2;
+  --backgroundColor: #E8E1EF;
+  --darkColor: #C2C4C8;
+  --textColor: #272727;
+}
 
 html {
   margin: 0;
@@ -8,6 +15,7 @@ html {
 body {
   margin: 0;
   padding: 0;
+  background-color: var(--backgroundColor);
 }
 
 .board > ngx-simplebar > .simplebar-wrapper > .simplebar-mask > .simplebar-offset > .simplebar-content-wrapper > .simplebar-content{
