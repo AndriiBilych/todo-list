@@ -1,10 +1,19 @@
 .task {
-  width: 100%;
-  height: 100%;
+  width: 240px;
+  height: auto;
+  padding: 5px;
+  margin-top: 8px;
   word-wrap: break-word;
   word-break: break-word;
+  background-color: var(--backgroundColor);
+  color: var(--textColor);
+  border-radius: 5px;
   display: flex;
   justify-content: space-between;
+}
+
+.task_container {
+  width: 250px;
 }
 
 .remove_task_button {

@@ -31,22 +31,6 @@ ngx-simplebar {
   width: 250px;
 }
 
-.task {
-  margin-top: 8px;
-  padding: 5px;
-  font-size: 16px;
-  background-color: var(--backgroundColor);
-  color: var(--textColor);
-  display: flex;
-  justify-content: space-between;
-  border-radius: 5px;
-}
-
-.task_buttons_container {
-  display: flex;
-  justify-content: space-between;
-}
-
 .input_task_element {
   visibility: hidden;
 }

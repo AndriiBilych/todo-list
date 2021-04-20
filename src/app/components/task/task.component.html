@@ -1,15 +1,17 @@
-<div class="task">
-  <ng-container *ngIf="!isModifyingTask; else textInput">
-  <div class="task_title" (click)="isModifyingTask = !isModifyingTask">{{textValue}}</div>
-  </ng-container>
+<div class="task_container">
+  <div class="task">
+    <ng-container *ngIf="!isModifyingTask; else textInput">
+    <div class="task_title" (click)="isModifyingTask = !isModifyingTask">{{textValue}}</div>
+    </ng-container>
 
-  <ng-template #textInput>
-    <app-input-form
-      (textSubmissionAction)="isModifyingTask = !isModifyingTask; textValue = $event.text.length > 0 ? $event.text : textValue"
-      [textToShow]="textValue"
-      [targetClass]="'task_title'"
-    ></app-input-form>
-  </ng-template>
+    <ng-template #textInput>
+      <app-input-form
+        (textSubmissionAction)="isModifyingTask = !isModifyingTask; textValue = $event.text.length > 0 ? $event.text : textValue"
+        [textToShow]="textValue"
+        [targetClass]="'task_title'"
+      ></app-input-form>
+    </ng-template>
 
-  <button (click)="removeAction.emit()" class="remove_task_button">X</button>
+    <button (click)="removeAction.emit()" class="remove_task_button">X</button>
+  </div>
 </div>

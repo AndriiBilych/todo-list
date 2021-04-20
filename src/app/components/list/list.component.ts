@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter, HostListener} from '@angular/core';
 import { ListModel } from '../../models/ListModel';
 
 @Component({
@@ -8,12 +8,12 @@ import { ListModel } from '../../models/ListModel';
 })
 export class ListComponent implements OnInit {
   options = { autoHide: false};
+  isAddingTask: boolean;
+  isChangingName: boolean;
 
   // tslint:disable-next-line:variable-name no-input-rename
   @Input('list') _list: ListModel;
   @Output() closeListAction = new EventEmitter();
-  isAddingTask: boolean;
-  isChangingName: boolean;
 
   constructor() {
     this.isAddingTask = false;

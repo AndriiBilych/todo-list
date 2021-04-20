@@ -21,3 +21,13 @@ body {
 .board > ngx-simplebar > .simplebar-wrapper > .simplebar-mask > .simplebar-offset > .simplebar-content-wrapper > .simplebar-content{
   display: flex;
 }
+
+.draggable {
+  width: 250px;
+  height: 40px;
+  background-color: red;
+  position: fixed;
+  top: 100px;
+  left: 100px;
+}
+
