@@ -4,7 +4,7 @@
       <div *ngFor="let list of board.lists; index as i">
         <app-list (closeListAction)="board.lists.splice(i, 1)" [list]="list"></app-list>
       </div>
-        <button (click)="isAddingList = !isAddingList; pushToArray('test list')" class="add_list">+</button>
+      <button (click)="isAddingList = !isAddingList; pushToArray('test list')" class="add_list">+</button>
     </ngx-simplebar>
   </div>
 </ng-container>

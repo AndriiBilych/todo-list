@@ -1,5 +1,6 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import { BoardModel } from '../../models/BoardModel';
+import { PositionIndex } from '../../models/PositionIndex';
 import { ListModel } from '../../models/ListModel';
 import { ControlPanelService } from '../../services/control-panel.service';
 import { DataService } from '../../services/data-service.service';
@@ -13,17 +14,23 @@ export class BoardComponent implements OnInit {
   options = { autoHide: false};
   board: BoardModel;
   currentIndex: number;
+
+  indexOfDraggedTask = 0;
+  newIndex = 1/*this.findTaskIndex(event)*/;
+
   targetTask: HTMLElement = null;
+  taskPositionIndexHolder: PositionIndex[];
 
   isAddingList: boolean;
   isDragging = false;
 
   @HostListener('document:mousedown', ['$event.target'])
   startDrag(targetElement: HTMLElement): void {
-    this.isDragging = true;
-    this.targetTask = targetElement;
 
-    if (this.targetTask.classList.contains('task')) {
+    if (targetElement.classList.contains('task')) {
+      this.isDragging = true;
+
+      this.targetTask = targetElement;
       this.targetTask.style.position = 'fixed';
       this.targetTask.style.height = '20px';
       this.targetTask.style.width = '240px';
@@ -31,31 +38,57 @@ export class BoardComponent implements OnInit {
       this.targetTask.parentElement.style.height = '30px';
       this.targetTask.parentElement.style.backgroundColor = 'var(--darkColor)';
       // console.log(this.targetTask);
+      const allTasks = document.querySelectorAll('div.task_container') as unknown as HTMLCollection;
+
+      // @ts-ignore
+      // tslint:disable-next-line:prefer-for-of
+      for (let i = 0; i < allTasks.length; i++) {
+        const holder = allTasks[i].getBoundingClientRect();
+        this.taskPositionIndexHolder.push(new PositionIndex(holder.x, holder.y, i));
+      }
+
+      // this.taskPositionIndexHolder.forEach( (task) => console.log(task));
+      // console.log(this.targetTask.getBoundingClientRect());
     }
   }
 
   @HostListener('document:mousemove', ['$event'])
   drag(event): void {
     if (this.isDragging) {
+
       this.targetTask.style.top = `${event.clientY}px`;
       this.targetTask.style.left = `${event.clientX}px`;
+
+      if (this.newIndex !== this.indexOfDraggedTask) {
+        const taskHolder = this.board.lists[0].tasks[this.indexOfDraggedTask];
+        this.board.lists[0].tasks[this.indexOfDraggedTask] = this.board.lists[0].tasks[this.newIndex];
+        this.board.lists[0].tasks[this.newIndex] = taskHolder;
+        // this.board.lists[0].tasks.splice(this.newIndex, 0, );
+        // const taskHolder = this.board.lists[0].tasks[indexOfDraggedTask];
+        // this.board.lists[0].tasks.splice(indexOfDraggedTask, 1);
+        this.indexOfDraggedTask = this.newIndex;
+        console.log('Hello');
+      }
       // console.log(event.clientX, event.clientY);
     }
   }
 
   @HostListener('document:mouseup')
   endDrag(): void {
-    this.isDragging = false;
-    this.targetTask.style.removeProperty('position');
-    this.targetTask.style.removeProperty('top');
-    this.targetTask.style.removeProperty('left');
-    this.targetTask.style.height = 'auto';
+    if (this.targetTask !== null) {
+      this.isDragging = false;
 
-    this.targetTask.parentElement.style.background = 'none';
-    this.targetTask.parentElement.style.height = 'auto';
+      this.targetTask.style.removeProperty('position');
+      this.targetTask.style.removeProperty('top');
+      this.targetTask.style.removeProperty('left');
+      this.targetTask.style.height = 'auto';
 
-    this.targetTask = null;
-    // console.log(this.targetTask);
+      this.targetTask.parentElement.style.background = 'none';
+      this.targetTask.parentElement.style.height = 'auto';
+
+      this.targetTask = null;
+      // console.log(this.targetTask);
+    }
   }
 
   constructor(
@@ -65,6 +98,7 @@ export class BoardComponent implements OnInit {
     this.isAddingList = false;
     this.board = null;
     this.currentIndex = 0;
+    this.taskPositionIndexHolder = [];
   }
 
   ngOnInit(): void {
@@ -87,31 +121,11 @@ export class BoardComponent implements OnInit {
     this.board.lists.push(new ListModel(text));
   }
 
-  // createTaskCopy(): void {
-  //   document.getElementsByClassName('draggable');
-  //
-  //   const div = document.createElement( 'div');
-  //
-  //   // let found = false, x = -5, y = -5;
-  //   // while (!found) {
-  //   //   x += 10, y += 10
-  //   //   for (let i = 0; i < map.length; i++) {
-  //   //     if (parseInt(map[i].getAttribute("cx")) == x && parseInt(map[i].getAttribute("cy")) == y) {
-  //   //       found = false;
-  //   //       break;
-  //   //     }
-  //   //     found = true;
-  //   //   }
-  //   // }
-  //
-  //   div.setAttribute('class', 'draggable');
-  //   // newStation.setAttribute("cx", `${x}`);
-  //   // newStation.setAttribute("cy", `${y}`);
-  //   // newStation.setAttribute("r", `${elemRadius}`);
-  //   // newStation.setAttribute("fill", "#ff0000");
-  //
-  //   document.body.appendChild(div);
-  //
-  //   console.log('Added');
-  // }
+  findTaskIndex(event): number {
+    let holder = 0;
+    this.taskPositionIndexHolder.forEach( (task) => {
+      if (event.clientY > task.y) { holder = task.index; }
+    });
+    return holder;
+  }
 }
