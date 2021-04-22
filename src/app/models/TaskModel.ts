@@ -9,10 +9,11 @@ export class TaskModel implements DeserializeInterface<TaskInterface>, TaskInter
   listId: string;
   orderIndex: number;
 
-  constructor(listId: string, text?: string) {
+  constructor(listId: string, text?: string, orderIndex?: number) {
     this.listId = listId;
     this.id = uuidv4();
     this.content = text;
+    this.orderIndex = orderIndex;
   }
 
   deserialize(input: TaskInterface): this {
