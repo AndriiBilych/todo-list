@@ -16,7 +16,7 @@
   <ngx-simplebar [options]="options">
       <app-task
         *ngFor="let task of _list.tasks; index as i"
-        [textValue]="task"
+        [task]="task"
         (removeClicked)="_list.tasks.splice(i, 1)"
       ></app-task>
   </ngx-simplebar>

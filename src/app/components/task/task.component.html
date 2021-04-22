@@ -1,13 +1,13 @@
 <div class="task_container">
-  <div class="task">
+  <div class="task" [id]="task.taskId" [attr.data-id]="task.positionIndex">
     <ng-container *ngIf="!isModifyingTask; else textInput">
-    <div class="task_title" (click)="isModifyingTask = !isModifyingTask">{{textValue}}</div>
+    <div class="task_title" (click)="isModifyingTask = !isModifyingTask">{{task.content}}</div>
     </ng-container>
 
     <ng-template #textInput>
       <app-input-form
-        (textSubmissionAction)="isModifyingTask = !isModifyingTask; textValue = $event.text.length > 0 ? $event.text : textValue"
-        [textToShow]="textValue"
+        (textSubmissionAction)="isModifyingTask = !isModifyingTask; task = $event.text.length > 0 ? $event.text : task"
+        [textToShow]="task.content"
         [targetClass]="'task_title'"
       ></app-input-form>
     </ng-template>

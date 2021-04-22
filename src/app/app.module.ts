@@ -25,8 +25,8 @@ import { TaskComponent } from './components/task/task.component';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    ReactiveFormsModule,
     FormsModule,
+    ReactiveFormsModule,
     SimplebarAngularModule
   ],
   providers: [],

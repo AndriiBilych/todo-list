@@ -1,9 +1,10 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { BoardModel } from '../../models/BoardModel';
 import { PositionIndex } from '../../models/PositionIndex';
 import { ListModel } from '../../models/ListModel';
 import { ControlPanelService } from '../../services/control-panel.service';
 import { DataService } from '../../services/data-service.service';
+import { v4 as uuidv4 } from 'uuid';
 
 @Component({
   selector: 'app-board',
@@ -38,6 +39,10 @@ export class BoardComponent implements OnInit {
       this.targetTask.parentElement.style.height = '30px';
       this.targetTask.parentElement.style.backgroundColor = 'var(--darkColor)';
       // console.log(this.targetTask);
+      // tslint:disable-next-line:radix
+      this.indexOfDraggedTask = parseInt(this.targetTask.getAttribute('data-id'));
+
+      // this.targetTask.
       const allTasks = document.querySelectorAll('div.task_container') as unknown as HTMLCollection;
 
       // @ts-ignore
@@ -48,7 +53,7 @@ export class BoardComponent implements OnInit {
       }
 
       // this.taskPositionIndexHolder.forEach( (task) => console.log(task));
-      // console.log(this.targetTask.getBoundingClientRect());
+      // console.log(uuidv4());
     }
   }
 
@@ -59,17 +64,22 @@ export class BoardComponent implements OnInit {
       this.targetTask.style.top = `${event.clientY}px`;
       this.targetTask.style.left = `${event.clientX}px`;
 
-      if (this.newIndex !== this.indexOfDraggedTask) {
-        const taskHolder = this.board.lists[0].tasks[this.indexOfDraggedTask];
-        this.board.lists[0].tasks[this.indexOfDraggedTask] = this.board.lists[0].tasks[this.newIndex];
-        this.board.lists[0].tasks[this.newIndex] = taskHolder;
+      // if (this.newIndex !== this.indexOfDraggedTask) {
+        // const taskHolder = this.board.lists[0].tasks[this.indexOfDraggedTask];
+        // this.board.lists[0].tasks[this.indexOfDraggedTask] = this.board.lists[0].tasks[this.newIndex];
+        // this.board.lists[0].tasks[this.newIndex] = taskHolder;
         // this.board.lists[0].tasks.splice(this.newIndex, 0, );
         // const taskHolder = this.board.lists[0].tasks[indexOfDraggedTask];
         // this.board.lists[0].tasks.splice(indexOfDraggedTask, 1);
-        this.indexOfDraggedTask = this.newIndex;
-        console.log('Hello');
+        // this.targetTask.setAttribute('data-id', this.newIndex);
+        // this.indexOfDraggedTask = this.newIndex;
+        // this.targetTask.setAttribute('data-id', this.newIndex);
+        // console.log('Hello');
+      // }
+      this.newIndex = this.findTaskIndex(event);
+      if (this.newIndex !== this.indexOfDraggedTask) {
+        console.log(this.newIndex);
       }
-      // console.log(event.clientX, event.clientY);
     }
   }
 
@@ -109,8 +119,11 @@ export class BoardComponent implements OnInit {
 
     this.dataService.getBoards().subscribe( data => {
       this.board = data[this.currentIndex];
+      // this.board.lists
       this.controlPanelService.setIndex(this.currentIndex);
+      // this.board.lists[0].tasks[0].taskId = uuidv4();
     });
+
   }
 
   array(n: number): number[] {
@@ -118,7 +131,7 @@ export class BoardComponent implements OnInit {
   }
 
   pushToArray(text: string): void {
-    this.board.lists.push(new ListModel(text));
+    this.board.lists.push(new ListModel());
   }
 
   findTaskIndex(event): number {
