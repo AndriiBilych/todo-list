@@ -1,5 +1,5 @@
 <ng-container *ngIf="board != null; else loadingTemplate">
-  <div class="board">
+  <div class="board" [id]="board.id">
     <ngx-simplebar [options]="options">
       <div *ngFor="let list of board.lists; index as i">
         <app-list (closeListAction)="board.lists.splice(i, 1)" [list]="list" [id]="i"></app-list>

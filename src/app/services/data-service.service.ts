@@ -18,9 +18,9 @@ export class DataService {
     return this.http.get<BoardInterface[]>(`${this.JSONUrl}`)
       .pipe(
         map((list) => {
-          return list.map((item) => new BoardModel().desirialize(item));
+          return list.map((item) => new BoardModel().deserialize(item));
         }),
-        tap(console.log)
+        // tap(console.log)
       );
   }
 

@@ -16,8 +16,8 @@ export class BoardComponent implements OnInit {
   board: BoardModel;
   currentIndex: number;
 
-  indexOfDraggedTask = 0;
-  newIndex = 1/*this.findTaskIndex(event)*/;
+  draggedTaskIndex = 0;
+  newIndex = 0;
 
   targetTask: HTMLElement = null;
   taskPositionIndexHolder: PositionIndex[];
@@ -38,22 +38,18 @@ export class BoardComponent implements OnInit {
 
       this.targetTask.parentElement.style.height = '30px';
       this.targetTask.parentElement.style.backgroundColor = 'var(--darkColor)';
-      // console.log(this.targetTask);
-      // tslint:disable-next-line:radix
-      this.indexOfDraggedTask = parseInt(this.targetTask.getAttribute('data-id'));
 
-      // this.targetTask.
+      // tslint:disable-next-line:radix
+      this.draggedTaskIndex = parseInt(this.targetTask.getAttribute('order-index'));
+
       const allTasks = document.querySelectorAll('div.task_container') as unknown as HTMLCollection;
 
-      // @ts-ignore
-      // tslint:disable-next-line:prefer-for-of
       for (let i = 0; i < allTasks.length; i++) {
         const holder = allTasks[i].getBoundingClientRect();
         this.taskPositionIndexHolder.push(new PositionIndex(holder.x, holder.y, i));
       }
 
-      // this.taskPositionIndexHolder.forEach( (task) => console.log(task));
-      // console.log(uuidv4());
+      console.log(`taskId: ${this.targetTask.id} listId: ${this.targetTask.getAttribute('list-id')}`);
     }
   }
 
@@ -65,9 +61,6 @@ export class BoardComponent implements OnInit {
       this.targetTask.style.left = `${event.clientX}px`;
 
       // if (this.newIndex !== this.indexOfDraggedTask) {
-        // const taskHolder = this.board.lists[0].tasks[this.indexOfDraggedTask];
-        // this.board.lists[0].tasks[this.indexOfDraggedTask] = this.board.lists[0].tasks[this.newIndex];
-        // this.board.lists[0].tasks[this.newIndex] = taskHolder;
         // this.board.lists[0].tasks.splice(this.newIndex, 0, );
         // const taskHolder = this.board.lists[0].tasks[indexOfDraggedTask];
         // this.board.lists[0].tasks.splice(indexOfDraggedTask, 1);
@@ -77,8 +70,15 @@ export class BoardComponent implements OnInit {
         // console.log('Hello');
       // }
       this.newIndex = this.findTaskIndex(event);
-      if (this.newIndex !== this.indexOfDraggedTask) {
-        console.log(this.newIndex);
+      if (this.newIndex !== this.draggedTaskIndex) {
+        const taskHolder = this.board.lists[0].tasks[this.draggedTaskIndex];
+        // const domHolder = document.get
+        this.board.lists[0].tasks[this.draggedTaskIndex] = this.board.lists[0].tasks[this.newIndex];
+
+        this.board.lists[0].tasks[this.newIndex] = taskHolder;
+
+        console.log(`newIndex: ${this.newIndex} draggedTaskIndex: ${this.draggedTaskIndex}`);
+        this.draggedTaskIndex = this.newIndex;
       }
     }
   }

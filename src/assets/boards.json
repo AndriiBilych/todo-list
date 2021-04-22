@@ -5,15 +5,15 @@
         "tasks": [
           {
             "content": "Bread",
-            "positionIndex": 0
+            "orderIndex": 0
           },
           {
             "content": "Juice",
-            "positionIndex": 1
+            "orderIndex": 1
           },
           {
             "content": "Eggs",
-            "positionIndex": 2
+            "orderIndex": 2
           }
         ],
         "title": "Groceries"
@@ -28,11 +28,11 @@
         "tasks": [
           {
             "content": "Vacuum living room",
-            "positionIndex": 0
+            "orderIndex": 0
           },
           {
             "content": "Cook food",
-            "positionIndex": 1
+            "orderIndex": 1
           }
         ],
         "title": "Todo"
@@ -41,19 +41,19 @@
         "tasks": [
           {
             "content": "Buy a chair",
-            "positionIndex": 0
+            "orderIndex": 0
           },
           {
             "content": "Check the beds",
-            "positionIndex": 1
+            "orderIndex": 1
           },
           {
             "content": "Eat some cheese strips",
-            "positionIndex": 2
+            "orderIndex": 2
           },
           {
             "content": "Buy a table",
-            "positionIndex": 3
+            "orderIndex": 3
           }
         ],
         "title": "Ikea"
@@ -62,7 +62,7 @@
         "tasks": [
           {
             "content": "Send email",
-            "positionIndex": 0
+            "orderIndex": 0
           }
         ],
         "title": "Work"

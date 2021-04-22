@@ -1,18 +1,21 @@
 import {v4 as uuidv4} from 'uuid';
 import {TaskInterface} from './interfaces/task.interface';
-import {ListInterface} from './interfaces/list.interface';
-import {DesirializeInterface} from './interfaces/desirialize.interface';
+import {DeserializeInterface} from './interfaces/deserializeInterface';
 
-export class TaskModel implements DesirializeInterface<TaskInterface>, TaskInterface {
+export class TaskModel implements DeserializeInterface<TaskInterface>, TaskInterface {
   content: string;
   positionIndex: number;
-  taskId: string;
+  id: string;
+  listId: string;
+  orderIndex: number;
 
-  constructor() {
-    this.taskId = uuidv4();
+  constructor(listId: string, text?: string) {
+    this.listId = listId;
+    this.id = uuidv4();
+    this.content = text;
   }
 
-  desirialize(input: TaskInterface): this {
+  deserialize(input: TaskInterface): this {
 
     for (const key of Object.keys(input)) {
       this[key] = input[key];

@@ -1,4 +1,4 @@
-<div class="list_header">
+<div class="list_header" [id]="_list.id">
   <ng-container *ngIf="!isChangingName; else titleInput">
     <div class="list_title" (click)="isChangingName = !isChangingName">{{_list.title}}</div>
   </ng-container>
@@ -12,7 +12,7 @@
   <button (click)="closeListAction.emit()" class="remove_list">X</button>
 </div>
 
-<div class="list">
+<div class="list" [id]="_list.id">
   <ngx-simplebar [options]="options">
       <app-task
         *ngFor="let task of _list.tasks; index as i"
@@ -22,7 +22,7 @@
   </ngx-simplebar>
 </div>
 
-<div class="list_footer">
+<div class="list_footer" [id]="_list.id">
 <!--  <app-task-creation (valueEvent)="pushToArray($event); isAddingTask = !isAddingTask"></app-task-creation>-->
   <ng-container *ngIf="!isAddingTask; else taskInput">
     <button (click)="isAddingTask = !isAddingTask" class="open_form_to_add_task">+ Add another task</button>
