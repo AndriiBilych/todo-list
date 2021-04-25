@@ -12,7 +12,7 @@
   <button (click)="closeListAction.emit()" class="remove_list">X</button>
 </div>
 
-<div class="list" [id]="_list.id">
+<div class="list" [id]="_list.id" [attr.order-index]="_list.orderIndex">
   <ngx-simplebar [options]="options">
       <app-task
         *ngFor="let task of _list.tasks; index as i"

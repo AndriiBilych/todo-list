@@ -17,12 +17,6 @@ export class TaskModel implements DeserializeInterface<TaskInterface>, TaskInter
   }
 
   deserialize(input: TaskInterface): this {
-
-    for (const key of Object.keys(input)) {
-      this[key] = input[key];
-    }
-
-    return this;
-
+    return Object.assign(this, input);
   }
 }

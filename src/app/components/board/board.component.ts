@@ -18,10 +18,13 @@ export class BoardComponent implements OnInit {
   listTasks: HTMLCollection;
 
   draggedTaskIndex = '0';
-  newIndex = 1;
+  newIndex = '1';
+  currentListId = '0';
+  currentListOrderIndex = '0';
 
+  currentList: HTMLElement = null;
   targetTask: HTMLElement = null;
-  taskPositionIndexHolder: PositionIndex[];
+  taskPositionsByOrder: PositionIndex[];
 
   isAddingList: boolean;
   isDragging = false;
@@ -43,15 +46,21 @@ export class BoardComponent implements OnInit {
       // tslint:disable-next-line:radix
       this.draggedTaskIndex = this.targetTask.getAttribute('order-index');
 
-      // tslint:disable-next-line:max-line-length
-      this.listTasks = document.getElementById(this.targetTask.getAttribute('list-id')).querySelectorAll('div.task') as unknown as HTMLCollection;
+      this.currentListId = this.targetTask.getAttribute('list-id');
+      this.currentList = document.getElementById(this.currentListId);
+      this.currentListOrderIndex = this.currentList.getAttribute('order-index');
 
+      this.listTasks = this.currentList.querySelectorAll('div.task') as unknown as HTMLCollection;
+
+      // tslint:disable-next-line:prefer-for-of
       for (let i = 0; i < this.listTasks.length; i++) {
         const holder = this.listTasks[i].getBoundingClientRect();
-        this.taskPositionIndexHolder.push(new PositionIndex(holder.x, holder.y, i));
+        this.taskPositionsByOrder.push(new PositionIndex(holder.x, holder.y, this.listTasks[i].getAttribute('order-index')));
       }
 
-      // console.log(`taskId: ${this.targetTask.id} listId: ${this.targetTask.getAttribute('list-id')}`);
+      console.log(this.listTasks);
+      // console.log(this.listTasks);
+      // console.log(this.getTaskElementByOrderIndex('2'));
       // console.log(this.getTaskElementByOrderIndex('2'));
     }
   }
@@ -63,17 +72,19 @@ export class BoardComponent implements OnInit {
       this.targetTask.style.top = `${event.clientY}px`;
       this.targetTask.style.left = `${event.clientX}px`;
 
-
       this.newIndex = this.findTaskIndex(event);
-      if (this.newIndex.toString() !== this.draggedTaskIndex) {
-        const taskHolder = this.board.lists[0].tasks[this.draggedTaskIndex];
-        const taskElementHolder = this.getTaskElementByOrderIndex(this.newIndex.toString());
+      if (this.newIndex !== null && this.newIndex !== this.draggedTaskIndex) {
+        // tslint:disable-next-line:radix
+        const taskHolder = this.board.lists[parseInt(this.currentListOrderIndex)].tasks[this.draggedTaskIndex];
+        const taskElementHolder = this.getTaskElementByOrderIndex(this.newIndex);
         const newOrderIndex = taskElementHolder.getAttribute('order-index');
 
-        this.board.lists[0].tasks[this.draggedTaskIndex] = this.board.lists[0].tasks[this.newIndex];
+        // tslint:disable-next-line:radix max-line-length
+        this.board.lists[parseInt(this.currentListOrderIndex)].tasks[this.draggedTaskIndex] = this.board.lists[parseInt(this.currentListOrderIndex)].tasks[this.newIndex];
         taskElementHolder.setAttribute('order-index', this.targetTask.getAttribute('order-index'));
 
-        this.board.lists[0].tasks[this.newIndex] = taskHolder;
+        // tslint:disable-next-line:radix
+        this.board.lists[parseInt(this.currentListOrderIndex)].tasks[this.newIndex] = taskHolder;
         this.targetTask.setAttribute('order-index', newOrderIndex);
 
         // console.log(`newIndex: ${this.newIndex} draggedTaskIndex: ${this.draggedTaskIndex}`);
@@ -108,7 +119,7 @@ export class BoardComponent implements OnInit {
     this.isAddingList = false;
     this.board = null;
     this.currentIndex = 0;
-    this.taskPositionIndexHolder = [];
+    this.taskPositionsByOrder = [];
     this.listTasks = null;
   }
 
@@ -132,9 +143,9 @@ export class BoardComponent implements OnInit {
     this.board.lists.push(new ListModel());
   }
 
-  findTaskIndex(event): number {
-    let holder = 0;
-    this.taskPositionIndexHolder.forEach( (task) => {
+  findTaskIndex(event): string {
+    let holder = '0';
+    this.taskPositionsByOrder.forEach( (task) => {
       if (event.clientY > task.y) { holder = task.index; }
     });
     return holder;
@@ -147,5 +158,6 @@ export class BoardComponent implements OnInit {
         return this.listTasks[i] as HTMLElement;
       }
     }
+    return null;
   }
 }

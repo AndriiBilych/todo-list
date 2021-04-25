@@ -1,7 +1,7 @@
 export class PositionIndex {
   x: number;
   y: number;
-  index: number;
+  index: string;
 
   constructor(x, y, i) {
     this.x = x;

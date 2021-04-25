@@ -6,7 +6,7 @@
 
     <ng-template #textInput>
       <app-input-form
-        (textSubmissionAction)="isModifyingTask = !isModifyingTask; task = $event.text.length > 0 ? $event.text : task"
+        (textSubmissionAction)="isModifyingTask = !isModifyingTask; task.content = $event.text.length > 0 ? $event.text : task.content"
         [textToShow]="task.content"
         [targetClass]="'task_title'"
       ></app-input-form>
