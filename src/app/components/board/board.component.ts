@@ -5,6 +5,7 @@ import { ListModel } from '../../models/ListModel';
 import { ControlPanelService } from '../../services/control-panel.service';
 import { DataService } from '../../services/data-service.service';
 import { v4 as uuidv4 } from 'uuid';
+import {PositionIndexList} from '../../models/PositionIndexList';
 
 @Component({
   selector: 'app-board',
@@ -15,7 +16,7 @@ export class BoardComponent implements OnInit {
   options = { autoHide: false};
   board: BoardModel;
   currentIndex: number;
-  listTasks: HTMLCollection;
+  listTasksRefs: HTMLCollection;
 
   draggedTaskIndex = '0';
   newIndex = '1';
@@ -25,6 +26,7 @@ export class BoardComponent implements OnInit {
   currentList: HTMLElement = null;
   targetTask: HTMLElement = null;
   taskPositionsByOrder: PositionIndex[];
+  listOfListsOfTaskPositions: PositionIndexList[];
 
   isAddingList: boolean;
   isDragging = false;
@@ -50,13 +52,28 @@ export class BoardComponent implements OnInit {
       this.currentList = document.getElementById(this.currentListId);
       this.currentListOrderIndex = this.currentList.getAttribute('order-index');
 
-      this.listTasks = this.currentList.querySelectorAll('div.task') as unknown as HTMLCollection;
+      this.listTasksRefs = this.currentList.querySelectorAll('div.task') as unknown as HTMLCollection;
+      const listRefs = document.querySelectorAll('div.list') as unknown as HTMLCollection;
 
       // tslint:disable-next-line:prefer-for-of
-      for (let i = 0; i < this.listTasks.length; i++) {
-        const holder = this.listTasks[i].getBoundingClientRect();
-        this.taskPositionsByOrder.push(new PositionIndex(holder.x, holder.y, this.listTasks[i].getAttribute('order-index')));
+      for (let i = 0; i < listRefs.length; i++) {
+        const taskRefs = listRefs[i].querySelectorAll('div.task') as unknown as HTMLCollection;
+        this.listOfListsOfTaskPositions.push(new PositionIndexList(listRefs[i].id, listRefs[i].getAttribute('order-index')));
+
+        // tslint:disable-next-line:prefer-for-of
+        for (let j = 0; j < taskRefs.length; j++) {
+          const holder = taskRefs[j].getBoundingClientRect();
+          this.listOfListsOfTaskPositions[i].taskPositionsByOrder.push(new PositionIndex(holder.x, holder.y, taskRefs[j].getAttribute('order-index')));
+        }
       }
+
+      // console.log(this.listOfListsOfTaskPositions);
+
+      // tslint:disable-next-line:prefer-for-of
+      // for (let i = 0; i < this.listTasks.length; i++) {
+      //   const holder = this.listTasks[i].getBoundingClientRect();
+      //   this.taskPositionsByOrder.push(new PositionIndex(holder.x, holder.y, this.listTasks[i].getAttribute('order-index')));
+      // }
 
       // console.log(this.listTasks);
       // console.log(this.listTasks);
@@ -108,6 +125,7 @@ export class BoardComponent implements OnInit {
       this.targetTask.parentElement.style.height = 'auto';
 
       this.targetTask = null;
+      this.listOfListsOfTaskPositions = [];
       // console.log(this.targetTask);
     }
   }
@@ -120,7 +138,8 @@ export class BoardComponent implements OnInit {
     this.board = null;
     this.currentIndex = 0;
     this.taskPositionsByOrder = [];
-    this.listTasks = null;
+    this.listOfListsOfTaskPositions = [];
+    this.listTasksRefs = null;
   }
 
   ngOnInit(): void {
@@ -140,12 +159,13 @@ export class BoardComponent implements OnInit {
   }
 
   pushToArray(text: string): void {
-    this.board.lists.push(new ListModel());
+    this.board.lists.push(new ListModel(text, this.board.lists.length));
   }
 
   findTaskIndex(event): string {
     let holder = '0';
-    this.taskPositionsByOrder.forEach( (task) => {
+    // tslint:disable-next-line:radix
+    this.listOfListsOfTaskPositions[parseInt(this.currentListOrderIndex)].taskPositionsByOrder.forEach( (task) => {
       if (event.clientY > task.y) { holder = task.index; }
     });
     return holder;
@@ -153,9 +173,9 @@ export class BoardComponent implements OnInit {
 
   getTaskElementByOrderIndex(index: string): HTMLElement {
     // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < this.listTasks.length; i++) {
-      if (this.listTasks[i].getAttribute('order-index') === index) {
-        return this.listTasks[i] as HTMLElement;
+    for (let i = 0; i < this.listTasksRefs.length; i++) {
+      if (this.listTasksRefs[i].getAttribute('order-index') === index) {
+        return this.listTasksRefs[i] as HTMLElement;
       }
     }
     return null;

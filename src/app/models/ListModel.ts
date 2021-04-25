@@ -9,9 +9,11 @@ export class ListModel implements DeserializeInterface<ListInterface>, ListInter
   id: string;
   orderIndex: number;
 
-  constructor() {
+  constructor(text?: string, orderIndex?: number) {
     this.tasks = [];
     this.id = uuidv4();
+    this.title = text;
+    this.orderIndex = orderIndex;
   }
 
   deserialize(input: ListInterface): this {
