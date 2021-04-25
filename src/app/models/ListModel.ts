@@ -15,9 +15,7 @@ export class ListModel implements DeserializeInterface<ListInterface>, ListInter
   }
 
   deserialize(input: ListInterface): this {
-    for (const key of Object.keys(input)) {
-      this[key] = input[key];
-    }
+    Object.assign(this, input);
 
     this.tasks = this.tasks.map((item) => new TaskModel(this.id).deserialize(item));
 

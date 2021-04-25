@@ -58,7 +58,7 @@ export class BoardComponent implements OnInit {
         this.taskPositionsByOrder.push(new PositionIndex(holder.x, holder.y, this.listTasks[i].getAttribute('order-index')));
       }
 
-      console.log(this.listTasks);
+      // console.log(this.listTasks);
       // console.log(this.listTasks);
       // console.log(this.getTaskElementByOrderIndex('2'));
       // console.log(this.getTaskElementByOrderIndex('2'));

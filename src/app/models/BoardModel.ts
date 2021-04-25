@@ -14,11 +14,7 @@ export class BoardModel implements DeserializeInterface<BoardInterface>, BoardIn
   }
 
   deserialize(input: BoardInterface): this {
-    // Object.keys returns an array of a given object's property names as strings
-    for (const key of Object.keys(input)) {
-      // this[key] selects the property as in this['lists'] would
-      this[key] = input[key];
-    }
+    Object.assign(this, input);
 
     this.lists = this.lists.map((item) => new ListModel().deserialize(item));
 
