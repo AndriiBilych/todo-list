@@ -7,17 +7,25 @@
 }
 
 .dropbtn {
-  background-color: var(--buttonColor);
-  padding: 10px;
-  font-size: 16px;
-  border: none;
   display: flex;
-  border-radius: 5px;
 }
 
 .dropdown {
   position: relative;
   display: inline-block;
+}
+
+.left-container {
+  display: flex;
+}
+
+.left-button {
+  background-color: var(--buttonColor);
+  border: none;
+  padding: 10px;
+  margin-right: 5px;
+  font-size: 16px;
+  border-radius: 5px;
 }
 
 .dropdown-content {
@@ -37,16 +45,20 @@
   text-align: left;
 }
 
-.dropdown-content button:hover {
-  background-color: #ddd;
-}
-
 .dropdown:hover .dropdown-content {
   display: block;
 }
 
-.dropdown:hover .dropbtn {
-  background-color: var(--darkColor);
+.dropdown:hover .dropbtn, .list-name:hover , .left-button:hover{
+  background-color: var(--highlightedColor);
+}
+
+.list-name {
+  background-color: var(--buttonColor);
+}
+
+.selected {
+  background-color: var(--highlightedColor);
 }
 
 svg {

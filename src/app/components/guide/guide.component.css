@@ -8,7 +8,7 @@
 }
 
 div:hover .btn {
-  background-color: var(--darkColor);
+  background-color: var(--highlightedColor);
 }
 
 .modal {

@@ -6,7 +6,7 @@
       </div>
       <div class="add-list-container">
         <ng-container *ngIf="!isAddingList; else titleInput">
-            <button (click)="isAddingList = !isAddingList" class="add-list">+ Add another task</button>
+            <button (click)="isAddingList = !isAddingList" class="add-list">+ Add another list</button>
         </ng-container>
         <ng-template #titleInput>
           <app-input-form
