@@ -22,6 +22,7 @@ export class BoardComponent implements OnInit {
   newTaskIndex = '1';
   currentListId = '0';
   currentListOrderIndex = '0';
+  newListTitle = '';
 
   currentList: HTMLElement = null;
   targetTask: HTMLElement = null;

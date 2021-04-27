@@ -1,6 +1,6 @@
 <div class="list_header">
   <ng-container *ngIf="!isChangingName; else titleInput">
-    <div class="list_title" (click)="isChangingName = !isChangingName">{{_list.title}}</div>
+    <div #titleRef class="list_title" (click)="isChangingName = !isChangingName">{{_list.title}}</div>
   </ng-container>
   <ng-template #titleInput>
     <app-input-form
@@ -9,7 +9,7 @@
       [targetClass]="'list_title'"
     ></app-input-form>
   </ng-template>
-  <button (click)="closeListAction.emit()" class="remove_list">X</button>
+  <button (click)="closeListAction.emit()" class="remove_list">&times;</button>
 </div>
 
 <div class="list" [id]="_list.id" [attr.order-index]="_list.orderIndex">

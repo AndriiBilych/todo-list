@@ -4,7 +4,17 @@
       <div *ngFor="let list of board.lists; index as i">
         <app-list (closeListAction)="board.lists.splice(i, 1)" [list]="list" [id]="i"></app-list>
       </div>
-      <button (click)="isAddingList = !isAddingList; pushToArray('test list')" class="add_list">+</button>
+      <ng-container *ngIf="!isAddingList; else titleInput">
+        <button (click)="isAddingList = !isAddingList" class="add_list">+</button>
+      </ng-container>
+      <ng-template #titleInput>
+        <app-input-form
+          (textSubmissionAction)="isAddingList = !isAddingList;
+          pushToArray($event.text.length > 0 ? $event.text : 'New List')"
+          [textToShow]="newListTitle"
+          [targetClass]="'add_list'"
+        ></app-input-form>
+      </ng-template>
     </ngx-simplebar>
   </div>
 </ng-container>

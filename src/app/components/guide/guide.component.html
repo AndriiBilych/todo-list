@@ -1,0 +1,31 @@
+<div>
+  <button class="btn" (click)="modal.style.display = 'block'">
+    About
+  </button>
+</div>
+
+<div id="modal" class="modal">
+  <div class="modal-content">
+    <button class="close" (click)="modal.style.display = 'none'">&times;</button>
+    <h3>Description</h3>
+    <p>
+      <span>This website is a todo type web app made for training purposes by Andrii Bilych.</span>
+      It was created as a way to practice my skills and improve my knowledge on Angular/TypeScript/HTML/CSS.
+      The website contains only front-end part, therefore all data will be lost upon reloading or choosing
+      another board. Todo list loads with two boards filled with fake data received from an http request to
+      json file, as if receiving a response from back-end. Project is inspired and modeled after Trello
+      boards.
+    </p>
+    <h3>Features</h3>
+    <ul>
+      <li>Create/Delete/Modify tasks</li>
+      <li>Create/Delete lists</li>
+      <li>Change list name by pressing its title</li>
+      <li>Reorder tasks by dragging them inside list</li>
+      <li>Move tasks from list to list</li>
+      <li>Switch boards</li>
+      <li>Create multiple tasks by pressing enter when task creation form is opened</li>
+      <li>Cancel task creation by pressing ESC</li>
+    </ul>
+  </div>
+</div>

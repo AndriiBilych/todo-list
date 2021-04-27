@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output, EventEmitter, HostListener} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter, HostListener, ViewChild, ElementRef, AfterViewInit} from '@angular/core';
 import { ListModel } from '../../models/ListModel';
 import {TaskModel} from '../../models/TaskModel';
 
@@ -7,7 +7,7 @@ import {TaskModel} from '../../models/TaskModel';
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.css']
 })
-export class ListComponent implements OnInit {
+export class ListComponent implements OnInit, AfterViewInit {
   options = { autoHide: false};
   isAddingTask: boolean;
   isChangingName: boolean;
@@ -15,14 +15,14 @@ export class ListComponent implements OnInit {
   // tslint:disable-next-line:variable-name no-input-rename
   @Input('list') _list: ListModel;
   @Output() closeListAction = new EventEmitter();
+  @ViewChild('titleRef') titleRef: ElementRef;
 
   constructor() {
     this.isAddingTask = false;
     this.isChangingName = false;
   }
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
 
   array(n: number): number[] {
     return Array(n);
@@ -33,5 +33,11 @@ export class ListComponent implements OnInit {
       // this._list.tasks.length > 0 ? this._list.tasks.length : 0, text
       this._list.tasks.push(new TaskModel(this._list.id, text, this._list.tasks.length));
     }
+  }
+
+  ngAfterViewInit(): void {
+    // if (this._list.tasks.length === 0) {
+    //   this.titleRef.nativeElement.click();
+    // }
   }
 }

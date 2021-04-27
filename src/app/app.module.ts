@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SimplebarAngularModule } from 'simplebar-angular';
 import { InputFormComponent } from './components/input-form/input-form.component';
 import { TaskComponent } from './components/task/task.component';
+import { GuideComponent } from './components/guide/guide.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { TaskComponent } from './components/task/task.component';
     ListComponent,
     ControlPanelComponent,
     InputFormComponent,
-    TaskComponent
+    TaskComponent,
+    GuideComponent
   ],
   imports: [
     BrowserModule,
