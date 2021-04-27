@@ -19,7 +19,7 @@ export class BoardComponent implements OnInit {
   listTasksRefs: HTMLCollection;
 
   draggedTaskIndex = '0';
-  newIndex = '1';
+  newTaskIndex = '1';
   currentListId = '0';
   currentListOrderIndex = '0';
 
@@ -33,7 +33,7 @@ export class BoardComponent implements OnInit {
 
   @HostListener('document:mousedown', ['$event.target'])
   startDrag(targetElement: HTMLElement): void {
-
+    document.body.style.userSelect = 'none';
     if (targetElement.classList.contains('task')) {
       this.isDragging = true;
 
@@ -58,11 +58,14 @@ export class BoardComponent implements OnInit {
       // tslint:disable-next-line:prefer-for-of
       for (let i = 0; i < listRefs.length; i++) {
         const taskRefs = listRefs[i].querySelectorAll('div.task') as unknown as HTMLCollection;
-        this.listOfListsOfTaskPositions.push(new PositionIndexList(listRefs[i].id, listRefs[i].getAttribute('order-index')));
-
+        const boundingRect = listRefs[i].getBoundingClientRect();
+        // tslint:disable-next-line:max-line-length
+        this.listOfListsOfTaskPositions.push(new PositionIndexList(listRefs[i].id, listRefs[i].getAttribute('order-index'), boundingRect.x, boundingRect.y));
+        // console.log(this.listOfListsOfTaskPositions);
         // tslint:disable-next-line:prefer-for-of
         for (let j = 0; j < taskRefs.length; j++) {
           const holder = taskRefs[j].getBoundingClientRect();
+        // tslint:disable-next-line:max-line-length
           this.listOfListsOfTaskPositions[i].taskPositionsByOrder.push(new PositionIndex(holder.x, holder.y, taskRefs[j].getAttribute('order-index')));
         }
       }
@@ -89,30 +92,49 @@ export class BoardComponent implements OnInit {
       this.targetTask.style.top = `${event.clientY}px`;
       this.targetTask.style.left = `${event.clientX}px`;
 
-      this.newIndex = this.findTaskIndex(event);
-      if (this.newIndex !== null && this.newIndex !== this.draggedTaskIndex) {
-        // tslint:disable-next-line:radix
-        const taskHolder = this.board.lists[parseInt(this.currentListOrderIndex)].tasks[this.draggedTaskIndex];
-        const taskElementHolder = this.getTaskElementByOrderIndex(this.newIndex);
-        const newOrderIndex = taskElementHolder.getAttribute('order-index');
+      const newListIndex = this.findListIndex(event);
+      if (newListIndex !== null && newListIndex !== this.currentListOrderIndex){
+        // this.newTaskIndex = this.findTaskIndex(event, newListIndex);
 
-        // tslint:disable-next-line:radix max-line-length
-        this.board.lists[parseInt(this.currentListOrderIndex)].tasks[this.draggedTaskIndex] = this.board.lists[parseInt(this.currentListOrderIndex)].tasks[this.newIndex];
-        taskElementHolder.setAttribute('order-index', this.targetTask.getAttribute('order-index'));
+        // tslint:disable-next-line:max-line-length
+        this.board.lists[newListIndex].tasks.push(this.board.lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)]);
+        // tslint:disable-next-line:max-line-length
+        this.board.lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)].listId = this.board.lists[newListIndex].id;
+        this.board.lists[Number(this.currentListOrderIndex)].tasks.splice(Number(this.draggedTaskIndex), 1);
 
-        // tslint:disable-next-line:radix
-        this.board.lists[parseInt(this.currentListOrderIndex)].tasks[this.newIndex] = taskHolder;
-        this.targetTask.setAttribute('order-index', newOrderIndex);
+        this.recalculateOrderIndices(this.currentListOrderIndex);
+        this.recalculateOrderIndices(newListIndex);
 
-        // console.log(`newIndex: ${this.newIndex} draggedTaskIndex: ${this.draggedTaskIndex}`);
-        // console.log(`moved element: ${} draggedElement: ${this.targetTask}`);
-        this.draggedTaskIndex = this.newIndex.toString();
+        this.currentListOrderIndex = newListIndex;
+        this.draggedTaskIndex = null;
+      }
+      else {
+        this.newTaskIndex = this.findTaskIndex(event, newListIndex);
+        if (this.newTaskIndex !== null && this.draggedTaskIndex !== null && this.newTaskIndex !== this.draggedTaskIndex) {
+          // tslint:disable-next-line:radix
+          const taskHolder = this.board.lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)];
+          const taskElementHolder = this.getTaskElementByOrderIndex(this.newTaskIndex);
+          const newOrderIndex = taskElementHolder.getAttribute('order-index');
+
+          // tslint:disable-next-line:max-line-length
+          this.board.lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)] = this.board.lists[Number(this.currentListOrderIndex)].tasks[Number(this.newTaskIndex)];
+          taskElementHolder.setAttribute('order-index', this.targetTask.getAttribute('order-index'));
+
+          // tslint:disable-next-line:radix
+          this.board.lists[Number(this.currentListOrderIndex)].tasks[Number(this.newTaskIndex)] = taskHolder;
+          this.targetTask.setAttribute('order-index', newOrderIndex);
+
+          // console.log(`newIndex: ${this.newIndex} draggedTaskIndex: ${this.draggedTaskIndex}`);
+          // console.log(`moved element: ${} draggedElement: ${this.targetTask}`);
+          this.draggedTaskIndex = this.newTaskIndex;
+        }
       }
     }
   }
 
   @HostListener('document:mouseup')
   endDrag(): void {
+    document.body.style.userSelect = 'all';
     if (this.targetTask !== null) {
       this.isDragging = false;
 
@@ -162,13 +184,29 @@ export class BoardComponent implements OnInit {
     this.board.lists.push(new ListModel(text, this.board.lists.length));
   }
 
-  findTaskIndex(event): string {
+  findListIndex(event): string {
+    let holder = null;
+    // tslint:disable-next-line:radix
+    this.listOfListsOfTaskPositions.forEach( (list) => {
+      if (event.clientX > list.x) { holder = list.orderIndex; }
+    });
+    return holder;
+  }
+
+  findTaskIndex(event, listOrderIndex): string {
     let holder = '0';
     // tslint:disable-next-line:radix
-    this.listOfListsOfTaskPositions[parseInt(this.currentListOrderIndex)].taskPositionsByOrder.forEach( (task) => {
+    this.listOfListsOfTaskPositions[Number(listOrderIndex)].taskPositionsByOrder.forEach( (task) => {
       if (event.clientY > task.y) { holder = task.index; }
     });
     return holder;
+  }
+
+  recalculateOrderIndices(listOrderIndex): void {
+    // tslint:disable-next-line:prefer-for-of
+    for (let i = 0; i < this.board.lists[listOrderIndex].tasks.length; i++) {
+      this.board.lists[listOrderIndex].tasks[i].orderIndex = i;
+    }
   }
 
   getTaskElementByOrderIndex(index: string): HTMLElement {
