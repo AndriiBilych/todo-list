@@ -5,7 +5,7 @@
   margin-top: 8px;
   word-wrap: break-word;
   word-break: break-word;
-  background-color: var(--backgroundColor);
+  background-color: var(--buttonColor);
   color: var(--textColor);
   border-radius: 5px;
   display: flex;
@@ -19,7 +19,7 @@
 .remove_task_button {
   display: none;
   border: none;
-  background-color: var(--backgroundColor);
+  background-color: var(--buttonColor);
   margin-bottom: auto;
   position: fixed;
   margin-left: 215px;

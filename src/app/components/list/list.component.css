@@ -1,5 +1,5 @@
 .list {
-  background-color: var(--secondaryColor);
+  background-color: var(--mainColor);
   padding: 0 10px 0 10px;
   margin: 0 6px;
   max-height: calc(75vh + 20px);
@@ -16,7 +16,7 @@ ngx-simplebar {
   justify-content: space-between;
   margin-right: 6px;
   margin-left: 6px;
-  background-color: var(--secondaryColor);
+  background-color: var(--mainColor);
   color: var(--textColor);
   padding: 5px 10px;
   border-radius: 12px 12px 0 0;
@@ -24,7 +24,7 @@ ngx-simplebar {
 }
 
 .list_footer {
-  background-color: var(--secondaryColor);
+  background-color: var(--mainColor);
   padding: 0 10px 0 10px;
   margin: 0 6px;
   border-radius: 0 0 12px 12px;
@@ -48,7 +48,7 @@ ngx-simplebar {
 
 .open_form_to_add_task {
   border: none;
-  background-color: var(--secondaryColor);
+  background: none;
   color: var(--textColor);
   margin-bottom: 8px;
   padding: 6px;

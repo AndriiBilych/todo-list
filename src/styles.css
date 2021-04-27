@@ -1,8 +1,9 @@
 @import '~simplebar/dist/simplebar.css';
 :root {
-  --mainColor: #6878DE;
+  --mainColor: rgba(223, 231, 234, 0.5);
   --secondaryColor: #55F1D2;
-  --backgroundColor: #E8E1EF;
+  --buttonColor: #DDE9FF;
+  --backgroundColor: #2a8cd4;
   --darkColor: #C2C4C8;
   --textColor: #272727;
 }

@@ -1,5 +1,5 @@
 .btn {
-  background-color: var(--backgroundColor);
+  background-color: var(--buttonColor);
   padding: 10px;
   font-size: 16px;
   border: none;
