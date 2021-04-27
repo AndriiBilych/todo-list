@@ -23,6 +23,12 @@ body {
   display: flex;
 }
 
+.simplebar-track.simplebar-vertical {
+  top: 8px !important;
+  width: 10px !important;
+  left: 12.4vw;
+}
+
 .draggable {
   width: 250px;
   height: 40px;

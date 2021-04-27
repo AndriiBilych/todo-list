@@ -1,5 +1,5 @@
 .task {
-  width: 240px;
+  /*width: 240px;*/
   height: auto;
   padding: 5px;
   margin-top: 8px;
@@ -12,20 +12,19 @@
   justify-content: space-between;
 }
 
-.task_container {
-  width: 250px;
+.task_title{
+  padding-left: 10px;
 }
 
 .remove_task_button {
-  display: none;
+  visibility: hidden;
   border: none;
   background-color: var(--buttonColor);
   margin-bottom: auto;
-  position: fixed;
-  margin-left: 215px;
+  /*margin-left: 215px;*/
 }
 
 .task:hover .remove_task_button {
-  display: flex;
+  visibility: visible;
 }
 

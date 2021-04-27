@@ -18,26 +18,11 @@
         ],
         "title": "Groceries",
         "orderIndex": 0
-      }
-    ],
-    "title": "First board",
-    "id": 0
-  },
-  {
-    "lists": [
+      },
       {
-        "tasks": [
-          {
-            "content": "Vacuum living room",
-            "orderIndex": 0
-          },
-          {
-            "content": "Cook food",
-            "orderIndex": 1
-          }
-        ],
-        "title": "Todo",
-        "orderIndex": 0
+        "tasks": [],
+        "title": "Done",
+        "orderIndex": 1
       },
       {
         "tasks": [
@@ -59,7 +44,7 @@
           }
         ],
         "title": "Ikea",
-        "orderIndex": 1
+        "orderIndex": 2
       },
       {
         "tasks": [
@@ -69,10 +54,159 @@
           }
         ],
         "title": "Work",
+        "orderIndex": 3
+      },
+      {
+        "tasks": [
+          {
+            "content": "Lesson #6.5",
+            "orderIndex": 0
+          }
+        ],
+        "title": "Guitar practice",
+        "orderIndex": 4
+      },
+      {
+        "tasks": [
+          {
+            "content": "Contact the lawyer",
+            "orderIndex": 0
+          }
+        ],
+        "title": "Legal",
+        "orderIndex": 5
+      },
+      {
+        "tasks": [
+          {
+            "content": "Finish the report",
+            "orderIndex": 0
+          }
+        ],
+        "title": "Studies",
+        "orderIndex": 6
+      }
+    ],
+    "title": "Board with many Lists",
+    "id": 0
+  },
+  {
+    "lists": [
+      {
+        "tasks": [
+          {
+            "content": "Vacuum living room",
+            "orderIndex": 0
+          },
+          {
+            "content": "Cook food",
+            "orderIndex": 1
+          },
+          {
+            "content": "Call grandma",
+            "orderIndex": 2
+          },
+          {
+            "content": "Work on project",
+            "orderIndex": 3
+          },
+          {
+            "content": "Go for a jog",
+            "orderIndex": 4
+          },
+          {
+            "content": "Buy groceries",
+            "orderIndex": 5
+          },
+          {
+            "content": "Clean the windows",
+            "orderIndex": 6
+          },
+          {
+            "content": "Pick up Shawn from work",
+            "orderIndex": 7
+          },
+          {
+            "content": "Prepare cloth",
+            "orderIndex": 8
+          },
+          {
+            "content": "Check the barbecue",
+            "orderIndex": 9
+          },
+          {
+            "content": "Tell Shawn, he is a great friend",
+            "orderIndex": 10
+          },
+          {
+            "content": "Walk the dog",
+            "orderIndex": 11
+          },
+          {
+            "content": "Walk yourself",
+            "orderIndex": 12
+          },
+          {
+            "content": "Create a list of things to do",
+            "orderIndex": 13
+          },
+          {
+            "content": "Assign yourself more tasks",
+            "orderIndex": 14
+          },
+          {
+            "content": "Pet your dog",
+            "orderIndex": 15
+          },
+          {
+            "content": "Pet yourself on the back",
+            "orderIndex": 16
+          },
+          {
+            "content": "Finish all tasks",
+            "orderIndex": 17
+          },
+          {
+            "content": "Iron cloth",
+            "orderIndex": 18
+          },
+          {
+            "content": "Cheese",
+            "orderIndex": 19
+          }
+        ],
+        "title": "Today",
+        "orderIndex": 0
+      },
+      {
+        "tasks": [
+          {
+            "content": "Buy a chair",
+            "orderIndex": 0
+          },
+          {
+            "content": "Check the beds",
+            "orderIndex": 1
+          },
+          {
+            "content": "Eat some cheese strips",
+            "orderIndex": 2
+          },
+          {
+            "content": "Buy a table",
+            "orderIndex": 3
+          }
+        ],
+        "title": "Tomorrow",
+        "orderIndex": 1
+      },
+      {
+        "tasks": [],
+        "title": "Done",
         "orderIndex": 2
       }
     ],
-    "title": "Second board",
+    "title": "Board with Many tasks",
     "id": 1
   }
 ]

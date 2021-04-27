@@ -23,7 +23,6 @@
 </div>
 
 <div class="list_footer">
-<!--  <app-task-creation (valueEvent)="pushToArray($event); isAddingTask = !isAddingTask"></app-task-creation>-->
   <ng-container *ngIf="!isAddingTask; else taskInput">
     <button (click)="isAddingTask = !isAddingTask" class="open_form_to_add_task">+ Add another task</button>
   </ng-container>

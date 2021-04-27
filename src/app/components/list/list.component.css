@@ -1,9 +1,8 @@
 .list {
   background-color: var(--mainColor);
-  padding: 0 10px 0 10px;
+  padding: 0 15px;
   margin: 0 6px;
   max-height: calc(75vh + 20px);
-  width: 250px;
 }
 
 ngx-simplebar {
@@ -18,17 +17,15 @@ ngx-simplebar {
   margin-left: 6px;
   background-color: var(--mainColor);
   color: var(--textColor);
-  padding: 5px 10px;
+  padding: 5px 17px;
   border-radius: 12px 12px 0 0;
-  width: 250px;
 }
 
 .list_footer {
   background-color: var(--mainColor);
-  padding: 0 10px 0 10px;
+  padding: 0 17px;
   margin: 0 6px;
   border-radius: 0 0 12px 12px;
-  width: 250px;
 }
 
 .input_task_element {
