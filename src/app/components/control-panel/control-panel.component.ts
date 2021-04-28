@@ -10,6 +10,7 @@ import { DataService } from '../../services/data-service.service';
 export class ControlPanelComponent implements OnInit {
   titles: { title: string, id: number }[];
   selectedIndex: number;
+  isChangingName: boolean;
 
   constructor(
     private readonly controlPanelService: ControlPanelService,
@@ -17,6 +18,7 @@ export class ControlPanelComponent implements OnInit {
   ) {
     this.titles = null;
     this.selectedIndex = 0;
+    this.isChangingName = false;
   }
 
   ngOnInit(): void {

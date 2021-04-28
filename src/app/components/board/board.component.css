@@ -1,12 +1,10 @@
 .board {
   overflow: auto;
   height: calc(100vh - 60px);
-  /*justify-content: flex-start;*/
-  /*display: flex;*/
 }
 
 .list-container {
-  min-width: 15vw;
+  min-width: 230px;
 }
 
 ngx-simplebar {

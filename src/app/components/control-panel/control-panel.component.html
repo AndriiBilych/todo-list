@@ -17,7 +17,16 @@
         <button class="list-name">+ New Board</button>
       </div>
     </div>
-    <button class="left-button">{{titles[selectedIndex].title}}</button>
+    <ng-container *ngIf="!isChangingName; else titleInput">
+      <div class="left-button" (click)="isChangingName = !isChangingName">{{titles[selectedIndex].title}}</div>
+    </ng-container>
+    <ng-template #titleInput>
+      <app-input-form
+        (textSubmissionAction)="isChangingName = !isChangingName; titles[selectedIndex].title = $event.text.length > 0 ? $event.text : titles[selectedIndex].title"
+        [textToShow]="titles[selectedIndex].title"
+        [targetClass]="'left-button'"
+      ></app-input-form>
+    </ng-template>
   </div>
   <app-guide></app-guide>
 </div>
