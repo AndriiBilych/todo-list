@@ -16,7 +16,7 @@ export class TaskComponent implements OnInit {
 
   @HostListener('contextmenu', ['$event'])
   onRightClick(event): void {
-    event.preventDefault();
+    // event.preventDefault();
     if (event.target.classList.contains('task') || event.target.classList.contains('task_title')) {
       this.isModifyingTask = !this.isModifyingTask;
     }

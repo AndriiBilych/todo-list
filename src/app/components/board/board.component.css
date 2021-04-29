@@ -4,6 +4,10 @@
 
 }
 
+.list-placeholder {
+  min-width: 230px;
+}
+
 .list-container {
   min-width: 230px;
 }

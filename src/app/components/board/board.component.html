@@ -1,8 +1,13 @@
 <ng-container *ngIf="boards != null; else loadingTemplate">
   <div class="board" [id]="boards[currentIndex].id">
     <ngx-simplebar [options]="options">
-      <div *ngFor="let list of boards[currentIndex].lists; index as i" class="list-container">
-        <app-list (closeListAction)="boards[currentIndex].lists.splice(i, 1)" [list]="list" [id]="i"></app-list>
+      <div *ngFor="let list of boards[currentIndex].lists; index as i"
+           class="list-placeholder"
+           [id]="list.id"
+           [attr.order-index]="list.orderIndex">
+        <div class="list-container">
+          <app-list (closeListAction)="removeList(i)" [list]="list" [id]="i"></app-list>
+        </div>
       </div>
       <div class="add-list-container">
         <ng-container *ngIf="!isAddingList; else titleInput">
