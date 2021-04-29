@@ -34,7 +34,7 @@ export class InputFormComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!targetElement.classList.contains('add_task')
       && !targetElement.classList.contains(this.targetClass)
       && !targetElement.classList.contains('input_task')) {
-      console.log(this.targetClass, targetElement);
+      // console.log(this.targetClass, targetElement); // testing
       if (openForms.length > 0) {
         openForms.forEach(el => el.click());
       }

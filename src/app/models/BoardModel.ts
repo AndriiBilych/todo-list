@@ -8,7 +8,8 @@ export class BoardModel implements DeserializeInterface<BoardInterface>, BoardIn
   title: string;
   id: string;
 
-  constructor() {
+  constructor(title?: string) {
+    this.title = title;
     this.lists = [];
     this.id = uuidv4();
   }

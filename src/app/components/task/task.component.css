@@ -21,7 +21,6 @@
   border: none;
   background-color: var(--buttonColor);
   margin-bottom: auto;
-  /*margin-left: 215px;*/
 }
 
 .task:hover .remove_task_button {

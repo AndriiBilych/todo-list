@@ -14,17 +14,20 @@
           [class.list-name]="i != selectedIndex"
           (click)="onClick(i)"
         >{{title.title}}</button>
-        <button class="list-name">+ New Board</button>
+        <button class="list-name" (click)="createBoard()">+ New Board</button>
       </div>
     </div>
     <ng-container *ngIf="!isChangingName; else titleInput">
-      <div class="left-button" (click)="isChangingName = !isChangingName">{{titles[selectedIndex].title}}</div>
+      <div class="board-name-container left-button">
+        <div class="title">{{titles[selectedIndex]?.title}}</div>
+        <button class="remove_board_button" (click)="removeBoard(selectedIndex)">&times;</button>
+      </div>
     </ng-container>
     <ng-template #titleInput>
       <app-input-form
         (textSubmissionAction)="isChangingName = !isChangingName; titles[selectedIndex].title = $event.text.length > 0 ? $event.text : titles[selectedIndex].title"
         [textToShow]="titles[selectedIndex].title"
-        [targetClass]="'left-button'"
+        [targetClass]="'title'"
       ></app-input-form>
     </ng-template>
   </div>

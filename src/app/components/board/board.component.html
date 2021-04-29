@@ -1,8 +1,8 @@
-<ng-container *ngIf="board != null; else loadingTemplate">
-  <div class="board" [id]="board.id">
+<ng-container *ngIf="boards != null; else loadingTemplate">
+  <div class="board" [id]="boards[currentIndex].id">
     <ngx-simplebar [options]="options">
-      <div *ngFor="let list of board.lists; index as i" class="list-container">
-        <app-list (closeListAction)="board.lists.splice(i, 1)" [list]="list" [id]="i"></app-list>
+      <div *ngFor="let list of boards[currentIndex].lists; index as i" class="list-container">
+        <app-list (closeListAction)="boards[currentIndex].lists.splice(i, 1)" [list]="list" [id]="i"></app-list>
       </div>
       <div class="add-list-container">
         <ng-container *ngIf="!isAddingList; else titleInput">
@@ -11,7 +11,8 @@
         <ng-template #titleInput>
           <app-input-form
             (textSubmissionAction)="isAddingList = !isAddingList;
-            pushToArray($event.text.length > 0 ? $event.text : 'New List')"
+            pushToArray($event.text.length > 0 ? $event.text : 'New List');
+            isAddingList = $event.keep"
             [textToShow]="newListTitle"
             [targetClass]="'add-list'"
           ></app-input-form>

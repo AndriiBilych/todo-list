@@ -1,6 +1,6 @@
 <div class="list_header">
   <ng-container *ngIf="!isChangingName; else titleInput">
-    <div #titleRef class="list_title" (click)="isChangingName = !isChangingName">{{_list.title}}</div>
+    <div #titleRef class="list_title">{{_list.title}}</div>
   </ng-container>
   <ng-template #titleInput>
     <app-input-form

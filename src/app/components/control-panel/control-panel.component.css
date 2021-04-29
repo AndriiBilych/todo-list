@@ -67,3 +67,19 @@ svg {
   margin-top: 4px;
   margin-left: 2px;
 }
+
+.board-name-container {
+  display: flex;
+}
+
+.remove_board_button {
+  visibility: hidden;
+  border: none;
+  background: none;
+  margin-left: 5px
+  /*margin-bottom: auto;*/
+}
+
+.board-name-container:hover .remove_board_button {
+  visibility: visible;
+}

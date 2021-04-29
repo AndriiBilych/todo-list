@@ -17,6 +17,14 @@ export class ListComponent implements OnInit, AfterViewInit {
   @Output() closeListAction = new EventEmitter();
   @ViewChild('titleRef') titleRef: ElementRef;
 
+  @HostListener('contextmenu', ['$event'])
+  onRightClick(event): void {
+    event.preventDefault();
+    if (event.target.classList.contains('list_header') || event.target.classList.contains('list_title')) {
+      this.isChangingName = !this.isChangingName;
+    }
+  }
+
   constructor() {
     this.isAddingTask = false;
     this.isChangingName = false;

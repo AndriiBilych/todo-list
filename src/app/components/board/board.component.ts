@@ -14,7 +14,7 @@ import {PositionIndexList} from '../../models/PositionIndexList';
 })
 export class BoardComponent implements OnInit {
   options = { autoHide: false};
-  board: BoardModel;
+  boards: BoardModel[];
   currentIndex: number;
   listTasksRefs: HTMLCollection;
 
@@ -35,13 +35,17 @@ export class BoardComponent implements OnInit {
   @HostListener('document:mousedown', ['$event.target'])
   startDrag(targetElement: HTMLElement): void {
     document.body.style.userSelect = 'none';
-    if (targetElement.classList.contains('task')) {
+    if (targetElement.classList.contains('task') || targetElement.classList.contains('task_title')) {
       this.isDragging = true;
 
-      this.targetTask = targetElement;
+      if (targetElement.classList.contains('task_title')) {
+        this.targetTask = targetElement.parentElement;
+      }
+      else {
+        this.targetTask = targetElement;
+      }
       this.targetTask.style.position = 'fixed';
-      this.targetTask.style.height = '20px';
-      this.targetTask.style.width = '240px';
+      this.targetTask.style.minWidth = '150px';
 
       this.targetTask.parentElement.style.height = '30px';
       this.targetTask.parentElement.style.backgroundColor = 'var(--darkColor)';
@@ -70,19 +74,6 @@ export class BoardComponent implements OnInit {
           this.listOfListsOfTaskPositions[i].taskPositionsByOrder.push(new PositionIndex(holder.x, holder.y, taskRefs[j].getAttribute('order-index')));
         }
       }
-
-      // console.log(this.listOfListsOfTaskPositions);
-
-      // tslint:disable-next-line:prefer-for-of
-      // for (let i = 0; i < this.listTasks.length; i++) {
-      //   const holder = this.listTasks[i].getBoundingClientRect();
-      //   this.taskPositionsByOrder.push(new PositionIndex(holder.x, holder.y, this.listTasks[i].getAttribute('order-index')));
-      // }
-
-      // console.log(this.listTasks);
-      // console.log(this.listTasks);
-      // console.log(this.getTaskElementByOrderIndex('2'));
-      // console.log(this.getTaskElementByOrderIndex('2'));
     }
   }
 
@@ -98,31 +89,32 @@ export class BoardComponent implements OnInit {
         // this.newTaskIndex = this.findTaskIndex(event, newListIndex);
 
         // tslint:disable-next-line:max-line-length
-        this.board.lists[newListIndex].tasks.push(this.board.lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)]);
+        this.boards[this.currentIndex].lists[newListIndex].tasks.push(this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)]);
         // tslint:disable-next-line:max-line-length
-        this.board.lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)].listId = this.board.lists[newListIndex].id;
-        this.board.lists[Number(this.currentListOrderIndex)].tasks.splice(Number(this.draggedTaskIndex), 1);
+        this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)].listId = this.boards[this.currentIndex].lists[newListIndex].id;
+        this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks.splice(Number(this.draggedTaskIndex), 1);
 
         this.recalculateOrderIndices(this.currentListOrderIndex);
         this.recalculateOrderIndices(newListIndex);
 
         this.currentListOrderIndex = newListIndex;
         this.draggedTaskIndex = null;
+        this.isDragging = !this.isDragging;
       }
       else {
         this.newTaskIndex = this.findTaskIndex(event, newListIndex);
         if (this.newTaskIndex !== null && this.draggedTaskIndex !== null && this.newTaskIndex !== this.draggedTaskIndex) {
           // tslint:disable-next-line:radix
-          const taskHolder = this.board.lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)];
+          const taskHolder = this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)];
           const taskElementHolder = this.getTaskElementByOrderIndex(this.newTaskIndex);
           const newOrderIndex = taskElementHolder.getAttribute('order-index');
 
           // tslint:disable-next-line:max-line-length
-          this.board.lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)] = this.board.lists[Number(this.currentListOrderIndex)].tasks[Number(this.newTaskIndex)];
+          this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)] = this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks[Number(this.newTaskIndex)];
           taskElementHolder.setAttribute('order-index', this.targetTask.getAttribute('order-index'));
 
           // tslint:disable-next-line:radix
-          this.board.lists[Number(this.currentListOrderIndex)].tasks[Number(this.newTaskIndex)] = taskHolder;
+          this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks[Number(this.newTaskIndex)] = taskHolder;
           this.targetTask.setAttribute('order-index', newOrderIndex);
 
           // console.log(`newIndex: ${this.newIndex} draggedTaskIndex: ${this.draggedTaskIndex}`);
@@ -149,7 +141,6 @@ export class BoardComponent implements OnInit {
 
       this.targetTask = null;
       this.listOfListsOfTaskPositions = [];
-      // console.log(this.targetTask);
     }
   }
 
@@ -158,7 +149,7 @@ export class BoardComponent implements OnInit {
     private readonly dataService: DataService
   ) {
     this.isAddingList = false;
-    this.board = null;
+    this.boards = null;
     this.currentIndex = 0;
     this.taskPositionsByOrder = [];
     this.listOfListsOfTaskPositions = [];
@@ -167,12 +158,21 @@ export class BoardComponent implements OnInit {
 
   ngOnInit(): void {
     this.controlPanelService.index$.subscribe( index => {
+      if (index >= this.boards.length) {
+        this.boards.push(new BoardModel('New Board'));
+      }
       this.currentIndex = index;
-      this.dataService.getBoards().subscribe( data => this.board = data[index]);
+    });
+
+    this.controlPanelService.deleteIndex$.subscribe( index => {
+      if (this.boards.length > 0) {
+        this.boards.splice(index, 1);
+      }
+      this.currentIndex = 0;
     });
 
     this.dataService.getBoards().subscribe( data => {
-      this.board = data[this.currentIndex];
+      this.boards = data;
       this.controlPanelService.setIndex(this.currentIndex);
     });
   }
@@ -182,7 +182,7 @@ export class BoardComponent implements OnInit {
   }
 
   pushToArray(text: string): void {
-    this.board.lists.push(new ListModel(text, this.board.lists.length));
+    this.boards[this.currentIndex].lists.push(new ListModel(text, this.boards[this.currentIndex].lists.length));
   }
 
   findListIndex(event): string {
@@ -205,8 +205,8 @@ export class BoardComponent implements OnInit {
 
   recalculateOrderIndices(listOrderIndex): void {
     // tslint:disable-next-line:prefer-for-of
-    for (let i = 0; i < this.board.lists[listOrderIndex].tasks.length; i++) {
-      this.board.lists[listOrderIndex].tasks[i].orderIndex = i;
+    for (let i = 0; i < this.boards[this.currentIndex].lists[listOrderIndex].tasks.length; i++) {
+      this.boards[this.currentIndex].lists[listOrderIndex].tasks[i].orderIndex = i;
     }
   }
 
