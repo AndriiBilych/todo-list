@@ -36,6 +36,22 @@ export class BoardComponent implements OnInit {
   isDraggingTask = false;
   isDraggingList = false;
 
+  // TODO
+  // @HostListener('document:wheel', ['$event'])
+  // onScroll(event): void {
+  //   console.log('scroll', event);
+  // }
+  //
+  // @HostListener('document:mousedown', ['$event'])
+  // onBoardStartDrag(event): void {
+  //   console.log('mousedown', event);
+  // }
+  //
+  // @HostListener('document:mousemove', ['$event'])
+  // onBoardDrag(event): void {
+  //   console.log('mousemove', event);
+  // }
+
   @HostListener('document:mousedown', ['$event.target'])
   startDrag(targetElement: HTMLElement): void {
     document.body.style.userSelect = 'none';
@@ -78,7 +94,6 @@ export class BoardComponent implements OnInit {
           this.listOfListsOfTaskPositions[i].taskPositionsByOrder.push(new PositionIndex(holder.x, holder.y, taskRefs[j].getAttribute('order-index')));
         }
       }
-      // console.log(listRefs);
     }
     else if (targetElement.classList.contains('list_header') || targetElement.classList.contains('list_title')) {
       this.isDraggingList = true;
@@ -113,10 +128,7 @@ export class BoardComponent implements OnInit {
       this.targetTask.style.left = `${event.clientX}px`;
 
       const newListIndex = this.findListIndex(event);
-      // console.log(newListIndex);
       if (newListIndex !== null && newListIndex !== this.currentListOrderIndex){
-        // this.newTaskIndex = this.findTaskIndex(event, newListIndex);
-
         // tslint:disable-next-line:max-line-length
         this.boards[this.currentIndex].lists[newListIndex].tasks.push(this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)]);
         // tslint:disable-next-line:max-line-length
@@ -241,10 +253,6 @@ export class BoardComponent implements OnInit {
     });
   }
 
-  array(n: number): number[] {
-    return Array(n);
-  }
-
   pushToArray(text: string): void {
     this.boards[this.currentIndex].lists.push(new ListModel(text, this.boards[this.currentIndex].lists.length));
   }
@@ -268,13 +276,9 @@ export class BoardComponent implements OnInit {
   }
 
   recalculateOrderIndices(listOrderIndex): void {
-    // tslint:disable-next-line:max-line-length
-    // const tasksHolder = document.getElementById(this.boards[this.currentIndex].lists[listOrderIndex].id).querySelectorAll('div.task') as unknown as HTMLCollection;
-    // console.log(tasksHolder);
     // tslint:disable-next-line:prefer-for-of
     for (let i = 0; i < this.boards[this.currentIndex].lists[listOrderIndex].tasks.length; i++) {
       this.boards[this.currentIndex].lists[listOrderIndex].tasks[i].orderIndex = i;
-      // tasksHolder[i].setAttribute('order-index', i.toString());
     }
   }
 
