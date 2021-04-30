@@ -5,6 +5,7 @@
   border: none;
   display: flex;
   border-radius: 5px;
+  color: var(--textColor);
 }
 
 div:hover .btn {
@@ -22,6 +23,7 @@ div:hover .btn {
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  color: var(--textColor);
 }
 
 .modal-content {

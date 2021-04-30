@@ -36,4 +36,5 @@ svg {
   padding: 6px 12px;
   width: 14vw;
   border-radius: 10px;
+  color: var(--textColor);
 }

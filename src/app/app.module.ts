@@ -12,6 +12,7 @@ import { SimplebarAngularModule } from 'simplebar-angular';
 import { InputFormComponent } from './components/input-form/input-form.component';
 import { TaskComponent } from './components/task/task.component';
 import { GuideComponent } from './components/guide/guide.component';
+import { ColorPickerComponent } from './components/color-picker/color-picker.component';
 
 @NgModule({
   declarations: [
@@ -21,7 +22,8 @@ import { GuideComponent } from './components/guide/guide.component';
     ControlPanelComponent,
     InputFormComponent,
     TaskComponent,
-    GuideComponent
+    GuideComponent,
+    ColorPickerComponent
   ],
   imports: [
     BrowserModule,
