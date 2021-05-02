@@ -1,4 +1,12 @@
+.input_form_container {
+  display: flex;
+}
+
 .input_task {
-  margin-top: 8px;
-  margin-bottom: 14px;
+  width: 150px;
+}
+.add_task {
+  position: fixed;
+  top: -10px;
+  left: -10px;
 }

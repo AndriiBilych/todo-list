@@ -17,19 +17,19 @@
         <button class="list-name" (click)="createBoard()">+ New Board</button>
       </div>
     </div>
-    <ng-container *ngIf="!isChangingName; else titleInput">
-      <div class="board-name-container left-button">
-        <div class="board-title">{{titles[selectedIndex]?.title}}</div>
-        <button class="remove_board_button" (click)="removeBoard(selectedIndex)">&times;</button>
-      </div>
-    </ng-container>
-    <ng-template #titleInput>
-      <app-input-form
-        (textSubmissionAction)="isChangingName = !isChangingName; titles[selectedIndex].title = $event.text.length > 0 ? $event.text : titles[selectedIndex].title"
-        [textToShow]="titles[selectedIndex].title"
-        [targetClass]="'title'"
-      ></app-input-form>
-    </ng-template>
+    <div class="board-name-container" [style.padding]="isChangingName ? '0' : '10px'">
+      <ng-container *ngIf="!isChangingName; else titleInput">
+          <div class="board-title">{{titles[selectedIndex]?.title}}</div>
+          <button class="remove_board_button" (click)="removeBoard(selectedIndex)">&times;</button>
+      </ng-container>
+      <ng-template #titleInput>
+        <app-input-form
+          (textSubmissionAction)="isChangingName = !isChangingName; titles[selectedIndex].title = $event.text.length > 0 ? $event.text : titles[selectedIndex].title"
+          [textToShow]="titles[selectedIndex].title"
+          [targetClass]="'board-title'"
+        ></app-input-form>
+      </ng-template>
+    </div>
   </div>
   <div class="left-container">
     <app-color-picker></app-color-picker>

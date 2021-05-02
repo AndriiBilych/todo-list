@@ -15,7 +15,7 @@ export class ControlPanelComponent implements OnInit {
   @HostListener('contextmenu', ['$event'])
   onRightClick(event): void {
     event.preventDefault();
-    if (event.target.classList.contains('title')) {
+    if (event.target.classList.contains('board-title')) {
       this.isChangingName = !this.isChangingName;
     }
   }

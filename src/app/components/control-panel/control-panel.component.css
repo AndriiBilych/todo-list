@@ -73,6 +73,11 @@ svg {
 
 .board-name-container {
   display: flex;
+  background-color: var(--buttonColor);
+  border: none;
+  margin-right: 5px;
+  font-size: 16px;
+  border-radius: 5px;
 }
 
 .remove_board_button {
@@ -80,7 +85,6 @@ svg {
   border: none;
   background: none;
   margin-left: 5px
-  /*margin-bottom: auto;*/
 }
 
 .board-name-container:hover .remove_board_button {
