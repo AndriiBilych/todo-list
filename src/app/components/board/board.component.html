@@ -16,9 +16,8 @@
         <ng-template #titleInput>
           <app-input-form
             (textSubmissionAction)="isAddingList = !isAddingList;
-            pushToArray($event.text.length > 0 ? $event.text : 'New List');
+            pushToArray($event.text.length > 0 && $event.text !== '\n' ? $event.text : 'New List');
             isAddingList = $event.keep"
-            [textToShow]="newListTitle"
             [targetClass]="'add-list'"
           ></app-input-form>
         </ng-template>

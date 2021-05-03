@@ -5,7 +5,7 @@ import {v4 as uuidv4} from 'uuid';
 
 export class ListModel implements DeserializeInterface<ListInterface>, ListInterface {
   tasks: TaskModel[];
-  title: string;
+  title = 'New List';
   id: string;
   orderIndex: number;
 
