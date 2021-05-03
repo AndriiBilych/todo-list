@@ -28,7 +28,8 @@
   </ng-container>
   <ng-template #taskInput>
     <app-input-form
-      (textSubmissionAction)="pushToArray($event.text); isAddingTask = $event.keep"
+      (textSubmissionAction)="pushToArray($event.text.length > 0 && $event.text !== '\n' ? $event.text : 'New Task');
+      isAddingTask = $event.keep"
       [textToShow]="''"
       [targetClass]="'open_form_to_add_task'"
     ></app-input-form>

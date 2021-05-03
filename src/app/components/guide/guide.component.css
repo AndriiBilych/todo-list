@@ -28,10 +28,11 @@ div:hover .btn {
 
 .modal-content {
   background-color: #fefefe;
-  margin: 15% auto; /* 15% from the top and centered */
-  padding: 20px;
+  margin: 10% 20%; /* 15% from the top and centered */
+  padding: 30px;
   border: 1px solid #888;
-  width: 80%; /* Could be more or less, depending on screen size */
+  font-size: 18px;
+  width: 60%; /* Could be more or less, depending on screen size */
 }
 
 /* The Close Button */
@@ -51,4 +52,8 @@ div:hover .btn {
 
 span {
   margin-left: 20px;
+}
+
+.space {
+  margin: 18px;
 }

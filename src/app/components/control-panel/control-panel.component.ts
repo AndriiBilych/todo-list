@@ -1,4 +1,4 @@
-import {Component, HostListener, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import { ControlPanelService } from '../../services/control-panel.service';
 import { DataService } from '../../services/data-service.service';
 
@@ -11,6 +11,15 @@ export class ControlPanelComponent implements OnInit {
   titles: { title: string, id: number }[];
   selectedIndex: number;
   isChangingName: boolean;
+
+  @ViewChild('modal') modal: ElementRef;
+
+  @HostListener('document:mousedown', ['$event.target'])
+  onCloseModalClick(target): void {
+    if (target.classList.contains('modal')) {
+      this.modal.nativeElement.style.display = 'none';
+    }
+  }
 
   @HostListener('contextmenu', ['$event'])
   onRightClick(event): void {
@@ -27,6 +36,7 @@ export class ControlPanelComponent implements OnInit {
     this.titles = null;
     this.selectedIndex = 0;
     this.isChangingName = false;
+    // this.modal = null;
   }
 
   ngOnInit(): void {
@@ -37,6 +47,7 @@ export class ControlPanelComponent implements OnInit {
     this.dataService.getTitles().subscribe( data => {
       this.titles = data;
     });
+
   }
 
   onClick(i: number): void {
@@ -44,11 +55,13 @@ export class ControlPanelComponent implements OnInit {
   }
 
   removeBoard(i: number): void {
-    if (this.titles.length - 1 > 0) {
-      this.controlPanelService.deleteIndex(i);
-      this.titles.splice(this.selectedIndex, 1);
-      this.controlPanelService.setIndex(0);
-      this.selectedIndex = 0;
+    this.controlPanelService.deleteIndex(i);
+    this.titles.splice(this.selectedIndex, 1);
+    this.controlPanelService.setIndex(0);
+    this.selectedIndex = 0;
+
+    if (this.titles.length === 0) {
+      this.createBoard();
     }
   }
 

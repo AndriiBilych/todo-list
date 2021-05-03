@@ -20,7 +20,15 @@
     <div class="board-name-container" [style.padding]="isChangingName ? '0' : '10px'">
       <ng-container *ngIf="!isChangingName; else titleInput">
           <div class="board-title">{{titles[selectedIndex]?.title}}</div>
-          <button class="remove_board_button" (click)="removeBoard(selectedIndex)">&times;</button>
+          <button class="remove_board_button" (click)="modal.style.display = 'block'">&times;</button>
+          <div #modal class="modal">
+            <div class="modal-content">
+              <button class="close" (click)="modal.style.display = 'none'">&times;</button>
+              <h3>Are you sure you want to delete "{{titles[selectedIndex].title}}" board?</h3>
+              <button class="choice" (click)="removeBoard(selectedIndex); modal.style.display = 'none'">Yes</button>
+              <button class="choice" (click)="modal.style.display = 'none'">No</button>
+            </div>
+          </div>
       </ng-container>
       <ng-template #titleInput>
         <app-input-form
