@@ -8,33 +8,39 @@ import {Component, OnInit} from '@angular/core';
 export class ColorPickerComponent implements OnInit {
   themes: {colors: {key: string, value: string}[], title: string}[] = [];
 
-  constructor() {
-    const colors: {key: string, value: string}[] = [];
-    colors.push({key: '--mainColor', value: getComputedStyle(document.documentElement).getPropertyValue('--mainColor')});
-    colors.push({key: '--buttonColor', value: getComputedStyle(document.documentElement).getPropertyValue('--buttonColor')});
-    colors.push({key: '--backgroundColor', value: getComputedStyle(document.documentElement).getPropertyValue('--backgroundColor')});
-    colors.push({key: '--highlightedColor', value: getComputedStyle(document.documentElement).getPropertyValue('--highlightedColor')});
-    colors.push({key: '--textColor', value: getComputedStyle(document.documentElement).getPropertyValue('--textColor')});
-    this.themes.push({colors, title: 'Default'});
-
-    const colors2: {key: string, value: string}[] = [];
-    colors2.push({key: '--mainColor', value: 'rgba(217, 201, 195, 0.53)'});
-    colors2.push({key: '--buttonColor', value: '#E8E2DB'});
-    colors2.push({key: '--backgroundColor', value: '#d48a2a'});
-    colors2.push({key: '--highlightedColor', value: 'rgb(212, 138, 42)'});
-    colors2.push({key: '--textColor', value: '#272727'});
-    this.themes.push({colors: colors2, title: 'Funky'});
-
-    const colors1: {key: string, value: string}[] = [];
-    colors1.push({key: '--mainColor', value: 'rgba(223, 231, 234, 0.11)'});
-    colors1.push({key: '--buttonColor', value: '#191919'});
-    colors1.push({key: '--backgroundColor', value: '#2b3135'});
-    colors1.push({key: '--highlightedColor', value: 'rgb(53, 55, 56)'});
-    colors1.push({key: '--textColor', value: '#cccbca'});
-    this.themes.push({colors: colors1, title: 'Dark'});
-  }
+  constructor() {}
 
   ngOnInit(): void {
+    this.themes = [{
+      colors: [
+        {key: '--mainColor', value: getComputedStyle(document.documentElement).getPropertyValue('--mainColor')},
+        {key: '--buttonColor', value: getComputedStyle(document.documentElement).getPropertyValue('--buttonColor')},
+        {key: '--backgroundColor', value: getComputedStyle(document.documentElement).getPropertyValue('--backgroundColor')},
+        {key: '--highlightedColor', value: getComputedStyle(document.documentElement).getPropertyValue('--highlightedColor')},
+        {key: '--textColor', value: getComputedStyle(document.documentElement).getPropertyValue('--textColor')}
+      ],
+      title: 'Default'
+    },
+    {
+      colors: [
+        {key: '--mainColor', value: 'rgba(217, 201, 195, 0.53)'},
+        {key: '--buttonColor', value: '#E8E2DB'},
+        {key: '--backgroundColor', value: '#d48a2a'},
+        {key: '--highlightedColor', value: 'rgb(212, 138, 42)'},
+        {key: '--textColor', value: '#272727'}
+      ],
+      title: 'Funky'
+    },
+    {
+      colors: [
+        {key: '--mainColor', value: 'rgba(223, 231, 234, 0.11)'},
+        {key: '--buttonColor', value: '#191919'},
+        {key: '--backgroundColor', value: '#2b3135'},
+        {key: '--highlightedColor', value: 'rgb(53, 55, 56)'},
+        {key: '--textColor', value: '#cccbca'}
+      ],
+      title: 'Dark'
+    }];
   }
 
   getBackgroundColor(colors: {key: string, value: string}[]): string {
