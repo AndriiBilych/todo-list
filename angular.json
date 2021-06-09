@@ -61,18 +61,18 @@
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
           "options": {
-            "browserTarget": "trello-styled-board:build"
+            "browserTarget": "TodoList:build"
           },
           "configurations": {
             "production": {
-              "browserTarget": "trello-styled-board:build:production"
+              "browserTarget": "TodoList:build:production"
             }
           }
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "trello-styled-board:build"
+            "browserTarget": "TodoList:build"
           }
         },
         "test": {
@@ -109,11 +109,11 @@
           "builder": "@angular-devkit/build-angular:protractor",
           "options": {
             "protractorConfig": "e2e/protractor.conf.js",
-            "devServerTarget": "trello-styled-board:serve"
+            "devServerTarget": "TodoList:serve"
           },
           "configurations": {
             "production": {
-              "devServerTarget": "trello-styled-board:serve:production"
+              "devServerTarget": "TodoList:serve:production"
             }
           }
         },
@@ -124,5 +124,5 @@
       }
     }
   },
-  "defaultProject": "trello-styled-board"
+  "defaultProject": "TodoList"
 }
