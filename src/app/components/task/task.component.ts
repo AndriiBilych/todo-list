@@ -8,10 +8,8 @@ import {TaskModel} from '../../models/TaskModel';
 })
 export class TaskComponent implements OnInit {
 
-  // tslint:disable-next-line:no-input-rename
-  @Input('task') task: TaskModel;
-  // tslint:disable-next-line:no-output-rename
-  @Output('removeClicked') removeAction = new EventEmitter();
+  @Input() task: TaskModel;
+  @Output() removeAction = new EventEmitter();
   isModifyingTask: boolean;
 
   @HostListener('contextmenu', ['$event'])

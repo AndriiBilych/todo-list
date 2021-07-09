@@ -9,22 +9,12 @@ import {map, tap} from 'rxjs/operators';
   providedIn: 'root'
 })
 export class DataService {
-  JSONUrl = 'assets/boards.json';
-  JSONTitlesUrl = 'assets/boardsTitles.json';
-
   constructor(private http: HttpClient) { }
 
   getBoards(): Observable<BoardModel[]> {
-    return this.http.get<BoardInterface[]>(`${this.JSONUrl}`)
-      .pipe(
-        map((list) => {
-          return list.map((item) => new BoardModel().deserialize(item));
-        }),
-        // tap(console.log)
-      );
-  }
-
-  getTitles(): Observable<{ title: string, id: number }[]> {
-    return this.http.get<{ title: string, id: number }[]>(`${this.JSONTitlesUrl}`);
+    return this.http.get<BoardInterface[]>('assets/boards.json')
+      .pipe(map((list) => {
+        return list.map((item) => new BoardModel().deserialize(item));
+      }));
   }
 }

@@ -13,6 +13,7 @@ import { InputFormComponent } from './components/input-form/input-form.component
 import { TaskComponent } from './components/task/task.component';
 import { GuideComponent } from './components/guide/guide.component';
 import { ColorPickerComponent } from './components/color-picker/color-picker.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ColorPickerComponent } from './components/color-picker/color-picker.com
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
-    SimplebarAngularModule
+    SimplebarAngularModule,
+    BrowserAnimationsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

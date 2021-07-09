@@ -1,42 +1,44 @@
-<div class="panel" *ngIf="titles != null">
+<div class="panel">
+<!--  *ngIf="titles != null"-->
   <div class="left-container">
     <div class="dropdown">
       <button class="dropbtn left-button">
-        <div class="board-title">Boards</div>
+        <label class="board-title">{{selectedBoard ? selectedBoard.title : 'Boards'}}</label>
         <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="chevron-down" class="svg-inline--fa fa-chevron-down fa-w-14" role="img" viewBox="0 0 448 512">
           <path fill="currentColor" d="M207.029 381.476L12.686 187.132c-9.373-9.373-9.373-24.569 0-33.941l22.667-22.667c9.357-9.357 24.522-9.375 33.901-.04L224 284.505l154.745-154.021c9.379-9.335 24.544-9.317 33.901.04l22.667 22.667c9.373 9.373 9.373 24.569 0 33.941L240.971 381.476c-9.373 9.372-24.569 9.372-33.942 0z"></path>
         </svg>
       </button>
       <div class="dropdown-content">
         <button
-          *ngFor="let title of titles; index as i"
-          [class.selected]="i == selectedIndex"
-          [class.list-name]="i != selectedIndex"
-          (click)="onClick(i)"
-        >{{title.title}}</button>
-        <button class="list-name" (click)="createBoard()">+ New Board</button>
+          class="list-name"
+          *ngFor="let b of boards; index as i"
+          [class.selected]="selectedBoard?.title === b.title"
+          (click)="onClick(b.uuid)"
+        >{{b.title}}</button>
+<!--        <button class="list-name" (click)="createBoard()">+ New Board</button>-->
       </div>
     </div>
-    <div class="board-name-container" [style.padding]="isChangingName ? '0' : '10px'">
-      <ng-container *ngIf="!isChangingName; else titleInput">
-          <div class="board-title">{{titles[selectedIndex]?.title}}</div>
-          <button class="remove_board_button" (click)="modal.style.display = 'block'">&times;</button>
-          <div #modal class="modal">
-            <div class="modal-content">
-              <button class="close" (click)="modal.style.display = 'none'">&times;</button>
-              <h3>Are you sure you want to delete "{{titles[selectedIndex].title}}" board?</h3>
-              <button class="choice" (click)="removeBoard(selectedIndex); modal.style.display = 'none'">Yes</button>
-              <button class="choice" (click)="modal.style.display = 'none'">No</button>
-            </div>
-          </div>
-      </ng-container>
-      <ng-template #titleInput>
-        <app-input-form
-          (textSubmissionAction)="isChangingName = !isChangingName; titles[selectedIndex].title = $event.text.length > 0 ? $event.text : titles[selectedIndex].title"
-          [textToShow]="titles[selectedIndex].title"
-          [targetClass]="'board-title'"
-        ></app-input-form>
-      </ng-template>
+    <div class="board-name-container" *ngIf="selectedBoard !== null">
+<!--      [style.padding]="isChangingName ? '0' : '10px'"-->
+<!--      <ng-container *ngIf="!isChangingName; else titleInput">-->
+<!--          <div class="board-title">{{titles[selectedIndex]?.title}}</div>-->
+<!--          <button class="remove_board_button" (click)="modal.style.display = 'block'">&times;</button>-->
+<!--          <div #modal class="modal">-->
+<!--            <div class="modal-content">-->
+<!--              <button class="close" (click)="modal.style.display = 'none'">&times;</button>-->
+<!--              <h3>Are you sure you want to delete "{{titles[selectedIndex].title}}" board?</h3>-->
+<!--              <button class="choice" (click)="removeBoard(selectedIndex); modal.style.display = 'none'">Yes</button>-->
+<!--              <button class="choice" (click)="modal.style.display = 'none'">No</button>-->
+<!--            </div>-->
+<!--          </div>-->
+<!--      </ng-container>-->
+<!--      <ng-template #titleInput>-->
+<!--        <app-input-form-->
+<!--          (textSubmissionAction)="isChangingName = !isChangingName; titles[selectedIndex].title = $event.text.length > 0 ? $event.text : titles[selectedIndex].title"-->
+<!--          [textToShow]="titles[selectedIndex].title"-->
+<!--          [targetClass]="'board-title'"-->
+<!--        ></app-input-form>-->
+<!--      </ng-template>-->
     </div>
   </div>
   <div class="left-container">

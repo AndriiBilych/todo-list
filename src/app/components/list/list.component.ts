@@ -12,8 +12,7 @@ export class ListComponent implements OnInit {
   isAddingTask: boolean;
   isChangingName: boolean;
 
-  // tslint:disable-next-line:variable-name no-input-rename
-  @Input('list') _list: ListModel;
+  @Input() list: ListModel;
   @Output() closeListAction = new EventEmitter();
   @ViewChild('titleRef') titleRef: ElementRef;
 
@@ -32,13 +31,14 @@ export class ListComponent implements OnInit {
 
   ngOnInit(): void {}
 
+
   array(n: number): number[] {
     return Array(n);
   }
 
   pushToArray(text: string): void {
     if (text.length > 0) {
-      this._list.tasks.push(new TaskModel(this._list.id, text, this._list.tasks.length));
+      this.list.tasks.push(new TaskModel(this.list.id, text, this.list.tasks.length));
     }
   }
 }

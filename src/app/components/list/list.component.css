@@ -3,13 +3,14 @@
   padding: 0 15px;
   margin: 0 6px;
   max-height: calc(75vh + 20px);
+  min-height: 10px;
 }
 
 ngx-simplebar {
   max-height: inherit;
 }
 
-.list_header {
+.list-header {
   margin-top: 8px;
   display: flex;
   justify-content: space-between;
@@ -21,7 +22,7 @@ ngx-simplebar {
   border-radius: 12px 12px 0 0;
 }
 
-.list_footer {
+.list-footer {
   background-color: var(--mainColor);
   padding: 0 17px;
   margin: 0 6px;
@@ -32,18 +33,18 @@ ngx-simplebar {
   visibility: hidden;
 }
 
-.remove_list {
+.remove-list {
   display: none;
   border: none;
   background: none;
   margin-bottom: auto;
 }
 
-.list_header:hover .remove_list {
+.list-header:hover .remove-list {
   display: block;
 }
 
-.open_form_to_add_task {
+.open-form-to-add-task {
   border: none;
   background: none;
   color: var(--textColor);

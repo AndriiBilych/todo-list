@@ -1,23 +1,45 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import {Component, HostListener, OnDestroy, OnInit} from '@angular/core';
 import { BoardModel } from '../../models/BoardModel';
 import { PositionIndex } from '../../models/PositionIndex';
 import { ListModel } from '../../models/ListModel';
 import { ControlPanelService } from '../../services/control-panel.service';
 import { DataService } from '../../services/data-service.service';
-import { v4 as uuidv4 } from 'uuid';
 import {PositionIndexList} from '../../models/PositionIndexList';
+import {BoardStoreService} from '../../services/board-store.service';
+import {Subscription} from 'rxjs';
+import {CdkDragDrop, CdkDragEnter, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import {TaskModel} from '../../models/TaskModel';
 
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
   styleUrls: ['./board.component.css']
 })
-export class BoardComponent implements OnInit {
+export class BoardComponent implements OnInit, OnDestroy {
   options = { autoHide: false};
+  selectedBoard: BoardModel;
   boards: BoardModel[];
   currentIndex: number;
-  listTasksRefs: HTMLCollection;
-  listsRefs: HTMLCollection;
+  listTasksRefs: Element[];
+  listsRefs: Element[];
+  movies = [
+    'Episode I - The Phantom Menace',
+    'Episode II - Attack of the Clones',
+    'Episode III - Revenge of the Sith',
+    'Episode IV - A New Hope',
+    'Episode V - The Empire Strikes Back',
+    'Episode VI - Return of the Jedi',
+    'Episode VII - The Force Awakens',
+    'Episode VIII - The Last Jedi',
+    'Episode IX – The Rise of Skywalker'
+  ];
+  timePeriods = [
+    'Bronze age',
+    'Iron age',
+    'Middle ages',
+    'Early modern period',
+    'Long nineteenth century'
+  ];
 
   draggedTaskIndex = '0';
   newTaskIndex = '1';
@@ -36,21 +58,32 @@ export class BoardComponent implements OnInit {
   isDraggingTask = false;
   isDraggingList = false;
 
-  // TODO
-  // @HostListener('document:wheel', ['$event'])
-  // onScroll(event): void {
-  //   console.log('scroll', event);
-  // }
-  //
-  // @HostListener('document:mousedown', ['$event'])
-  // onBoardStartDrag(event): void {
-  //   console.log('mousedown', event);
-  // }
-  //
-  // @HostListener('document:mousemove', ['$event'])
-  // onBoardDrag(event): void {
-  //   console.log('mousemove', event);
-  // }
+  subscription: Subscription;
+
+  constructor(
+    private readonly controlPanelService: ControlPanelService,
+    private readonly dataService: DataService,
+    private readonly boardStoreService: BoardStoreService
+  ) {
+    this.isAddingList = false;
+    this.selectedBoard = null;
+    this.currentIndex = 0;
+    this.taskPositionsByOrder = [];
+    this.listOfListsOfTaskPositions = [];
+    this.listTasksRefs = null;
+    this.boards = [];
+
+    this.subscription = new Subscription();
+  }
+
+  ngOnInit(): void {
+    this.subscription.add(this.boardStoreService.selectedBoard$.subscribe(board => this.selectedBoard = board));
+    this.subscription.add(this.boardStoreService.boards$.subscribe(data => this.boards = data));
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
 
   @HostListener('document:mousedown', ['$event.target'])
   startDrag(targetElement: HTMLElement): void {
@@ -71,31 +104,27 @@ export class BoardComponent implements OnInit {
       this.targetTask.parentElement.style.height = '30px';
       this.targetTask.parentElement.style.backgroundColor = 'var(--darkColor)';
 
-      // tslint:disable-next-line:radix
       this.draggedTaskIndex = this.targetTask.getAttribute('order-index');
 
       this.currentListId = this.targetTask.getAttribute('list-id');
       this.currentList = document.getElementById(this.currentListId);
       this.currentListOrderIndex = this.currentList.getAttribute('order-index');
 
-      this.listTasksRefs = this.currentList.querySelectorAll('div.task') as unknown as HTMLCollection;
-      const listRefs = document.querySelectorAll('div.list-placeholder') as unknown as HTMLCollection;
+      this.listTasksRefs = Array.from(this.currentList.querySelectorAll('div.task'));
+      const listRefs = Array.from(document.querySelectorAll('div.list-placeholder'));
 
-      // tslint:disable-next-line:prefer-for-of
-      for (let i = 0; i < listRefs.length; i++) {
-        const taskRefs = listRefs[i].querySelectorAll('div.task') as unknown as HTMLCollection;
-        const boundingRect = listRefs[i].getBoundingClientRect();
-        // tslint:disable-next-line:max-line-length
-        this.listOfListsOfTaskPositions.push(new PositionIndexList(listRefs[i].id, listRefs[i].getAttribute('order-index'), boundingRect.x, boundingRect.y));
-        // tslint:disable-next-line:prefer-for-of
-        for (let j = 0; j < taskRefs.length; j++) {
-          const holder = taskRefs[j].getBoundingClientRect();
-        // tslint:disable-next-line:max-line-length
-          this.listOfListsOfTaskPositions[i].taskPositionsByOrder.push(new PositionIndex(holder.x, holder.y, taskRefs[j].getAttribute('order-index')));
-        }
-      }
+      listRefs.forEach((list, i) => {
+        const taskRefs = Array.from(list.querySelectorAll('div.task'));
+        const boundingRect = list.getBoundingClientRect();
+        this.listOfListsOfTaskPositions.push(new PositionIndexList(list.id, list.getAttribute('order-index'), boundingRect.x, boundingRect.y));
+        taskRefs.forEach(ref => {
+          const holder = ref.getBoundingClientRect();
+          this.listOfListsOfTaskPositions[i].taskPositionsByOrder.push(new PositionIndex(holder.x, holder.y, ref.getAttribute('order-index')));
+        });
+      });
     }
-    else if (targetElement.classList.contains('list_header') || targetElement.classList.contains('list_title')) {
+    else
+    if (targetElement.classList.contains('list_header') || targetElement.classList.contains('list_title')) {
       this.isDraggingList = true;
 
       if (targetElement.classList.contains('list_title')) {
@@ -107,16 +136,13 @@ export class BoardComponent implements OnInit {
 
       this.targetList.style.position = 'fixed';
 
-      // tslint:disable-next-line:radix
       this.currentListOrderIndex = this.targetList.parentElement.getAttribute('order-index');
-      this.listsRefs = document.querySelectorAll('div.list-placeholder') as unknown as HTMLCollection;
+      this.listsRefs = Array.from(document.querySelectorAll('div.list-placeholder'));
 
-      // tslint:disable-next-line:prefer-for-of
-      for (let i = 0; i < this.listsRefs.length; i++) {
-        const boundingRect = this.listsRefs[i].getBoundingClientRect();
-        // tslint:disable-next-line:max-line-length
-        this.listOfListsOfTaskPositions.push(new PositionIndexList(this.listsRefs[i].id, this.listsRefs[i].getAttribute('order-index'), boundingRect.x, boundingRect.y));
-      }
+      this.listsRefs.forEach(list => {
+        const boundingRect = list.getBoundingClientRect();
+        this.listOfListsOfTaskPositions.push(new PositionIndexList(list.id, list.getAttribute('order-index'), boundingRect.x, boundingRect.y));
+      });
     }
   }
 
@@ -129,9 +155,7 @@ export class BoardComponent implements OnInit {
 
       const newListIndex = this.findListIndex(event);
       if (newListIndex !== null && newListIndex !== this.currentListOrderIndex){
-        // tslint:disable-next-line:max-line-length
         this.boards[this.currentIndex].lists[newListIndex].tasks.push(this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)]);
-        // tslint:disable-next-line:max-line-length
         this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)].listId = this.boards[this.currentIndex].lists[newListIndex].id;
         this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks.splice(Number(this.draggedTaskIndex), 1);
 
@@ -150,11 +174,9 @@ export class BoardComponent implements OnInit {
           const taskElementHolder = this.getTaskElementByOrderIndex(this.newTaskIndex);
           const newOrderIndex = taskElementHolder.getAttribute('order-index');
 
-          // tslint:disable-next-line:max-line-length
           this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)] = this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks[Number(this.newTaskIndex)];
           taskElementHolder.setAttribute('order-index', this.targetTask.getAttribute('order-index'));
 
-          // tslint:disable-next-line:radix
           this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks[Number(this.newTaskIndex)] = taskHolder;
           this.targetTask.setAttribute('order-index', newOrderIndex);
 
@@ -169,16 +191,13 @@ export class BoardComponent implements OnInit {
 
       this.newListOrderIndex = this.findListIndex(event);
       if (this.newListOrderIndex !== null && this.newListOrderIndex !== this.currentListOrderIndex) {
-        // tslint:disable-next-line:radix
         const listHolder = this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)];
         const listElementHolder = this.getListElementByOrderIndex(this.newListOrderIndex);
         const newOrderIndex = listElementHolder.getAttribute('order-index');
 
-        // tslint:disable-next-line:max-line-length
         this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)] = this.boards[this.currentIndex].lists[Number(this.newListOrderIndex)];
         listElementHolder.setAttribute('order-index', this.targetList.parentElement.getAttribute('order-index'));
 
-        // tslint:disable-next-line:radix
         this.boards[this.currentIndex].lists[Number(this.newListOrderIndex)] = listHolder;
         this.targetList.parentElement.setAttribute('order-index', newOrderIndex);
 
@@ -220,38 +239,66 @@ export class BoardComponent implements OnInit {
     }
   }
 
-  constructor(
-    private readonly controlPanelService: ControlPanelService,
-    private readonly dataService: DataService
-  ) {
-    this.isAddingList = false;
-    this.boards = null;
-    this.currentIndex = 0;
-    this.taskPositionsByOrder = [];
-    this.listOfListsOfTaskPositions = [];
-    this.listTasksRefs = null;
-  }
+  // TODO
+  // @HostListener('document:wheel', ['$event'])
+  // onScroll(event): void {
+  //   console.log('scroll', event);
+  // }
+  //
+  // @HostListener('document:mousedown', ['$event'])
+  // onBoardStartDrag(event): void {
+  //   console.log('mousedown', event);
+  // }
+  //
+  // @HostListener('document:mousemove', ['$event'])
+  // onBoardDrag(event): void {
+  //   console.log('mousemove', event);
+  // }
 
-  ngOnInit(): void {
-    this.controlPanelService.index$.subscribe( index => {
-      if (index >= this.boards.length) {
-        this.boards.push(new BoardModel('New Board'));
-      }
-      this.currentIndex = index;
-    });
+  // drop(event: CdkDragDrop<TaskModel[]>) {
+  //   // console.log(event);
+  //   if (event.previousContainer === event.container) {
+  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  //   } else {
+  //     transferArrayItem(event.previousContainer.data,
+  //       event.container.data,
+  //       event.previousIndex,
+  //       event.currentIndex);
+  //   }
+  //   // moveItemInArray(array, event.previousIndex, event.currentIndex);
+  // }
 
-    this.controlPanelService.deleteIndex$.subscribe( index => {
-      if (this.boards.length > 0) {
-        this.boards.splice(index, 1);
-      }
-      this.currentIndex = 0;
-    });
 
-    this.dataService.getBoards().subscribe( data => {
-      this.boards = data;
-      this.controlPanelService.setIndex(this.currentIndex);
-    });
-  }
+  // dragEnter(event: CdkDragEnter<TaskModel[]>) {
+  //   // console.log(event);
+  //   if (event.previousContainer === event.container) {
+  //     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  //   } else {
+  //     transferArrayItem(event.previousContainer.data,
+  //       event.container.data,
+  //       event.previousIndex,
+  //       event.currentIndex);
+  //   }
+  //   // moveItemInArray(array, event.previousIndex, event.currentIndex);
+  // }
+
+
+  // drop(event: CdkDragDrop<string[]>) {
+  //   moveItemInArray(this.timePeriods, event.previousIndex, event.currentIndex);
+  // }
+
+  // dropList(array, event: CdkDragDrop<ListModel[]>) {
+  //   console.log(event);
+  //   // if (event.previousContainer === event.container) {
+  //   //   moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+  //   // } else {
+  //   //   transferArrayItem(event.previousContainer.data,
+  //   //     event.container.data,
+  //   //     event.previousIndex,
+  //   //     event.currentIndex);
+  //   // }
+  //   moveItemInArray(array, event.previousIndex, event.currentIndex);
+  // }
 
   pushToArray(text: string): void {
     this.boards[this.currentIndex].lists.push(new ListModel(text, this.boards[this.currentIndex].lists.length));
@@ -259,7 +306,6 @@ export class BoardComponent implements OnInit {
 
   findListIndex(event): string {
     let holder = null;
-    // tslint:disable-next-line:radix
     this.listOfListsOfTaskPositions.forEach( (list) => {
       if (event.clientX > list.x) { holder = list.orderIndex; }
     });
@@ -268,7 +314,6 @@ export class BoardComponent implements OnInit {
 
   findTaskIndex(event, listOrderIndex): string {
     let holder = '0';
-    // tslint:disable-next-line:radix
     this.listOfListsOfTaskPositions[Number(listOrderIndex)].taskPositionsByOrder.forEach( (task) => {
       if (event.clientY > task.y) { holder = task.index; }
     });
@@ -307,5 +352,10 @@ export class BoardComponent implements OnInit {
     for (let i = 0; i < this.boards[this.currentIndex].lists.length; i++) {
       this.boards[this.currentIndex].lists[i].orderIndex = i;
     }
+  }
+
+  onClick(uuid: string): void {
+    this.boardStoreService.setBoards(this.boards);
+    this.boardStoreService.setSelectedBoard(this.boards.find(b => b.uuid === uuid));
   }
 }

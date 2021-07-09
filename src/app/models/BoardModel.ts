@@ -6,12 +6,12 @@ import {v4 as uuidv4} from 'uuid';
 export class BoardModel implements DeserializeInterface<BoardInterface>, BoardInterface {
   lists: ListModel[];
   title: string;
-  id: string;
+  uuid: string;
 
   constructor(title?: string) {
     this.title = title;
     this.lists = [];
-    this.id = uuidv4();
+    this.uuid = uuidv4();
   }
 
   deserialize(input: BoardInterface): this {

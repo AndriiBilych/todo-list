@@ -408,7 +408,7 @@ class ListComponent {
     }
     pushToArray(text) {
         if (text.length > 0) {
-            this._list.tasks.push(new _models_TaskModel__WEBPACK_IMPORTED_MODULE_1__["TaskModel"](this._list.id, text, this._list.tasks.length));
+            this.list.tasks.push(new _models_TaskModel__WEBPACK_IMPORTED_MODULE_1__["TaskModel"](this.list.id, text, this.list.tasks.length));
         }
     }
 }
