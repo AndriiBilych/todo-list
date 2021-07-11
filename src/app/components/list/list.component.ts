@@ -19,7 +19,7 @@ export class ListComponent implements OnInit {
   @HostListener('contextmenu', ['$event'])
   onRightClick(event): void {
     event.preventDefault();
-    if (event.target.classList.contains('list_header') || event.target.classList.contains('list_title')) {
+    if (event.target.classList.contains('list-header') || event.target.classList.contains('list-title')) {
       this.isChangingName = !this.isChangingName;
     }
   }
@@ -38,7 +38,7 @@ export class ListComponent implements OnInit {
 
   pushToArray(text: string): void {
     if (text.length > 0) {
-      this.list.tasks.push(new TaskModel(this.list.id, text, this.list.tasks.length));
+      this.list.tasks.push(new TaskModel(text, this.list.tasks.length));
     }
   }
 }

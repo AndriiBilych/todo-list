@@ -1,7 +1,6 @@
 export interface TaskInterface {
-  positionIndex: number;
+  id: number;
+  uuid: string;
+  order: number;
   content: string;
-  id: string;
-  listId: string;
-  orderIndex: number;
 }

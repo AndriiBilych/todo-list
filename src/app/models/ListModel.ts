@@ -6,20 +6,26 @@ import {v4 as uuidv4} from 'uuid';
 export class ListModel implements DeserializeInterface<ListInterface>, ListInterface {
   tasks: TaskModel[];
   title = 'New List';
-  id: string;
-  orderIndex: number;
+  id: number;
+  uuid: string;
+  order: number;
 
-  constructor(text?: string, orderIndex?: number) {
+  constructor(text?: string, order?: number) {
     this.tasks = [];
-    this.id = uuidv4();
+    this.uuid = uuidv4();
+    this.id = 0;
     this.title = text;
-    this.orderIndex = orderIndex;
+    this.order = order;
   }
 
   deserialize(input: ListInterface): this {
     Object.assign(this, input);
 
-    this.tasks = this.tasks.map((item) => new TaskModel(this.id).deserialize(item));
+    this.tasks = this.tasks.map((item) => new TaskModel().deserialize(item));
+
+    this.tasks.sort((first, second) =>
+      first.order > second.order ? 1 : first.order < second.order ? -1 : 0
+    );
 
     return this;
 

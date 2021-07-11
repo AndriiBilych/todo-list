@@ -1,16 +1,16 @@
-<div class="task_container">
-  <div class="task" [id]="task.id" [attr.list-id]="task.listId" [attr.order-index]="task.orderIndex">
+<div class="task-container" [attr.uuid]="task.uuid" [class.task-container-selected]="task.selected">
+  <div class="task" [attr.uuid]="task.uuid" *ngIf="!task.selected">
     <ng-container *ngIf="!isModifyingTask; else textInput">
-      <div class="task_title">{{task.content}}</div>
+      <div class="task-title">{{task.content}}</div>
     </ng-container>
     <ng-template #textInput>
       <app-input-form
         (textSubmissionAction)="isModifyingTask = !isModifyingTask; task.content = $event.text.length > 0 ? $event.text : task.content"
         [textToShow]="task.content"
-        [targetClass]="'task_title'"
+        [targetClass]="'task-title'"
       ></app-input-form>
     </ng-template>
 
-    <button (click)="removeAction.emit()" class="remove_task_button">&times;</button>
+    <button (click)="removeAction.emit()" class="remove-task-button">&times;</button>
   </div>
 </div>

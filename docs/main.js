@@ -229,7 +229,7 @@ TaskComponent.ɵcmp = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵdefineComp
         const _r1 = _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵreference"](4);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("id", ctx.task.id);
-        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("list-id", ctx.task.listId)("order-index", ctx.task.orderIndex);
+        _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵattribute"]("list-id", ctx.task.listId)("order-index", ctx.task.order);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵadvance"](1);
         _angular_core__WEBPACK_IMPORTED_MODULE_0__["ɵɵproperty"]("ngIf", !ctx.isModifyingTask)("ngIfElse", _r1);
     } }, directives: [_angular_common__WEBPACK_IMPORTED_MODULE_1__["NgIf"], _input_form_input_form_component__WEBPACK_IMPORTED_MODULE_2__["InputFormComponent"]], styles: [".task[_ngcontent-%COMP%] {\r\n  \r\n  height: auto;\r\n  padding: 5px;\r\n  margin-top: 8px;\r\n  word-wrap: break-word;\r\n  word-break: break-word;\r\n  background-color: var(--buttonColor);\r\n  color: var(--textColor);\r\n  border-radius: 5px;\r\n  display: flex;\r\n  justify-content: space-between;\r\n}\r\n\r\n.task_title[_ngcontent-%COMP%]{\r\n  padding-left: 10px;\r\n}\r\n\r\n.remove_task_button[_ngcontent-%COMP%] {\r\n  visibility: hidden;\r\n  border: none;\r\n  background-color: var(--buttonColor);\r\n  margin-bottom: auto;\r\n}\r\n\r\n.task[_ngcontent-%COMP%]:hover   .remove_task_button[_ngcontent-%COMP%] {\r\n  visibility: visible;\r\n}\n/*# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJzb3VyY2VzIjpbInRhc2suY29tcG9uZW50LmNzcyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiQUFBQTtFQUNFLGdCQUFnQjtFQUNoQixZQUFZO0VBQ1osWUFBWTtFQUNaLGVBQWU7RUFDZixxQkFBcUI7RUFDckIsc0JBQXNCO0VBQ3RCLG9DQUFvQztFQUNwQyx1QkFBdUI7RUFDdkIsa0JBQWtCO0VBQ2xCLGFBQWE7RUFDYiw4QkFBOEI7QUFDaEM7O0FBRUE7RUFDRSxrQkFBa0I7QUFDcEI7O0FBRUE7RUFDRSxrQkFBa0I7RUFDbEIsWUFBWTtFQUNaLG9DQUFvQztFQUNwQyxtQkFBbUI7QUFDckI7O0FBRUE7RUFDRSxtQkFBbUI7QUFDckIiLCJmaWxlIjoidGFzay5jb21wb25lbnQuY3NzIiwic291cmNlc0NvbnRlbnQiOlsiLnRhc2sge1xyXG4gIC8qd2lkdGg6IDI0MHB4OyovXHJcbiAgaGVpZ2h0OiBhdXRvO1xyXG4gIHBhZGRpbmc6IDVweDtcclxuICBtYXJnaW4tdG9wOiA4cHg7XHJcbiAgd29yZC13cmFwOiBicmVhay13b3JkO1xyXG4gIHdvcmQtYnJlYWs6IGJyZWFrLXdvcmQ7XHJcbiAgYmFja2dyb3VuZC1jb2xvcjogdmFyKC0tYnV0dG9uQ29sb3IpO1xyXG4gIGNvbG9yOiB2YXIoLS10ZXh0Q29sb3IpO1xyXG4gIGJvcmRlci1yYWRpdXM6IDVweDtcclxuICBkaXNwbGF5OiBmbGV4O1xyXG4gIGp1c3RpZnktY29udGVudDogc3BhY2UtYmV0d2VlbjtcclxufVxyXG5cclxuLnRhc2tfdGl0bGV7XHJcbiAgcGFkZGluZy1sZWZ0OiAxMHB4O1xyXG59XHJcblxyXG4ucmVtb3ZlX3Rhc2tfYnV0dG9uIHtcclxuICB2aXNpYmlsaXR5OiBoaWRkZW47XHJcbiAgYm9yZGVyOiBub25lO1xyXG4gIGJhY2tncm91bmQtY29sb3I6IHZhcigtLWJ1dHRvbkNvbG9yKTtcclxuICBtYXJnaW4tYm90dG9tOiBhdXRvO1xyXG59XHJcblxyXG4udGFzazpob3ZlciAucmVtb3ZlX3Rhc2tfYnV0dG9uIHtcclxuICB2aXNpYmlsaXR5OiB2aXNpYmxlO1xyXG59XHJcblxyXG4iXX0= */"] });
@@ -1114,10 +1114,10 @@ class BoardComponent {
             this.targetTask.parentElement.style.height = '30px';
             this.targetTask.parentElement.style.backgroundColor = 'var(--darkColor)';
             // tslint:disable-next-line:radix
-            this.draggedTaskIndex = this.targetTask.getAttribute('order-index');
+            this.currentTaskIndex = this.targetTask.getAttribute('order-index');
             this.currentListId = this.targetTask.getAttribute('list-id');
             this.currentList = document.getElementById(this.currentListId);
-            this.currentListOrderIndex = this.currentList.getAttribute('order-index');
+            this.currentListIndex = this.currentList.getAttribute('order-index');
             this.listTasksRefs = this.currentList.querySelectorAll('div.task');
             const listRefs = document.querySelectorAll('div.list-placeholder');
             // tslint:disable-next-line:prefer-for-of
@@ -1144,7 +1144,7 @@ class BoardComponent {
             }
             this.targetList.style.position = 'fixed';
             // tslint:disable-next-line:radix
-            this.currentListOrderIndex = this.targetList.parentElement.getAttribute('order-index');
+            this.currentListIndex = this.targetList.parentElement.getAttribute('order-index');
             this.listsRefs = document.querySelectorAll('div.list-placeholder');
             // tslint:disable-next-line:prefer-for-of
             for (let i = 0; i < this.listsRefs.length; i++) {
@@ -1159,32 +1159,32 @@ class BoardComponent {
             this.targetTask.style.top = `${event.clientY}px`;
             this.targetTask.style.left = `${event.clientX}px`;
             const newListIndex = this.findListIndex(event);
-            if (newListIndex !== null && newListIndex !== this.currentListOrderIndex) {
+            if (newListIndex !== null && newListIndex !== this.currentListIndex) {
                 // tslint:disable-next-line:max-line-length
-                this.boards[this.currentIndex].lists[newListIndex].tasks.push(this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)]);
+                this.boards[this.currentIndex].lists[newListIndex].tasks.push(this.boards[this.currentIndex].lists[Number(this.currentListIndex)].tasks[Number(this.currentTaskIndex)]);
                 // tslint:disable-next-line:max-line-length
-                this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)].listId = this.boards[this.currentIndex].lists[newListIndex].id;
-                this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks.splice(Number(this.draggedTaskIndex), 1);
-                this.recalculateOrderIndices(this.currentListOrderIndex);
+                this.boards[this.currentIndex].lists[Number(this.currentListIndex)].tasks[Number(this.currentTaskIndex)].listId = this.boards[this.currentIndex].lists[newListIndex].id;
+                this.boards[this.currentIndex].lists[Number(this.currentListIndex)].tasks.splice(Number(this.currentTaskIndex), 1);
+                this.recalculateOrderIndices(this.currentListIndex);
                 this.recalculateOrderIndices(newListIndex);
-                this.currentListOrderIndex = newListIndex;
-                this.draggedTaskIndex = null;
+                this.currentListIndex = newListIndex;
+                this.currentTaskIndex = null;
                 this.isDraggingTask = !this.isDraggingTask;
             }
             else if (!this.isDraggingList) {
                 this.newTaskIndex = this.findTaskIndex(event, newListIndex);
-                if (this.newTaskIndex !== null && this.draggedTaskIndex !== null && this.newTaskIndex !== this.draggedTaskIndex) {
+                if (this.newTaskIndex !== null && this.currentTaskIndex !== null && this.newTaskIndex !== this.currentTaskIndex) {
                     // tslint:disable-next-line:radix
-                    const taskHolder = this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)];
+                    const taskHolder = this.boards[this.currentIndex].lists[Number(this.currentListIndex)].tasks[Number(this.currentTaskIndex)];
                     const taskElementHolder = this.getTaskElementByOrderIndex(this.newTaskIndex);
                     const newOrderIndex = taskElementHolder.getAttribute('order-index');
                     // tslint:disable-next-line:max-line-length
-                    this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks[Number(this.draggedTaskIndex)] = this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks[Number(this.newTaskIndex)];
+                    this.boards[this.currentIndex].lists[Number(this.currentListIndex)].tasks[Number(this.currentTaskIndex)] = this.boards[this.currentIndex].lists[Number(this.currentListIndex)].tasks[Number(this.newTaskIndex)];
                     taskElementHolder.setAttribute('order-index', this.targetTask.getAttribute('order-index'));
                     // tslint:disable-next-line:radix
-                    this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)].tasks[Number(this.newTaskIndex)] = taskHolder;
+                    this.boards[this.currentIndex].lists[Number(this.currentListIndex)].tasks[Number(this.newTaskIndex)] = taskHolder;
                     this.targetTask.setAttribute('order-index', newOrderIndex);
-                    this.draggedTaskIndex = this.newTaskIndex;
+                    this.currentTaskIndex = this.newTaskIndex;
                 }
             }
         }
@@ -1192,18 +1192,18 @@ class BoardComponent {
             this.targetList.style.top = `${event.clientY}px`;
             this.targetList.style.left = `${event.clientX}px`;
             this.newListOrderIndex = this.findListIndex(event);
-            if (this.newListOrderIndex !== null && this.newListOrderIndex !== this.currentListOrderIndex) {
+            if (this.newListOrderIndex !== null && this.newListOrderIndex !== this.currentListIndex) {
                 // tslint:disable-next-line:radix
-                const listHolder = this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)];
+                const listHolder = this.boards[this.currentIndex].lists[Number(this.currentListIndex)];
                 const listElementHolder = this.getListElementByOrderIndex(this.newListOrderIndex);
                 const newOrderIndex = listElementHolder.getAttribute('order-index');
                 // tslint:disable-next-line:max-line-length
-                this.boards[this.currentIndex].lists[Number(this.currentListOrderIndex)] = this.boards[this.currentIndex].lists[Number(this.newListOrderIndex)];
+                this.boards[this.currentIndex].lists[Number(this.currentListIndex)] = this.boards[this.currentIndex].lists[Number(this.newListOrderIndex)];
                 listElementHolder.setAttribute('order-index', this.targetList.parentElement.getAttribute('order-index'));
                 // tslint:disable-next-line:radix
                 this.boards[this.currentIndex].lists[Number(this.newListOrderIndex)] = listHolder;
                 this.targetList.parentElement.setAttribute('order-index', newOrderIndex);
-                this.currentListOrderIndex = this.newListOrderIndex;
+                this.currentListIndex = this.newListOrderIndex;
             }
         }
     }
@@ -1275,7 +1275,7 @@ class BoardComponent {
     recalculateOrderIndices(listOrderIndex) {
         // tslint:disable-next-line:prefer-for-of
         for (let i = 0; i < this.boards[this.currentIndex].lists[listOrderIndex].tasks.length; i++) {
-            this.boards[this.currentIndex].lists[listOrderIndex].tasks[i].orderIndex = i;
+            this.boards[this.currentIndex].lists[listOrderIndex].tasks[i].order = i;
         }
     }
     getTaskElementByOrderIndex(index) {
@@ -1299,7 +1299,7 @@ class BoardComponent {
     removeList(num) {
         this.boards[this.currentIndex].lists.splice(num, 1);
         for (let i = 0; i < this.boards[this.currentIndex].lists.length; i++) {
-            this.boards[this.currentIndex].lists[i].orderIndex = i;
+            this.boards[this.currentIndex].lists[i].order = i;
         }
     }
 }

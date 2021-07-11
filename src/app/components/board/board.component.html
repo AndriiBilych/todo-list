@@ -3,10 +3,10 @@
     <ngx-simplebar [options]="options">
       <div *ngFor="let list of selectedBoard.lists; index as i"
            class="list-placeholder"
-           [id]="list.id"
-           [attr.order-index]="list.orderIndex">
+           [attr.uuid]="list.uuid"
+           [attr.order-index]="list.order">
         <div class="list-container">
-          <app-list (closeListAction)="removeList(i)" [list]="list" [id]="i"></app-list>
+          <app-list (closeListAction)="removeList(i)" [list]="list"></app-list>
         </div>
       </div>
       <div class="add-list-container">
@@ -24,6 +24,9 @@
       </div>
     </ngx-simplebar>
   </div>
+  <div #fakeTask class="task" *ngIf="isDraggingTask">
+    <div class="task-title">{{selectedTaskData.content}}</div>
+  </div>
 </ng-container>
 
 <ng-template #loadingTemplate>
@@ -33,7 +36,7 @@
       <button
         class="example"
         *ngFor="let b of boards"
-        (click)="onClick(b.uuid)"
+        (click)="loadBoard(b.uuid)"
       >{{b.title}}</button>
     </div>
   </div>

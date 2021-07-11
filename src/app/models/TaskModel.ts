@@ -4,16 +4,17 @@ import {DeserializeInterface} from './interfaces/deserializeInterface';
 
 export class TaskModel implements DeserializeInterface<TaskInterface>, TaskInterface {
   content: string;
-  positionIndex: number;
-  id: string;
-  listId: string;
-  orderIndex: number;
+  id: number;
+  uuid: string;
+  order: number;
+  selected: boolean;
 
-  constructor(listId: string, text?: string, orderIndex?: number) {
-    this.listId = listId;
-    this.id = uuidv4();
+  constructor(text?: string, orderIndex?: number) {
+    this.id = 0;
+    this.uuid = uuidv4();
     this.content = text;
-    this.orderIndex = orderIndex;
+    this.order = orderIndex;
+    this.selected = false;
   }
 
   deserialize(input: TaskInterface): this {

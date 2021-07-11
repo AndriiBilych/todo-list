@@ -1,7 +1,6 @@
 .board {
   overflow: auto;
   height: calc(100vh - 60px);
-
 }
 
 .list-placeholder {
@@ -68,3 +67,20 @@ svg {
   background-color: var(--highlightedColor);
 }
 
+.task {
+  position: fixed;
+  min-width: 150px;
+  padding: 5px;
+  margin-top: 8px;
+  word-wrap: break-word;
+  word-break: break-word;
+  background-color: var(--buttonColor);
+  color: var(--textColor);
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.task-title{
+  padding-left: 10px;
+}
