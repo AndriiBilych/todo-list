@@ -21,7 +21,6 @@ export class BoardComponent implements OnInit, OnDestroy {
   selectedTaskData: TaskModel;
 
   currentIndex: number;
-  // listTasksRefs: Element[];
   listsRefs: Element[];
 
   currentTaskIndex = 0;
@@ -56,7 +55,6 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.currentIndex = null;
     this.taskPositionsByOrder = [];
     this.listsBoundingInfo = [];
-    // this.listTasksRefs = null;
     this.boards = [];
 
     this.subscription = new Subscription();
@@ -71,7 +69,6 @@ export class BoardComponent implements OnInit, OnDestroy {
       if (this.boards.length > 0) {
         this.boardStoreService.setSelectedBoard(this.boards[0]);
       }
-
     }));
   }
 
@@ -79,31 +76,20 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  modelChange(event) {
-    console.log('change', event);
-  }
-
   @HostListener('document:mousedown', ['$event.target'])
   startDrag(targetElement: HTMLElement): void {
-    document.body.style.userSelect = 'none';
     if (!this.listsBoundingInfo.length) {
       this.calculateBoundingInfo();
     }
-    // console.log('boundingInfo', this.listsBoundingInfo);
 
     if (targetElement.classList.contains('task') || targetElement.classList.contains('task-title')) {
+      document.body.style.userSelect = 'none';
       this.isDraggingTask = true;
       this.targetTask = targetElement;
 
       if (targetElement.classList.contains('task-title')) {
         this.targetTask = targetElement.parentElement;
       }
-
-      // this.targetTask.style.position = 'fixed';
-      // this.targetTask.style.minWidth = '150px';
-
-      // this.targetTask.parentElement.style.height = '30px';
-      // this.targetTask.parentElement.style.backgroundColor = 'var(--highlightedColor)';
 
       const targetTaskUuid = this.targetTask.getAttribute('uuid');
       this.selectedTaskData = this.getTaskDataByUuid(targetTaskUuid);
@@ -113,8 +99,8 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.selectedBoard.lists[this.currentListIndex].tasks[this.currentTaskIndex].selected = true;
     }
     else if (targetElement.classList.contains('list-header') || targetElement.classList.contains('list-title')) {
+      document.body.style.userSelect = 'none';
       this.isDraggingList = true;
-
       this.targetList = targetElement.parentElement.parentElement;
 
       if (targetElement.classList.contains('list-title')) {
@@ -137,33 +123,22 @@ export class BoardComponent implements OnInit, OnDestroy {
   drag(event): void {
     if (this.isDraggingTask) {
 
+      // set fake task's position
       this.fakeTask.nativeElement.style.top = `${event.clientY}px`;
       this.fakeTask.nativeElement.style.left = `${event.clientX}px`;
 
-      // console.log(this.findListIndexByMouseX(event.clientX));
       const newListIndex = this.findListIndexByMouseX(event.clientX);
       if (newListIndex !== this.currentListIndex){
         const currentBoard = this.selectedBoard;
         const currentList = currentBoard.lists[this.currentListIndex];
         const newList = currentBoard.lists[newListIndex];
 
+        // delete old task, and add new task
         newList.tasks.push(currentList.tasks[this.currentTaskIndex]);
-        // currentList.tasks[this.currentTaskIndex].listId = currentBoard.lists[newListIndex].id;
         currentList.tasks.splice(this.currentTaskIndex, 1);
 
         this.currentListIndex = newListIndex;
         this.currentTaskIndex = newList.tasks.length - 1;
-
-        this.targetTask = this.findTaskElementByUuid(this.targetTask.getAttribute('uuid')) as HTMLElement;
-
-        // console.log(this.targetTask);
-        // console.log(this.targetTask.parentElement);
-
-        // this.targetTask.style.top = `${event.clientY}px`;
-        // this.targetTask.style.left = `${event.clientX}px`;
-        // this.targetTask.parentElement.style.height = '30px';
-        // this.targetTask.parentElement.style.backgroundColor = 'var(--highlightedColor)';
-        // this.isDraggingTask = !this.isDraggingTask;
       }
       // else
       // if (!this.isDraggingList) {
@@ -192,16 +167,11 @@ export class BoardComponent implements OnInit, OnDestroy {
 
       this.newListOrderIndex = this.listsBoundingInfo.findIndex( list => event.clientX > list.x);
       if (this.newListOrderIndex !== null && this.newListOrderIndex !== this.currentListIndex) {
-        const currentBoard = this.boards[this.currentIndex];
-        const currentList = currentBoard.lists[this.currentListIndex];
-        // const listElementHolder = this.getListElementByOrderIndex(this.newListOrderIndex);
-        // const newOrderIndex = listElementHolder.getAttribute('order-index');
+        const currentList = this.selectedBoard.lists[this.currentListIndex];
 
-        currentBoard.lists[this.currentListIndex] = currentBoard.lists[this.newListOrderIndex];
-        // listElementHolder.setAttribute('order-index', this.targetList.parentElement.getAttribute('order-index'));
-
-        currentBoard.lists[this.newListOrderIndex] = currentList;
-        // this.targetList.parentElement.setAttribute('order-index', newOrderIndex);
+        // switch neighbouring lists
+        this.selectedBoard.lists[this.currentListIndex] = this.selectedBoard.lists[this.newListOrderIndex];
+        this.selectedBoard.lists[this.newListOrderIndex] = currentList;
 
         this.currentListIndex = this.newListOrderIndex;
       }
@@ -216,7 +186,9 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.targetTask = null;
       this.selectedTaskData = null;
       this.listsBoundingInfo = [];
-      this.deselectAllTasks();
+
+      // deselect all tasks
+      this.selectedBoard.lists.forEach(list => list.tasks.forEach(task => task.selected = false));
     }
 
     if (this.targetList !== null) {
@@ -252,14 +224,6 @@ export class BoardComponent implements OnInit, OnDestroy {
   // onBoardDrag(event): void {
   //   console.log('mousemove', event);
   // }
-
-  deselectAllTasks() {
-    this.selectedBoard.lists.forEach(list => list.tasks.forEach(task => task.selected = false));
-  }
-
-  pushToArray(text: string): void {
-    this.boards[this.currentIndex].lists.push(new ListModel(text, this.boards[this.currentIndex].lists.length));
-  }
 
   findListIndexByMouseX(clientX: number): number {
     const index = this.listsBoundingInfo.findIndex( list => clientX <= list.x) - 1;
@@ -303,11 +267,12 @@ export class BoardComponent implements OnInit, OnDestroy {
   //   return null;
   // }
 
-  removeList(num): void {
-    this.boards[this.currentIndex].lists.splice(num, 1);
-    for (let i = 0; i < this.boards[this.currentIndex].lists.length; i++) {
-      this.boards[this.currentIndex].lists[i].order = i;
-    }
+  removeList(index): void {
+    this.selectedBoard.lists.splice(index, 1);
+  }
+
+  pushToArray(text: string): void {
+    this.selectedBoard.lists.push(new ListModel(text));
   }
 
   loadBoard(uuid: string): void {
@@ -329,10 +294,5 @@ export class BoardComponent implements OnInit, OnDestroy {
         this.listsBoundingInfo[i].taskPositionsByOrder.push(new TaskBoundingInfo(holder.x, holder.y, ref.getAttribute('uuid')));
       });
     });
-  }
-
-  findTaskElementByUuid(uuid: string) {
-    const tasks = Array.from(document.querySelectorAll('div.task-container'));
-    return tasks.find(task => task.getAttribute('uuid') === uuid);
   }
 }
