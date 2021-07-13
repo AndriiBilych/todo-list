@@ -1,7 +1,7 @@
 .task-container {
   border-radius: 5px;
-  margin-top: 8px;
   cursor: pointer;
+  margin: 8px 15px 0 15px;
 }
 
 .task-container-selected {
@@ -12,7 +12,6 @@
 .task {
   height: auto;
   padding: 5px;
-  margin: 0 15px;
   word-wrap: break-word;
   word-break: break-word;
   background-color: var(--button);
