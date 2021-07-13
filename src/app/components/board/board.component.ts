@@ -41,10 +41,15 @@ export class BoardComponent implements OnInit, OnDestroy {
   isAddingList: boolean;
   isDraggingTask = false;
   isDraggingList = false;
+  isDraggingBoard = false;
 
   subscription: Subscription;
 
   @ViewChild('fakeTask') fakeTask: ElementRef;
+  @ViewChild('board') boardRef: ElementRef;
+  scrollContainerRef: any;
+  mouseStartingX: number;
+  scrollSpeed = 10;
 
   constructor(
     private readonly controlPanelService: ControlPanelService,
@@ -52,6 +57,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     private readonly boardStoreService: BoardStoreService,
   ) {
     this.isAddingList = false;
+    this.mouseStartingX = null;
     this.selectedBoard = null;
     this.currentIndex = null;
     this.taskPositionsByOrder = [];
@@ -59,12 +65,18 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.boards = [];
 
     this.subscription = new Subscription();
+    this.scrollContainerRef = null;
   }
 
   ngOnInit(): void {
     this.subscription.add(this.boardStoreService.selectedBoard$.subscribe(board => this.selectedBoard = board));
     this.subscription.add(this.boardStoreService.boards$.subscribe(data => {
       this.boards = data;
+
+      // Testing, exclusively for disabling title screen
+      if (this.boards.length > 0) {
+        this.boardStoreService.setSelectedBoard(this.boards[0]);
+      }
     }));
   }
 
@@ -78,6 +90,10 @@ export class BoardComponent implements OnInit, OnDestroy {
     if (event.buttons === 1) {
       if (!this.listsBoundingInfo.length) {
         this.calculateBoundingInfo();
+      }
+
+      if (!this.scrollContainerRef && this.selectedBoard) {
+        this.scrollContainerRef = this.boardRef.nativeElement.firstChild.firstChild.children[1].firstChild.firstChild;
       }
 
       if (targetElement.classList.contains('task') || targetElement.classList.contains('task-title')) {
@@ -109,6 +125,10 @@ export class BoardComponent implements OnInit, OnDestroy {
 
         const uuid = this.targetList.getAttribute('uuid');
         this.currentListIndex = this.selectedBoard.lists.findIndex(list => list.uuid === uuid);
+      }
+      else if (this.selectedBoard !== null){
+       this.isDraggingBoard = true;
+       this.mouseStartingX = event.clientX;
       }
     }
   }
@@ -179,6 +199,10 @@ export class BoardComponent implements OnInit, OnDestroy {
         this.currentListIndex = this.newListOrderIndex;
       }
     }
+
+    if (this.isDraggingBoard) {
+      this.scrollContainerRef.scrollLeft -= (event.clientX - this.mouseStartingX) / this.scrollSpeed;
+    }
   }
 
   @HostListener('mouseup')
@@ -212,25 +236,27 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.targetList = null;
     }
 
+    if (this.selectedBoard !== null) {
+      this.isDraggingBoard = false;
+      this.mouseStartingX = null;
+    }
+
     // calculate board bounding info
     this.calculateBoundingInfo();
   }
 
-  // TODO
-  // @HostListener('document:wheel', ['$event'])
-  // onScroll(event): void {
-  //   console.log('scroll', event);
-  // }
-  //
-  // @HostListener('document:mousedown', ['$event'])
-  // onBoardStartDrag(event): void {
-  //   console.log('mousedown', event);
-  // }
-  //
-  // @HostListener('document:mousemove', ['$event'])
-  // onBoardDrag(event): void {
-  //   console.log('mousemove', event);
-  // }
+  @HostListener('document:wheel', ['$event'])
+  onScroll(event): void {
+    if (!this.scrollContainerRef && this.selectedBoard) {
+      this.scrollContainerRef = this.boardRef.nativeElement.firstChild.firstChild.children[1].firstChild.firstChild;
+    }
+
+    const target = event.target;
+
+    if (target && target.classList === this.scrollContainerRef.classList) {
+      this.scrollContainerRef.scrollLeft += event.deltaY / -1.6;
+    }
+  }
 
   findListIndexByMouseX(clientX: number): number {
     if (!this.listsBoundingInfo || this.listsBoundingInfo.length === 0) {
