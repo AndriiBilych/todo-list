@@ -6,6 +6,7 @@
   --highlighted: rgb(159, 194, 219);
   --text: #272727;
   --modalBackground: #fff;
+  --grayed: rgba(68, 70, 71, 0.74);
 }
 
 html {

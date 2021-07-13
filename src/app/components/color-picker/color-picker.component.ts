@@ -18,7 +18,8 @@ export class ColorPickerComponent implements OnInit {
         {key: '--background', value: getComputedStyle(document.documentElement).getPropertyValue('--background')},
         {key: '--highlighted', value: getComputedStyle(document.documentElement).getPropertyValue('--highlighted')},
         {key: '--text', value: getComputedStyle(document.documentElement).getPropertyValue('--text')},
-        {key: '--modalBackground', value: getComputedStyle(document.documentElement).getPropertyValue('--modalBackground')}
+        {key: '--modalBackground', value: getComputedStyle(document.documentElement).getPropertyValue('--modalBackground')},
+        {key: '--grayed', value: getComputedStyle(document.documentElement).getPropertyValue('--grayed')}
       ],
       title: 'Default'
     },
@@ -29,7 +30,8 @@ export class ColorPickerComponent implements OnInit {
         {key: '--background', value: '#d48a2a'},
         {key: '--highlighted', value: 'rgb(212, 138, 42)'},
         {key: '--text', value: '#272727'},
-        {key: '--modalBackground', value: '#fff'}
+        {key: '--modalBackground', value: '#fff'},
+        {key: '--grayed', value: 'rgba(68, 70, 71, 0.74)'}
       ],
       title: 'Funky'
     },
@@ -40,7 +42,8 @@ export class ColorPickerComponent implements OnInit {
         {key: '--background', value: '#2b3135'},
         {key: '--highlighted', value: 'rgb(53, 55, 56)'},
         {key: '--text', value: '#cccbca'},
-        {key: '--modalBackground', value: '#2b3135'}
+        {key: '--modalBackground', value: '#2b3135'},
+        {key: '--grayed', value: 'rgba(230, 238, 241, 0.55)'}
       ],
       title: 'Dark'
     }];

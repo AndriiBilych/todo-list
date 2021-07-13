@@ -1,3 +1,8 @@
+.label {
+  display: flex;
+  justify-content: center;
+}
+
 .btn {
   background-color: var(--button);
   padding: 10px;
@@ -13,37 +18,75 @@ div:hover .btn {
 }
 
 .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1; /* Sit on top */
+  display: none;
+  position: fixed;
+  z-index: 1;
   left: 0;
   top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgb(0,0,0); /* Fallback color */
-  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
   color: var(--text);
+}
+
+.modal-content-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
 }
 
 .modal-content {
+  display: block;
   background-color: var(--modalBackground);
   color: var(--text);
-  margin: 10% 20%; /* 15% from the top and centered */
-  padding: 30px;
+  padding: 40px;
   border: 1px solid #888;
   font-size: 18px;
-  width: 60%; /* Could be more or less, depending on screen size */
+  width: 60%;
+  height: 70%;
+  border-radius: 10px;
+  position: relative;
 }
 
-/* The Close Button */
+.instructions-container {
+  display: flex;
+  justify-content: center;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  left: 0;
+  margin-bottom: 20px;
+}
+
+.author {
+  color: var(--grayed);
+  display: block;
+}
+
+a {
+  margin: 10px;
+}
+
 .close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
   color: var(--text);
   background-color: var(--button);
-  float: right;
   font-size: 18px;
   border: none;
+  border-radius: 5px;
   font-weight: bold;
+  height: 25px;
+  width: 25px;
 }
 
 .close:hover, .close:focus {

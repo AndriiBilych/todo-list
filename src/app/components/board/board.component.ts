@@ -100,11 +100,13 @@ export class BoardComponent implements OnInit, OnDestroy {
 
         this.selectedBoard.lists[this.currentListIndex].tasks[this.currentTaskIndex].selected = true;
       }
-      else if (targetElement.classList.contains('list-header') || targetElement.classList.contains('list-title')) {
+      else if (targetElement.classList.contains('title') || targetElement.classList.contains('title-container')) {
         this.isDraggingList = true;
-        this.targetList = targetElement.parentElement.parentElement;
 
-        if (targetElement.classList.contains('list-title')) {
+        // reference to list-container in board.html
+        this.targetList = targetElement.parentElement.parentElement.parentElement;
+
+        if (targetElement.classList.contains('title')) {
           this.targetList = this.targetList.parentElement;
         }
 

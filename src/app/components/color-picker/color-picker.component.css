@@ -24,7 +24,7 @@
   display: block;
 }
 
-.dropdown:hover .dropbtn, .list-name:hover , .left-button:hover{
+.dropdown:hover .dropBtn, .list-name:hover , .left-button:hover{
   background-color: var(--highlighted);
 }
 
