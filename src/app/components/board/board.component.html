@@ -5,7 +5,7 @@
            class="list-placeholder"
            [attr.uuid]="list.uuid"
            [attr.order-index]="list.order">
-        <div class="list-container">
+        <div class="list-container" [attr.uuid]="list.uuid">
           <app-list (closeListAction)="removeList(i)" [list]="list"></app-list>
         </div>
       </div>

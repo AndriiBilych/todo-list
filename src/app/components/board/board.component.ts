@@ -23,7 +23,6 @@ export class BoardComponent implements OnInit, OnDestroy {
   selectedTaskData: TaskModel;
 
   currentIndex: number;
-  listsRefs: Element[];
 
   currentTaskIndex = 0;
   newTaskIndex = 1;
@@ -105,18 +104,13 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.targetList = targetElement.parentElement.parentElement;
 
       if (targetElement.classList.contains('list-title')) {
-        this.targetList = targetElement.parentElement.parentElement.parentElement;
+        this.targetList = this.targetList.parentElement;
       }
 
       this.targetList.style.position = 'fixed';
 
-      this.currentListIndex = Number(this.targetList.parentElement.getAttribute('order-index'));
-      this.listsRefs = Array.from(document.querySelectorAll('div.list-placeholder'));
-
-      this.listsRefs.forEach(list => {
-        const boundingRect = list.getBoundingClientRect();
-        this.listsBoundingInfo.push(new ListBoundingInfo(boundingRect.x, boundingRect.y, boundingRect.bottom, boundingRect.right, list.id));
-      });
+      const uuid = this.targetList.getAttribute('uuid');
+      this.currentListIndex = this.selectedBoard.lists.findIndex(list => list.uuid === uuid);
     }
   }
 
@@ -175,8 +169,8 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.targetList.style.top = `${event.clientY}px`;
       this.targetList.style.left = `${event.clientX}px`;
 
-      this.newListOrderIndex = this.listsBoundingInfo.findIndex( list => event.clientX > list.x);
-      if (this.newListOrderIndex !== null && this.newListOrderIndex !== this.currentListIndex) {
+      this.newListOrderIndex = this.findListIndexByMouseX(event.clientX);
+      if (this.newListOrderIndex !== this.currentListIndex) {
         const currentList = this.selectedBoard.lists[this.currentListIndex];
 
         // switch neighbouring lists
