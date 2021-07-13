@@ -70,14 +70,7 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.subscription.add(this.boardStoreService.selectedBoard$.subscribe(board => this.selectedBoard = board));
-    this.subscription.add(this.boardStoreService.boards$.subscribe(data => {
-      this.boards = data;
-
-      // Testing, exclusively for disabling title screen
-      if (this.boards.length > 0) {
-        this.boardStoreService.setSelectedBoard(this.boards[0]);
-      }
-    }));
+    this.subscription.add(this.boardStoreService.boards$.subscribe(data => this.boards = data));
   }
 
   ngOnDestroy() {

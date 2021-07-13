@@ -2756,11 +2756,7 @@
               return _this5.selectedBoard = board;
             }));
             this.subscription.add(this.boardStoreService.boards$.subscribe(function (data) {
-              _this5.boards = data; // Testing, exclusively for disabling title screen
-
-              if (_this5.boards.length > 0) {
-                _this5.boardStoreService.setSelectedBoard(_this5.boards[0]);
-              }
+              return _this5.boards = data;
             }));
           }
         }, {
