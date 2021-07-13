@@ -25,11 +25,8 @@ export class BoardComponent implements OnInit, OnDestroy {
   currentIndex: number;
 
   currentTaskIndex = 0;
-  newTaskIndex = 1;
   currentListIndex = 0;
   newListOrderIndex = 0;
-
-  newListTitle = '';
 
   targetTask: HTMLElement = null;
   targetList: HTMLElement = null;
@@ -200,7 +197,6 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   @HostListener('mouseup')
   endDrag(): void {
-    document.body.style.userSelect = 'all';
     if (this.targetTask !== null) {
       this.isDraggingTask = false;
       this.targetTask = null;
