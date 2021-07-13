@@ -1,12 +1,14 @@
-.input_form_container {
+.input-form-container {
   display: flex;
 }
 
-.input_task {
+.input-task {
   width: 150px;
 }
-.add_task {
-  position: fixed;
-  top: -10px;
-  left: -10px;
+.add-task {
+}
+
+svg {
+  width: 10px;
+  height: 10px;
 }

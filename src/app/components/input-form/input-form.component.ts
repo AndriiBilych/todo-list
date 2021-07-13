@@ -23,8 +23,8 @@ export class InputFormComponent implements OnInit, AfterViewInit, OnDestroy {
   @Output() textSubmissionAction = new EventEmitter();
   @Input() textToShow: string;
   @Input() targetClass: string;
-  @ViewChild('textInput') textInputRef: ElementRef;
-  @ViewChild('addTaskRef') addTaskRef: ElementRef;
+  @ViewChild('input') inputRef: ElementRef;
+  @ViewChild('button') buttonRef: ElementRef;
 
   // @HostListener(`document:click`, ['$event.target'])
   // clickedOut(targetElement: HTMLElement): void {
@@ -40,7 +40,7 @@ export class InputFormComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @HostListener('document:keydown.escape')
   pressedEscape(): void {
-    this.addTaskRef.nativeElement.click();
+    this.buttonRef.nativeElement.click();
   }
 
   constructor(
@@ -53,11 +53,11 @@ export class InputFormComponent implements OnInit, AfterViewInit, OnDestroy {
     // setTimeout makes the code inside asynchronous, which prevents "NG0100: Expression has changed after it was checked" error
     setTimeout(() => {
       if (InputFormComponent.inputForm !== null) {
-        InputFormComponent.inputForm.addTaskRef.nativeElement.click();
+        InputFormComponent.inputForm.buttonRef.nativeElement.click();
       }
       InputFormComponent.inputForm = this;
     });
-    this.textInputRef.nativeElement.focus();
+    this.inputRef.nativeElement.focus();
   }
 
   onEnterPressed(event): void {

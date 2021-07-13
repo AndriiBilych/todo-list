@@ -30,12 +30,12 @@ svg {
 
 .add-list {
   border: none;
-  background-color: var(--mainColor);
+  background-color: var(--main);
   margin: 8px 6px;
   padding: 6px 12px;
   width: 14vw;
   border-radius: 10px;
-  color: var(--textColor);
+  color: var(--text);
 }
 
 .choose-example-container {
@@ -55,8 +55,8 @@ svg {
 }
 
 .example {
-  background-color: var(--buttonColor);
-  color: var(--textColor);
+  background-color: var(--button);
+  color: var(--text);
   padding: 10px;
   margin: 6px;
   border: none;
@@ -64,7 +64,7 @@ svg {
 }
 
 .example:hover {
-  background-color: var(--highlightedColor);
+  background-color: var(--highlighted);
 }
 
 .task {
@@ -74,8 +74,8 @@ svg {
   margin-top: 8px;
   word-wrap: break-word;
   word-break: break-word;
-  background-color: var(--buttonColor);
-  color: var(--textColor);
+  background-color: var(--button);
+  color: var(--text);
   border-radius: 5px;
   display: flex;
   justify-content: space-between;

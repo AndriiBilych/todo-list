@@ -1,9 +1,13 @@
 .panel {
   overflow: hidden;
-  background-color: var(--mainColor);
+  background-color: var(--main);
   padding: 8px;
   display: flex;
   justify-content: space-between;
+}
+
+.tools {
+  display: flex;
 }
 
 .dropbtn {
@@ -20,7 +24,8 @@
 }
 
 .left-button {
-  background-color: var(--buttonColor);
+  background-color: var(--button);
+  color: var(--text);
   border: none;
   padding: 10px;
   margin-right: 5px;
@@ -31,7 +36,7 @@
 .dropdown-content {
   display: none;
   position: fixed;
-  background-color: var(--buttonColor);
+  background-color: var(--button);
   min-width: 160px;
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   z-index: 1;
@@ -50,17 +55,17 @@
 }
 
 .dropdown:hover .dropbtn, .list-name:hover , .left-button:hover{
-  background-color: var(--highlightedColor);
+  background-color: var(--highlighted);
 }
 
 .list-name {
-  background-color: var(--buttonColor);
-  color: var(--textColor);
+  background-color: var(--button);
+  color: var(--text);
 }
 
 .selected {
-  background-color: var(--highlightedColor);
-  color: var(--textColor);
+  background-color: var(--highlighted);
+  color: var(--text);
 }
 
 svg {
@@ -68,12 +73,12 @@ svg {
   height: 2vh;
   margin-top: 4px;
   margin-left: 2px;
-  color: var(--textColor);
+  color: var(--text);
 }
 
 .board-name-container {
   display: flex;
-  background-color: var(--buttonColor);
+  background-color: var(--button);
   border: none;
   margin-right: 5px;
   font-size: 16px;
@@ -92,21 +97,21 @@ svg {
 }
 
 .board-title {
-  color: var(--textColor);
+  color: var(--text);
 }
 
 .btn {
-  background-color: var(--buttonColor);
+  background-color: var(--button);
   padding: 10px;
   font-size: 16px;
   border: none;
   display: flex;
   border-radius: 5px;
-  color: var(--textColor);
+  color: var(--text);
 }
 
 div:hover .btn {
-  background-color: var(--highlightedColor);
+  background-color: var(--highlighted);
 }
 
 .modal {
@@ -120,20 +125,21 @@ div:hover .btn {
   overflow: auto; /* Enable scroll if needed */
   background-color: rgb(0,0,0); /* Fallback color */
   background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  color: var(--textColor);
+  color: var(--text);
 }
 
 .modal-content {
-  background-color: #fefefe;
+  background-color: var(--modalBackground);
+  color: var(--text);
   margin: 15% auto; /* 15% from the top and centered */
   padding: 20px;
-  border: 1px solid #888;
   width: 80%; /* Could be more or less, depending on screen size */
 }
 
 /* The Close Button */
 .close {
-  color: #aaa;
+  color: var(--text);
+  background-color: var(--main);
   float: right;
   font-size: 18px;
   border: none;
@@ -141,16 +147,15 @@ div:hover .btn {
 }
 
 .choice {
-  color: #aaa;
-  /*float: right;*/
+  color: var(--text);
+  background-color: var(--main);
   font-size: 18px;
   border: none;
   font-weight: bold;
 }
 
 .close:hover, .close:focus, .choice:hover, .choice:focus {
-  color: black;
-  text-decoration: none;
+  background-color: var(--highlighted);
   cursor: pointer;
 }
 

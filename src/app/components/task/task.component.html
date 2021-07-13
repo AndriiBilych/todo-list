@@ -2,6 +2,7 @@
   <div class="task" [attr.uuid]="task.uuid" *ngIf="!task?.selected">
     <ng-container *ngIf="!isModifyingTask; else textInput">
       <div class="task-title">{{task.content}}</div>
+      <button (click)="removeAction.emit()" class="remove-task-button">&times;</button>
     </ng-container>
     <ng-template #textInput>
       <app-input-form
@@ -10,7 +11,5 @@
         [targetClass]="'task-title'"
       ></app-input-form>
     </ng-template>
-
-    <button (click)="removeAction.emit()" class="remove-task-button">&times;</button>
   </div>
 </div>

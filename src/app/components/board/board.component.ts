@@ -77,40 +77,42 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  @HostListener('mousedown', ['$event.target'])
-  startDrag(targetElement: HTMLElement): void {
+  @HostListener('mousedown', ['$event.target, $event'])
+  startDrag(targetElement: HTMLElement, event): void {
     document.body.style.userSelect = 'none';
-    if (!this.listsBoundingInfo.length) {
-      this.calculateBoundingInfo();
-    }
-
-    if (targetElement.classList.contains('task') || targetElement.classList.contains('task-title')) {
-      this.isDraggingTask = true;
-      this.targetTask = targetElement;
-
-      if (targetElement.classList.contains('task-title')) {
-        this.targetTask = targetElement.parentElement;
+    if (event.buttons === 1) {
+      if (!this.listsBoundingInfo.length) {
+        this.calculateBoundingInfo();
       }
 
-      const targetTaskUuid = this.targetTask.getAttribute('uuid');
-      this.selectedTaskData = this.getTaskDataByUuid(targetTaskUuid);
-      this.currentListIndex = this.selectedBoard.lists.findIndex(list => list.tasks.findIndex(task => task.uuid === targetTaskUuid) !== -1);
-      this.currentTaskIndex = this.selectedBoard.lists[this.currentListIndex].tasks.findIndex(task => task.uuid === targetTaskUuid);
+      if (targetElement.classList.contains('task') || targetElement.classList.contains('task-title')) {
+        this.isDraggingTask = true;
+        this.targetTask = targetElement;
 
-      this.selectedBoard.lists[this.currentListIndex].tasks[this.currentTaskIndex].selected = true;
-    }
-    else if (targetElement.classList.contains('list-header') || targetElement.classList.contains('list-title')) {
-      this.isDraggingList = true;
-      this.targetList = targetElement.parentElement.parentElement;
+        if (targetElement.classList.contains('task-title')) {
+          this.targetTask = targetElement.parentElement;
+        }
 
-      if (targetElement.classList.contains('list-title')) {
-        this.targetList = this.targetList.parentElement;
+        const targetTaskUuid = this.targetTask.getAttribute('uuid');
+        this.selectedTaskData = this.getTaskDataByUuid(targetTaskUuid);
+        this.currentListIndex = this.selectedBoard.lists.findIndex(list => list.tasks.findIndex(task => task.uuid === targetTaskUuid) !== -1);
+        this.currentTaskIndex = this.selectedBoard.lists[this.currentListIndex].tasks.findIndex(task => task.uuid === targetTaskUuid);
+
+        this.selectedBoard.lists[this.currentListIndex].tasks[this.currentTaskIndex].selected = true;
       }
+      else if (targetElement.classList.contains('list-header') || targetElement.classList.contains('list-title')) {
+        this.isDraggingList = true;
+        this.targetList = targetElement.parentElement.parentElement;
 
-      this.targetList.style.position = 'fixed';
+        if (targetElement.classList.contains('list-title')) {
+          this.targetList = this.targetList.parentElement;
+        }
 
-      const uuid = this.targetList.getAttribute('uuid');
-      this.currentListIndex = this.selectedBoard.lists.findIndex(list => list.uuid === uuid);
+        this.targetList.style.position = 'fixed';
+
+        const uuid = this.targetList.getAttribute('uuid');
+        this.currentListIndex = this.selectedBoard.lists.findIndex(list => list.uuid === uuid);
+      }
     }
   }
 

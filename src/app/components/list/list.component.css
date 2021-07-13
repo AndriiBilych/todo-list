@@ -1,29 +1,31 @@
 .list {
-  background-color: var(--mainColor);
+  background-color: var(--main);
   padding: 0 15px;
   margin: 0 6px;
   max-height: calc(75vh + 20px);
-  min-height: 10px;
 }
 
 ngx-simplebar {
   max-height: inherit;
 }
 
-.list-header {
+.header {
   margin-top: 8px;
-  display: flex;
-  justify-content: space-between;
   margin-right: 6px;
   margin-left: 6px;
-  background-color: var(--mainColor);
-  color: var(--textColor);
-  padding: 5px 17px;
+  background-color: var(--main);
+  color: var(--text);
   border-radius: 12px 12px 0 0;
 }
 
-.list-footer {
-  background-color: var(--mainColor);
+.title-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 10px 20px;
+}
+
+.footer {
+  background-color: var(--main);
   padding: 0 17px;
   margin: 0 6px;
   border-radius: 0 0 12px 12px;
@@ -40,16 +42,17 @@ ngx-simplebar {
   margin-bottom: auto;
 }
 
-.list-header:hover .remove-list {
+.header:hover .remove-list {
   display: block;
 }
 
 .open-form-to-add-task {
   border: none;
   background: none;
-  color: var(--textColor);
-  margin-bottom: 8px;
-  padding: 6px;
-  margin-top: 8px;
+  color: var(--text);
 }
 
+.button-container {
+  margin-bottom: 8px;
+  padding: 10px 5px;
+}

@@ -19,7 +19,7 @@ export class ListComponent implements OnInit {
   @HostListener('contextmenu', ['$event'])
   onRightClick(event): void {
     event.preventDefault();
-    if (event.target.classList.contains('list-header') || event.target.classList.contains('list-title')) {
+    if (event.target.classList.contains('header') || event.target.classList.contains('title') || event.target.classList.contains('title-container')) {
       this.isChangingName = !this.isChangingName;
     }
   }

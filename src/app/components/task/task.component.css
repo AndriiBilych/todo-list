@@ -1,11 +1,12 @@
 .task-container {
   border-radius: 5px;
   margin-top: 8px;
+  cursor: pointer;
 }
 
 .task-container-selected {
   height: 30px;
-  background-color: var(--highlightedColor);
+  background-color: var(--highlighted);
 }
 
 .task {
@@ -14,8 +15,8 @@
   margin-top: 8px;
   word-wrap: break-word;
   word-break: break-word;
-  background-color: var(--buttonColor);
-  color: var(--textColor);
+  background-color: var(--button);
+  color: var(--text);
   border-radius: 5px;
   display: flex;
   justify-content: space-between;
@@ -28,7 +29,7 @@
 .remove-task-button {
   visibility: hidden;
   border: none;
-  background-color: var(--buttonColor);
+  background-color: var(--button);
   margin-bottom: auto;
 }
 

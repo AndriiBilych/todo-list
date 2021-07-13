@@ -1,15 +1,17 @@
-<div class="list-header" [attr.uuid]="list.uuid">
-  <ng-container *ngIf="!isChangingName; else titleInput">
-    <div #titleRef class="list-title">{{list.title}}</div>
-  </ng-container>
-  <ng-template #titleInput>
-    <app-input-form
-      (textSubmissionAction)="isChangingName = !isChangingName; list.title = $event.text.length > 0 ? $event.text : list.title"
-      [textToShow]="list.title"
-      [targetClass]="'list-title'"
-    ></app-input-form>
-  </ng-template>
-  <button (click)="closeListAction.emit()" class="remove-list">&times;</button>
+<div class="header" [attr.uuid]="list.uuid">
+  <div class="title-container">
+    <ng-container *ngIf="!isChangingName; else titleInput">
+      <div #titleRef class="title">{{list.title}}</div>
+      <button (click)="closeListAction.emit()" class="remove-list">&times;</button>
+    </ng-container>
+    <ng-template #titleInput>
+      <app-input-form
+        (textSubmissionAction)="isChangingName = false; list.title = $event.text.length > 0 ? $event.text : list.title"
+        [textToShow]="list.title"
+        [targetClass]="'title'"
+      ></app-input-form>
+    </ng-template>
+  </div>
 </div>
 
 <div class="list" [attr.uuid]="list.uuid">
@@ -22,16 +24,18 @@
   </ngx-simplebar>
 </div>
 
-<div class="list-footer" [attr.uuid]="list.uuid">
-  <ng-container *ngIf="!isAddingTask; else taskInput">
-    <button (click)="isAddingTask = !isAddingTask" class="open-form-to-add-task">+ Add another task</button>
-  </ng-container>
-  <ng-template #taskInput>
-    <app-input-form
-      (textSubmissionAction)="pushToArray($event.text.length > 0 && $event.text !== '\n' ? $event.text : 'New Task');
-      isAddingTask = $event.keep"
-      [textToShow]="''"
-      [targetClass]="'open-form-to-add-task'"
-    ></app-input-form>
-  </ng-template>
+<div class="footer" [attr.uuid]="list.uuid">
+  <div class="button-container">
+    <ng-container *ngIf="!isAddingTask; else taskInput">
+      <button (click)="isAddingTask = !isAddingTask" class="open-form-to-add-task">+ Add another task</button>
+    </ng-container>
+    <ng-template #taskInput>
+      <app-input-form
+        (textSubmissionAction)="pushToArray($event.text.length > 0 && $event.text !== '\n' ? $event.text : 'New Task');
+        isAddingTask = $event.keep"
+        [textToShow]="''"
+        [targetClass]="'open-form-to-add-task'"
+      ></app-input-form>
+    </ng-template>
+  </div>
 </div>

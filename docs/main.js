@@ -260,7 +260,7 @@ class InputFormComponent {
         this.textSubmissionAction = new _angular_core__WEBPACK_IMPORTED_MODULE_0__["EventEmitter"]();
     }
     clickedOut(targetElement) {
-        const openForms = this.elementRef.nativeElement.querySelectorAll('button.add_task');
+        const openForms = this.elementRef.nativeElement.querySelectorAll('button.add-task');
         if (!targetElement.classList.contains('add-task')
             && !targetElement.classList.contains(this.targetClass)
             && !targetElement.classList.contains('input-task')) {

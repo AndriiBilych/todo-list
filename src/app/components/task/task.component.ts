@@ -1,4 +1,4 @@
-import {Component, Input, OnInit, Output, EventEmitter, HostListener, OnDestroy} from '@angular/core';
+import {Component, Input, OnInit, Output, EventEmitter, HostListener} from '@angular/core';
 import {TaskModel} from '../../models/TaskModel';
 
 @Component({
@@ -12,13 +12,13 @@ export class TaskComponent implements OnInit {
   @Output() removeAction = new EventEmitter();
   isModifyingTask: boolean;
 
-  // @HostListener('contextmenu', ['$event'])
-  // onRightClick(event): void {
-  //   event.preventDefault();
-  //   if (event.target.classList.contains('task') || event.target.classList.contains('task_title')) {
-  //     this.isModifyingTask = !this.isModifyingTask;
-  //   }
-  // }
+  @HostListener('contextmenu', ['$event'])
+  onRightClick(event): void {
+    event.preventDefault();
+    if (event.target.classList.contains('task') || event.target.classList.contains('task-title')) {
+      this.isModifyingTask = !this.isModifyingTask;
+    }
+  }
 
   constructor(
   ) {

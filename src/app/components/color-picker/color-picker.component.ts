@@ -13,38 +13,41 @@ export class ColorPickerComponent implements OnInit {
   ngOnInit(): void {
     this.themes = [{
       colors: [
-        {key: '--mainColor', value: getComputedStyle(document.documentElement).getPropertyValue('--mainColor')},
-        {key: '--buttonColor', value: getComputedStyle(document.documentElement).getPropertyValue('--buttonColor')},
-        {key: '--backgroundColor', value: getComputedStyle(document.documentElement).getPropertyValue('--backgroundColor')},
-        {key: '--highlightedColor', value: getComputedStyle(document.documentElement).getPropertyValue('--highlightedColor')},
-        {key: '--textColor', value: getComputedStyle(document.documentElement).getPropertyValue('--textColor')}
+        {key: '--main', value: getComputedStyle(document.documentElement).getPropertyValue('--main')},
+        {key: '--button', value: getComputedStyle(document.documentElement).getPropertyValue('--button')},
+        {key: '--background', value: getComputedStyle(document.documentElement).getPropertyValue('--background')},
+        {key: '--highlighted', value: getComputedStyle(document.documentElement).getPropertyValue('--highlighted')},
+        {key: '--text', value: getComputedStyle(document.documentElement).getPropertyValue('--text')},
+        {key: '--modalBackground', value: getComputedStyle(document.documentElement).getPropertyValue('--modalBackground')}
       ],
       title: 'Default'
     },
     {
       colors: [
-        {key: '--mainColor', value: 'rgba(217, 201, 195, 0.53)'},
-        {key: '--buttonColor', value: '#E8E2DB'},
-        {key: '--backgroundColor', value: '#d48a2a'},
-        {key: '--highlightedColor', value: 'rgb(212, 138, 42)'},
-        {key: '--textColor', value: '#272727'}
+        {key: '--main', value: 'rgba(217, 201, 195, 0.53)'},
+        {key: '--button', value: '#E8E2DB'},
+        {key: '--background', value: '#d48a2a'},
+        {key: '--highlighted', value: 'rgb(212, 138, 42)'},
+        {key: '--text', value: '#272727'},
+        {key: '--modalBackground', value: '#fff'}
       ],
       title: 'Funky'
     },
     {
       colors: [
-        {key: '--mainColor', value: 'rgba(223, 231, 234, 0.11)'},
-        {key: '--buttonColor', value: '#191919'},
-        {key: '--backgroundColor', value: '#2b3135'},
-        {key: '--highlightedColor', value: 'rgb(53, 55, 56)'},
-        {key: '--textColor', value: '#cccbca'}
+        {key: '--main', value: 'rgba(223, 231, 234, 0.11)'},
+        {key: '--button', value: '#191919'},
+        {key: '--background', value: '#2b3135'},
+        {key: '--highlighted', value: 'rgb(53, 55, 56)'},
+        {key: '--text', value: '#cccbca'},
+        {key: '--modalBackground', value: '#2b3135'}
       ],
       title: 'Dark'
     }];
   }
 
   getBackgroundColor(colors: {key: string, value: string}[]): string {
-    return colors.find( color => color.key === '--backgroundColor').value;
+    return colors.find( color => color.key === '--background').value;
   }
 
   changeColors(i): void {
