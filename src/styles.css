@@ -9,15 +9,11 @@
   --grayed: rgba(68, 70, 71, 0.74);
 }
 
-html {
-  margin: 0;
-  padding: 0;
-}
-
 body {
   margin: 0;
   padding: 0;
   background-color: var(--background);
+  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .board > ngx-simplebar > .simplebar-wrapper > .simplebar-mask > .simplebar-offset > .simplebar-content-wrapper > .simplebar-content{
@@ -27,18 +23,5 @@ body {
 .simplebar-track.simplebar-vertical {
   top: 8px !important;
   width: 10px !important;
-  left: 12.4vw;
+  left: 205px;
 }
-
-.draggable {
-  width: 250px;
-  height: 40px;
-  background-color: red;
-  position: fixed;
-  top: 100px;
-  left: 100px;
-}
-
-
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

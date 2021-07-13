@@ -1,6 +1,5 @@
 .list {
   background-color: var(--main);
-  padding: 0 15px;
   margin: 0 6px;
   max-height: calc(75vh + 20px);
 }

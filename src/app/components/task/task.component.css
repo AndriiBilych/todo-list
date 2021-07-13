@@ -12,7 +12,7 @@
 .task {
   height: auto;
   padding: 5px;
-  margin-top: 8px;
+  margin: 0 15px;
   word-wrap: break-word;
   word-break: break-word;
   background-color: var(--button);
