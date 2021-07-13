@@ -261,10 +261,9 @@ class InputFormComponent {
     }
     clickedOut(targetElement) {
         const openForms = this.elementRef.nativeElement.querySelectorAll('button.add_task');
-        if (!targetElement.classList.contains('add_task')
+        if (!targetElement.classList.contains('add-task')
             && !targetElement.classList.contains(this.targetClass)
-            && !targetElement.classList.contains('input_task')) {
-            // console.log(this.targetClass, targetElement); // testing
+            && !targetElement.classList.contains('input-task')) {
             if (openForms.length > 0) {
                 openForms.forEach(el => el.click());
             }

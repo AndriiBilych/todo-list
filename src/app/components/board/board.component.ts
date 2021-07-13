@@ -8,6 +8,8 @@ import {ListBoundingInfo} from '../../models/ListBoundingInfo';
 import {BoardStoreService} from '../../services/board-store.service';
 import {Subscription} from 'rxjs';
 import {TaskModel} from '../../models/TaskModel';
+import {SimplebarAngularComponent} from 'simplebar-angular';
+import {count} from 'rxjs/operators';
 
 @Component({
   selector: 'app-board',
@@ -76,14 +78,14 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.subscription.unsubscribe();
   }
 
-  @HostListener('document:mousedown', ['$event.target'])
+  @HostListener('mousedown', ['$event.target'])
   startDrag(targetElement: HTMLElement): void {
+    document.body.style.userSelect = 'none';
     if (!this.listsBoundingInfo.length) {
       this.calculateBoundingInfo();
     }
 
     if (targetElement.classList.contains('task') || targetElement.classList.contains('task-title')) {
-      document.body.style.userSelect = 'none';
       this.isDraggingTask = true;
       this.targetTask = targetElement;
 
@@ -99,7 +101,6 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.selectedBoard.lists[this.currentListIndex].tasks[this.currentTaskIndex].selected = true;
     }
     else if (targetElement.classList.contains('list-header') || targetElement.classList.contains('list-title')) {
-      document.body.style.userSelect = 'none';
       this.isDraggingList = true;
       this.targetList = targetElement.parentElement.parentElement;
 
@@ -114,7 +115,7 @@ export class BoardComponent implements OnInit, OnDestroy {
 
       this.listsRefs.forEach(list => {
         const boundingRect = list.getBoundingClientRect();
-        this.listsBoundingInfo.push(new ListBoundingInfo(boundingRect.x, boundingRect.y, list.id));
+        this.listsBoundingInfo.push(new ListBoundingInfo(boundingRect.x, boundingRect.y, boundingRect.bottom, boundingRect.right, list.id));
       });
     }
   }
@@ -128,37 +129,46 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.fakeTask.nativeElement.style.left = `${event.clientX}px`;
 
       const newListIndex = this.findListIndexByMouseX(event.clientX);
-      if (newListIndex !== this.currentListIndex){
-        const currentBoard = this.selectedBoard;
-        const currentList = currentBoard.lists[this.currentListIndex];
-        const newList = currentBoard.lists[newListIndex];
+      const newTaskIndex = this.findTaskIndexByMouseY(event.clientY, newListIndex);
+
+      const currentList = this.selectedBoard.lists[this.currentListIndex];
+      const newList = this.selectedBoard.lists[newListIndex];
+
+      // if list is the same
+      if (newListIndex === this.currentListIndex) {
+        // if task position is new
+        if (newTaskIndex !== this.currentTaskIndex) {
+          const uuid = this.selectedTaskData.uuid;
+          const currentTask = currentList.tasks[this.currentTaskIndex];
+          currentList.tasks[this.currentTaskIndex] = currentList.tasks[newTaskIndex];
+          currentList.tasks[newTaskIndex] = currentTask;
+
+          this.currentTaskIndex = newTaskIndex;
+
+          this.calculateBoundingInfo();
+
+          // next line refreshes reference to the correct object !IMPORTANT
+          this.selectedTaskData = this.getTaskDataByUuid(uuid);
+        }
+      }
+      // if list is different
+      else {
+        const uuid = this.selectedTaskData.uuid;
 
         // delete old task, and add new task
-        newList.tasks.push(currentList.tasks[this.currentTaskIndex]);
+        newList.tasks.splice(newTaskIndex, 0, this.selectedTaskData);
+        // next line deletes the object that selectedTaskData is pointing to !IMPORTANT
         currentList.tasks.splice(this.currentTaskIndex, 1);
 
         this.currentListIndex = newListIndex;
-        this.currentTaskIndex = newList.tasks.length - 1;
+        this.currentTaskIndex = newTaskIndex;
+
+        this.calculateBoundingInfo();
+        this.taskCleanup(uuid, this.selectedBoard.lists[newListIndex].uuid);
+
+        // next line refreshes reference to the correct object !IMPORTANT
+        this.selectedTaskData = this.getTaskDataByUuid(uuid);
       }
-      // else
-      // if (!this.isDraggingList) {
-      //   debugger;
-      //   this.newTaskIndex = this.findTaskIndex(event, newListIndex);
-      //   if (this.newTaskIndex !== null && this.draggedTaskIndex !== null && this.newTaskIndex !== this.draggedTaskIndex) {
-      //     const draggedTask = this.boards[this.currentIndex].lists[this.currentListIndex].tasks[this.draggedTaskIndex];
-      //     // const taskElementHolder = this.getTaskElementByOrderIndex(this.newTaskIndex);
-      //     // const newOrderIndex = taskElementHolder.getAttribute('order-index');
-      //     const currentList = this.boards[this.currentIndex].lists[this.currentListIndex];
-      //
-      //     currentList.tasks[this.draggedTaskIndex] = currentList.tasks[this.newTaskIndex];
-      //     // taskElementHolder.setAttribute('order-index', this.targetTask.getAttribute('order-index'));
-      //
-      //     currentList.tasks[this.newTaskIndex] = draggedTask;
-      //     // this.targetTask.setAttribute('order-index', newOrderIndex);
-      //
-      //     this.draggedTaskIndex = this.newTaskIndex;
-      //   }
-      // }
     }
 
     if (this.isDraggingList) {
@@ -178,7 +188,7 @@ export class BoardComponent implements OnInit, OnDestroy {
     }
   }
 
-  @HostListener('document:mouseup')
+  @HostListener('mouseup')
   endDrag(): void {
     document.body.style.userSelect = 'all';
     if (this.targetTask !== null) {
@@ -188,7 +198,11 @@ export class BoardComponent implements OnInit, OnDestroy {
       this.listsBoundingInfo = [];
 
       // deselect all tasks
-      this.selectedBoard.lists.forEach(list => list.tasks.forEach(task => task.selected = false));
+      this.selectedBoard.lists.forEach(list => list.tasks.forEach(task => {
+        if (task !== undefined) {
+          task.selected = false;
+        }
+      }));
     }
 
     if (this.targetList !== null) {
@@ -226,14 +240,76 @@ export class BoardComponent implements OnInit, OnDestroy {
   // }
 
   findListIndexByMouseX(clientX: number): number {
-    const index = this.listsBoundingInfo.findIndex( list => clientX <= list.x) - 1;
+    if (!this.listsBoundingInfo || this.listsBoundingInfo.length === 0) {
+      return 0;
+    }
+
+    const index = this.listsBoundingInfo.findIndex( list => clientX >= list.x && clientX <= list.right);
+    const first = this.listsBoundingInfo[0];
+    const last = this.listsBoundingInfo[this.listsBoundingInfo.length - 1];
+
+    if (clientX > last.right) {
+      return this.listsBoundingInfo.length - 1;
+    }
+
+    if (clientX < first.x) {
+      return 0;
+    }
+
     return index === -1 ? 0 : index;
+  }
+
+  findTaskIndexByMouseY(clientY: number, listIndex: number): number {
+    if (!this.listsBoundingInfo || this.listsBoundingInfo.length === 0) {
+      return 0;
+    }
+
+    const taskBoundsInfo = this.listsBoundingInfo[listIndex].tasksBoundingInfo;
+
+    if (!taskBoundsInfo || taskBoundsInfo.length === 0) {
+      return 0;
+    }
+
+    const first = taskBoundsInfo[0];
+    const last = taskBoundsInfo[taskBoundsInfo.length - 1];
+    const selectedListIndex = this.findListIndexByTaskUuid(this.selectedTaskData.uuid);
+
+    if (!first || !last || clientY < first.y) {
+      return 0;
+    }
+
+    if (clientY > last.bottom) {
+      if (taskBoundsInfo.length === 1 && last.uuid !== this.selectedTaskData.uuid) {
+        return 1;
+      }
+      return taskBoundsInfo.length - (selectedListIndex === listIndex ? 1 : 0);
+    }
+
+    let index = 0;
+    for (let i = 0; i < taskBoundsInfo.length; i++) {
+      if (clientY >= taskBoundsInfo[i].y) {
+        index = i;
+      }
+    }
+
+    return index;
+  }
+
+  findListIndexByTaskUuid(uuid) {
+    for (let i = 0; i < this.selectedBoard.lists.length; i++) {
+      for (const task of this.selectedBoard.lists[i].tasks) {
+        if (task !== undefined && task.uuid === uuid) {
+          return i;
+        }
+      }
+    }
+    return null;
   }
 
   getTaskDataByUuid(uuid: string): TaskModel {
     for (const list of this.selectedBoard.lists) {
       for (const task of list.tasks) {
-        if (task.uuid === uuid) {
+        if (task !== undefined && task.uuid === uuid) {
           return task;
         }
       }
@@ -241,31 +317,13 @@ export class BoardComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  // findTaskIndex(event, listOrderIndex): number {
-  //   let holder = null;
-  //   this.listsBoundingInfo[Number(listOrderIndex)].taskPositionsByOrder.forEach( (task) => {
-  //     if (event.clientY > task.y) { holder = Number(task.uuid); }
-  //   });
-  //   return holder;
-  // }
-
-  // getTaskElementByOrderIndex(index: number): HTMLElement {
-  //   for (let i = 0; i < this.listTasksRefs.length; i++) {
-  //     if (Number(this.listTasksRefs[i].getAttribute('order-index')) === index) {
-  //       return this.listTasksRefs[i] as HTMLElement;
-  //     }
-  //   }
-  //   return null;
-  // }
-
-  // getListElementByOrderIndex(index: number): HTMLElement {
-  //   for (let i = 0; i < this.listsRefs.length; i++) {
-  //     if (Number(this.listsRefs[i].getAttribute('order-index')) === index) {
-  //       return this.listsRefs[i] as HTMLElement;
-  //     }
-  //   }
-  //   return null;
-  // }
+  taskCleanup(taskUuid: string, listUuid: string) {
+    this.selectedBoard.lists.forEach(list => {
+      if (list.uuid !== listUuid) {
+        list.tasks = list.tasks.filter(task => task.uuid !== taskUuid);
+      }
+    });
+  }
 
   removeList(index): void {
     this.selectedBoard.lists.splice(index, 1);
@@ -286,12 +344,12 @@ export class BoardComponent implements OnInit, OnDestroy {
 
     listElements.forEach((list, i) => {
       const boundingRect = list.getBoundingClientRect();
-      this.listsBoundingInfo.push(new ListBoundingInfo(boundingRect.x, boundingRect.y, list.getAttribute('uuid')));
+      this.listsBoundingInfo.push(new ListBoundingInfo(boundingRect.x, boundingRect.y, boundingRect.bottom, boundingRect.right, list.getAttribute('uuid')));
 
       const taskElements = Array.from(list.querySelectorAll('div.task-container'));
       taskElements.forEach(ref => {
         const holder = ref.getBoundingClientRect();
-        this.listsBoundingInfo[i].taskPositionsByOrder.push(new TaskBoundingInfo(holder.x, holder.y, ref.getAttribute('uuid')));
+        this.listsBoundingInfo[i].tasksBoundingInfo.push(new TaskBoundingInfo(holder.x, holder.y, holder.bottom, holder.right, ref.getAttribute('uuid')));
       });
     });
   }
