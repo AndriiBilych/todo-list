@@ -1,5 +1,4 @@
 <div class="panel">
-<!--  *ngIf="titles != null"-->
   <div class="left-container">
     <div class="dropdown">
       <button class="dropbtn left-button">
@@ -12,38 +11,47 @@
         <button
           class="list-name"
           *ngFor="let b of boards; index as i"
-          [class.selected]="selectedBoard?.title === b.title"
+          [class.selected]="selectedBoard?.uuid === b.uuid"
           (click)="onClick(b.uuid)"
         >{{b.title}}</button>
-<!--        <button class="list-name" (click)="createBoard()">+ New Board</button>-->
+        <button class="list-name" (click)="createBoard()">+ New Board</button>
       </div>
     </div>
-    <div class="board-name-container" *ngIf="selectedBoard !== null">
-<!--      [style.padding]="isChangingName ? '0' : '10px'"-->
-<!--      <ng-container *ngIf="!isChangingName; else titleInput">-->
-<!--          <div class="board-title">{{titles[selectedIndex]?.title}}</div>-->
-<!--          <button class="remove_board_button" (click)="modal.style.display = 'block'">&times;</button>-->
-<!--          <div #modal class="modal">-->
-<!--            <div class="modal-content">-->
-<!--              <button class="close" (click)="modal.style.display = 'none'">&times;</button>-->
-<!--              <h3>Are you sure you want to delete "{{titles[selectedIndex].title}}" board?</h3>-->
-<!--              <button class="choice" (click)="removeBoard(selectedIndex); modal.style.display = 'none'">Yes</button>-->
-<!--              <button class="choice" (click)="modal.style.display = 'none'">No</button>-->
-<!--            </div>-->
-<!--          </div>-->
-<!--      </ng-container>-->
-<!--      <ng-template #titleInput>-->
-<!--        <app-input-form-->
-<!--          (textSubmissionAction)="isChangingName = !isChangingName; titles[selectedIndex].title = $event.text.length > 0 ? $event.text : titles[selectedIndex].title"-->
-<!--          [textToShow]="titles[selectedIndex].title"-->
-<!--          [targetClass]="'board-title'"-->
-<!--        ></app-input-form>-->
-<!--      </ng-template>-->
+
+    <div class="tools" *ngIf="selectedBoard !== null">
+      <ng-container *ngIf="!isChangingName; else titleInput">
+        <button class="left-button" (click)="isChangingName = true">
+          <span>Edit title</span>
+          <svg aria-hidden="true" focusable="false" data-prefix="fas" data-icon="pen" class="svg-inline--fa fa-pen fa-w-16" role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><path fill="currentColor" d="M290.74 93.24l128.02 128.02-277.99 277.99-114.14 12.6C11.35 513.54-1.56 500.62.14 485.34l12.7-114.22 277.9-277.88zm207.2-19.06l-60.11-60.11c-18.75-18.75-49.16-18.75-67.91 0l-56.55 56.55 128.02 128.02 56.55-56.55c18.75-18.76 18.75-49.16 0-67.91z"></path></svg>
+        </button>
+      </ng-container>
+      <ng-template #titleInput>
+        <app-input-form
+          (textSubmissionAction)="isChangingName = false; selectedBoard.title = $event.text.length > 0 ? $event.text : selectedBoard.title"
+          [textToShow]="selectedBoard.title"
+          [targetClass]="'left-button'"
+        ></app-input-form>
+      </ng-template>
+      <button class="left-button" (click)="confirmationRef.style.display = 'block'">
+        <span>Delete board</span>
+        &times;
+      </button>
     </div>
   </div>
+
   <div class="left-container">
     <app-color-picker></app-color-picker>
     <app-guide></app-guide>
   </div>
+
+  <div #confirmationRef class="modal">
+    <div class="modal-content">
+      <button class="close" (click)="confirmationRef.style.display = 'none'">&times;</button>
+      <h3>Are you sure you want to delete "{{selectedBoard?.title}}" board?</h3>
+      <button class="choice" (click)="removeBoard(selectedBoard.uuid); confirmationRef.style.display = 'none'">Yes</button>
+      <button class="choice" (click)="confirmationRef.style.display = 'none'">No</button>
+    </div>
+  </div>
 </div>
+
 

@@ -332,6 +332,12 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.boardStoreService.setSelectedBoard(this.boards.find(b => b.uuid === uuid));
   }
 
+  createBoard(): void {
+    this.boards.push(new BoardModel('New Board'));
+    this.boardStoreService.setBoards(this.boards);
+    this.boardStoreService.setSelectedBoard(this.boards[this.boards.length - 1]);
+  }
+
   calculateBoundingInfo() {
     this.listsBoundingInfo = [];
     const listElements = Array.from(document.querySelectorAll('div.list-placeholder'));

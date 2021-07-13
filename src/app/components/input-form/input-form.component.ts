@@ -21,24 +21,22 @@ export class InputFormComponent implements OnInit, AfterViewInit, OnDestroy {
   static inputForm: InputFormComponent = null;
 
   @Output() textSubmissionAction = new EventEmitter();
-  // tslint:disable-next-line:no-input-rename
-  @Input('textToShow') textToShow: string;
-  // tslint:disable-next-line:no-input-rename
-  @Input('targetClass') targetClass: string;
+  @Input() textToShow: string;
+  @Input() targetClass: string;
   @ViewChild('textInput') textInputRef: ElementRef;
   @ViewChild('addTaskRef') addTaskRef: ElementRef;
 
-  @HostListener(`document:click`, ['$event.target'])
-  clickedOut(targetElement: HTMLElement): void {
-    const openForms = this.elementRef.nativeElement.querySelectorAll('button.add_task');
-    if (!targetElement.classList.contains('add-task')
-      && !targetElement.classList.contains(this.targetClass)
-      && !targetElement.classList.contains('input-task')) {
-      if (openForms.length > 0) {
-        openForms.forEach(el => el.click());
-      }
-    }
-  }
+  // @HostListener(`document:click`, ['$event.target'])
+  // clickedOut(targetElement: HTMLElement): void {
+  //   const openForms = this.elementRef.nativeElement.querySelectorAll('button.add_task');
+  //   if (!targetElement.classList.contains('add-task')
+  //     && !targetElement.classList.contains(this.targetClass)
+  //     && !targetElement.classList.contains('input-task')) {
+  //     if (openForms.length > 0) {
+  //       openForms.forEach(el => el.click());
+  //     }
+  //   }
+  // }
 
   @HostListener('document:keydown.escape')
   pressedEscape(): void {

@@ -80,14 +80,14 @@ svg {
   border-radius: 5px;
 }
 
-.remove_board_button {
-  visibility: hidden;
+.remove-board {
+  /*visibility: hidden;*/
   border: none;
   background: none;
   margin-left: 5px
 }
 
-.board-name-container:hover .remove_board_button {
+.board-name-container:hover .remove-board {
   visibility: visible;
 }
 

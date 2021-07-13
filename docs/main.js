@@ -913,7 +913,7 @@ class ControlPanelComponent {
     }
     onCloseModalClick(target) {
         if (target.classList.contains('modal')) {
-            this.modal.nativeElement.style.display = 'none';
+            this.confirmation.nativeElement.style.display = 'none';
         }
     }
     onRightClick(event) {
