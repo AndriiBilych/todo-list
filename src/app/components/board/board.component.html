@@ -30,15 +30,5 @@
 </ng-container>
 
 <ng-template #loadingTemplate>
-  <div class="choose-example-container">
-    <div class="example-container">
-      <div class="label">Choose an example or create new board</div>
-      <button
-        class="example"
-        *ngFor="let b of boards"
-        (click)="loadBoard(b.uuid)"
-      >{{b.title}}</button>
-      <button class="example" (click)="createBoard()">+ New Board</button>
-    </div>
-  </div>
+  <app-homepage [boards]="boards" [loadBoard]="loadBoard" [createBoard]="createBoard"></app-homepage>
 </ng-template>

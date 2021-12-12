@@ -14,6 +14,7 @@ import { TaskComponent } from './components/task/task.component';
 import { GuideComponent } from './components/guide/guide.component';
 import { ColorPickerComponent } from './components/color-picker/color-picker.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { HomepageComponent } from './components/board/homepage/homepage.component';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     InputFormComponent,
     TaskComponent,
     GuideComponent,
-    ColorPickerComponent
+    ColorPickerComponent,
+    HomepageComponent
   ],
   imports: [
     BrowserModule,

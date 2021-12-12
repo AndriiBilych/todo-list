@@ -2,6 +2,10 @@ import {Component, Input, OnInit, Output, EventEmitter, HostListener, ViewChild,
 import { ListModel } from '../../models/ListModel';
 import {TaskModel} from '../../models/TaskModel';
 
+export function array(n: number): number[] {
+  return Array(n);
+}
+
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
@@ -29,11 +33,8 @@ export class ListComponent implements OnInit {
     this.isChangingName = false;
   }
 
-  ngOnInit(): void {}
-
-
-  array(n: number): number[] {
-    return Array(n);
+  ngOnInit(): void {
+    console.log(this.isAddingTask);
   }
 
   pushToArray(text: string): void {

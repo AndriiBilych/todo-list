@@ -39,35 +39,6 @@ svg {
   color: var(--text);
 }
 
-.choose-example-container {
-  display: flex;
-  min-height: 90vh;
-  justify-content: center;
-  align-items: center;
-}
-
-.example-container {
-  display: block;
-}
-
-.label {
-  text-align: center;
-  font-size: 20px;
-}
-
-.example {
-  background-color: var(--button);
-  color: var(--text);
-  padding: 10px;
-  margin: 6px;
-  border: none;
-  border-radius: 4px;
-}
-
-.example:hover {
-  background-color: var(--highlighted);
-}
-
 .task {
   position: fixed;
   min-width: 150px;
