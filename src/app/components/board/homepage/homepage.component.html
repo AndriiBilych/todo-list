@@ -1,16 +1,38 @@
-<div class="choose-example-container">
-  <div class="example-container">
-    <div class="label">Choose an example or create new board</div>
-    <button
-      class="example"
-      *ngFor="let b of boards"
-      (click)="loadBoard(b.uuid)"
-    >{{b.title}}</button>
-    <button class="example" (click)="createBoard()">+ New Board</button>
-  </div>
-</div>
+<!--<div class="choose-example-container">-->
+<!--  <div class="example-container">-->
+<!--    <div class="label">Choose an example or create new board</div>-->
+<!--    <button-->
+<!--      class="example"-->
+<!--      *ngFor="let b of boards"-->
+<!--      (click)="loadBoard(b.uuid)"-->
+<!--    >{{b.title}}</button>-->
+<!--    <button class="example" (click)="createBoard()">+ New Board</button>-->
+<!--  </div>-->
+<!--</div>-->
 
-<!--<button class="create-new-board-button">-->
-<!--  <span class="plus">+</span>-->
-<!--  Create new board-->
-<!--</button>-->
+<div class="board-table">
+  <ng-container *ngFor="let board of boards">
+    <button class="board-button"
+            [style.border]="'1.5px solid #' + board.color"
+            [style.border-left]="'5px solid #' + board.color"
+    >
+      <span class="title"
+           [style.color]="'#' + board.color"
+      >{{board.title}}</span>
+      <div class="date-label"
+           [style.background]="'#' + board.color"
+      >{{board.dateModified}}</div>
+    </button>
+  </ng-container>
+
+  <button class="board-button"
+          [style.border]="'2px solid #' + defaultColor"
+          [style.border-left]="'5px solid #' + defaultColor"
+          [style.color]="'#' + defaultColor"
+  >
+    <div class="helper">
+      <span class="plus">+</span>
+      <span class="create-new-board-label">Create new board</span>
+    </div>
+  </button>
+</div>

@@ -41,11 +41,11 @@ export class ControlPanelComponent implements OnInit {
 
   onClick(uuid: string): void {
     this.boardStoreService.setBoards(this.boards);
-    this.boardStoreService.setSelectedBoard(this.boards.find(b => b.uuid === uuid));
+    this.boardStoreService.setSelectedBoard(this.boards.find(b => b.uid === uuid));
   }
 
   removeBoard(uuid: string): void {
-    const index = this.boards.findIndex(b => b.uuid === uuid);
+    const index = this.boards.findIndex(b => b.uid === uuid);
     this.boards.splice(index, 1);
     this.boardStoreService.setBoards(this.boards);
     if (this.boards.length !== 0) {

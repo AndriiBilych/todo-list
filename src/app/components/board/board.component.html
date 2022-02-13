@@ -1,5 +1,5 @@
 <ng-container *ngIf="selectedBoard !== null; else loadingTemplate">
-  <div class="board" #board [attr.uuid]="selectedBoard.uuid">
+  <div class="board" #board [attr.uuid]="selectedBoard.uid">
     <ngx-simplebar [options]="options">
       <div *ngFor="let list of selectedBoard.lists; index as i"
            class="list-placeholder"

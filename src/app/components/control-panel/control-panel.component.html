@@ -11,8 +11,8 @@
         <button
           class="list-name"
           *ngFor="let b of boards; index as i"
-          [class.selected]="selectedBoard?.uuid === b.uuid"
-          (click)="onClick(b.uuid)"
+          [class.selected]="selectedBoard?.uid === b.uid"
+          (click)="onClick(b.uid)"
         >{{b.title}}</button>
         <button class="list-name" (click)="createBoard()">+ New Board</button>
       </div>
@@ -51,7 +51,7 @@
         <h3>Are you sure you want to delete "{{selectedBoard?.title}}" board?</h3>
       </div>
       <div class="choice-container">
-        <button class="choice" (click)="removeBoard(selectedBoard.uuid); confirmationRef.style.display = 'none'">Yes</button>
+        <button class="choice" (click)="removeBoard(selectedBoard.uid); confirmationRef.style.display = 'none'">Yes</button>
         <button class="choice" (click)="confirmationRef.style.display = 'none'">No</button>
       </div>
     </div>

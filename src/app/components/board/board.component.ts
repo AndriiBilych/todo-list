@@ -343,7 +343,7 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   loadBoard(uuid: string): void {
     this.boardStoreService.setBoards(this.boards);
-    this.boardStoreService.setSelectedBoard(this.boards.find(b => b.uuid === uuid));
+    this.boardStoreService.setSelectedBoard(this.boards.find(b => b.uid === uuid));
   }
 
   createBoard(): void {
