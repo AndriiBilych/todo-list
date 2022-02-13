@@ -14,7 +14,7 @@ import {
 @Component({
   selector: 'app-input-form',
   templateUrl: './input-form.component.html',
-  styleUrls: ['./input-form.component.css']
+  styleUrls: ['./input-form.component.scss']
 })
 export class InputFormComponent implements OnInit, AfterViewInit, OnDestroy {
 

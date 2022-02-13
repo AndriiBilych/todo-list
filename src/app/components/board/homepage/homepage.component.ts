@@ -4,7 +4,7 @@ import {BoardModel} from '../../../models/BoardModel';
 @Component({
   selector: 'app-homepage',
   templateUrl: './homepage.component.html',
-  styleUrls: ['./homepage.component.css']
+  styleUrls: ['./homepage.component.scss']
 })
 export class HomepageComponent {
   @Input() boards: BoardModel[];
