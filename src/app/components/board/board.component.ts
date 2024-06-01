@@ -8,8 +8,6 @@ import {ListBoundingInfo} from '../../models/ListBoundingInfo';
 import {BoardStoreService} from '../../services/board-store.service';
 import {Subscription} from 'rxjs';
 import {TaskModel} from '../../models/TaskModel';
-import {SimplebarAngularComponent} from 'simplebar-angular';
-import {count} from 'rxjs/operators';
 
 @Component({
   selector: 'app-board',

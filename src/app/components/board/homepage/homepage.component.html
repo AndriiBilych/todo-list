@@ -4,35 +4,66 @@
 <!--    <button-->
 <!--      class="example"-->
 <!--      *ngFor="let b of boards"-->
-<!--      (click)="loadBoard(b.uuid)"-->
+<!--      (click)="loadBoard(b.uid)"-->
 <!--    >{{b.title}}</button>-->
 <!--    <button class="example" (click)="createBoard()">+ New Board</button>-->
 <!--  </div>-->
 <!--</div>-->
 
-<div class="board-table">
-  <ng-container *ngFor="let board of boards">
-    <button class="board-button"
-            [style.border]="'1.5px solid #' + board.color"
-            [style.border-left]="'5px solid #' + board.color"
-    >
-      <span class="title"
-           [style.color]="'#' + board.color"
-      >{{board.title}}</span>
-      <div class="date-label"
-           [style.background]="'#' + board.color"
-      >{{board.dateModified}}</div>
-    </button>
-  </ng-container>
+<!--<div class="board-table">-->
+<!--  <ng-container *ngFor="let board of boards">-->
+<!--    <button class="board-button"-->
+<!--            [style.border]="'1.5px solid #' + board.color"-->
+<!--            [style.border-left]="'5px solid #' + board.color"-->
+<!--    >-->
+<!--      <span class="title"-->
+<!--           [style.color]="'#' + board.color"-->
+<!--      >{{board.title}}</span>-->
+<!--      <div class="date-label"-->
+<!--           [style.background]="'#' + board.color"-->
+<!--      >{{board.dateModified}}</div>-->
+<!--    </button>-->
+<!--  </ng-container>-->
 
-  <button class="board-button"
-          [style.border]="'2px solid #' + defaultColor"
-          [style.border-left]="'5px solid #' + defaultColor"
-          [style.color]="'#' + defaultColor"
-  >
-    <div class="helper">
-      <span class="plus">+</span>
-      <span class="create-new-board-label">Create new board</span>
-    </div>
-  </button>
+<!--  <button class="board-button"-->
+<!--          [style.border]="'2px solid #' + defaultColor"-->
+<!--          [style.border-left]="'5px solid #' + defaultColor"-->
+<!--          [style.color]="'#' + defaultColor"-->
+<!--  >-->
+<!--    <div class="helper">-->
+<!--      <span class="plus">+</span>-->
+<!--      <span class="create-new-board-label">Create new board</span>-->
+<!--    </div>-->
+<!--  </button>-->
+<!--</div>-->
+
+<div class="mx-16">
+  <div class="px-4 sm:px-0">
+    <h3 class="text-base font-semibold leading-7 text-gray-900">Applicant Information</h3>
+    <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Personal details and application.</p>
+  </div>
+  <div class="mt-6 border-t border-gray-100">
+    <ul class="divide-y divide-gray-100">
+      <li class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+        <span class="text-sm font-medium leading-6 text-gray-900">Full name</span>
+        <span class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">Margot Foster</span>
+      </li>
+      <li class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+        <span class="text-sm font-medium leading-6 text-gray-900">Application for</span>
+        <span class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">Backend Developer</span>
+      </li>
+      <li class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+        <span class="text-sm font-medium leading-6 text-gray-900">Email address</span>
+        <span class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">margotfoster@example.com</span>
+      </li>
+      <li class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+        <span class="text-sm font-medium leading-6 text-gray-900">Salary expectation</span>
+        <span class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">$120,000</span>
+      </li>
+      <li class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+        <span class="text-sm font-medium leading-6 text-gray-900">About</span>
+        <span class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">Fugiat ipsum ipsum deserunt culpa aute sint do nostrud anim incididunt cillum culpa consequat. Excepteur qui ipsum aliquip consequat sint. Sit id mollit nulla mollit nostrud in ea officia proident. Irure nostrud pariatur mollit ad adipisicing reprehenderit deserunt qui eu.</span>
+      </li>
+    </ul>
+  </div>
 </div>
