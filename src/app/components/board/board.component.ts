@@ -8,8 +8,8 @@ import { ListBoundingInfo } from '../../models/ListBoundingInfo';
 import { BoardStoreService } from '../../services/board-store.service';
 import { of, Subscription } from 'rxjs';
 import { TaskModel } from '../../models/TaskModel';
-import { ActivatedRoute } from "@angular/router";
-import { catchError, filter, map, switchMap } from "rxjs/operators";
+import { ActivatedRoute } from '@angular/router';
+import { catchError, filter, map, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-board',
@@ -17,6 +17,24 @@ import { catchError, filter, map, switchMap } from "rxjs/operators";
   styleUrls: ['./board.component.scss']
 })
 export class BoardComponent implements OnInit, OnDestroy {
+
+  constructor(
+    private readonly controlPanelService: ControlPanelService,
+    private readonly dataService: DataService,
+    private readonly boardStoreService: BoardStoreService,
+    private readonly activatedRoute: ActivatedRoute,
+  ) {
+    this.isAddingList = false;
+    this.mouseStartingX = null;
+    this.selectedBoard = null;
+    this.currentIndex = null;
+    this.taskPositionsByOrder = [];
+    this.listsBoundingInfo = [];
+    this.boards = [];
+
+    this.subscription = new Subscription();
+    this.scrollContainerRef = null;
+  }
   options = { autoHide: false};
   selectedBoard: BoardModel;
   boards: BoardModel[];
@@ -47,6 +65,22 @@ export class BoardComponent implements OnInit, OnDestroy {
   scrollContainerRef: any;
   mouseStartingX: number;
   scrollSpeed = 10;
+
+  boards$ = this.boardStoreService.boards$.pipe(
+    filter((boards: BoardModel[]) => !!boards.length)
+  );
+
+  selectedBoard$ = this.activatedRoute.params.pipe(
+    switchMap(({id: routeId}: { id: string }) => this.boards$.pipe(
+      map((boards: BoardModel[]) => boards.find(({id: boardId}) => boardId === routeId)),
+      map((boards) => {
+        if (boards === undefined) {
+          throw new Error('Board not found');
+        }
+        return boards;
+      }),
+    ))
+  );
 
   @HostListener('mousedown', ['$event.target, $event'])
   startDrag(targetElement: HTMLElement, event): void {
@@ -208,45 +242,11 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.calculateBoundingInfo();
   }
 
-  boards$ = this.boardStoreService.boards$.pipe(
-    filter((boards: BoardModel[]) => !!boards.length)
-  );
-
-  selectedBoard$ = this.activatedRoute.params.pipe(
-    switchMap(({id: routeId}: { id: string }) => this.boards$.pipe(
-      map((boards: BoardModel[]) => boards.find(({id: boardId}) => boardId === routeId)),
-      map((boards) => {
-        if (boards === undefined) {
-          throw new Error('Board not found');
-        }
-        return boards
-      }),
-    ))
-  );
-
-  constructor(
-    private readonly controlPanelService: ControlPanelService,
-    private readonly dataService: DataService,
-    private readonly boardStoreService: BoardStoreService,
-    private readonly activatedRoute: ActivatedRoute,
-  ) {
-    this.isAddingList = false;
-    this.mouseStartingX = null;
-    this.selectedBoard = null;
-    this.currentIndex = null;
-    this.taskPositionsByOrder = [];
-    this.listsBoundingInfo = [];
-    this.boards = [];
-
-    this.subscription = new Subscription();
-    this.scrollContainerRef = null;
-  }
-
   ngOnInit(): void {
     this.selectedBoard$.pipe(
       catchError((error) => {
-        console.error(error)
-        return of(null)
+        console.error(error);
+        return of(null);
       })
     ).subscribe((board) => this.selectedBoard = board);
     this.boards$.subscribe((boards: BoardModel[]) => this.boards = boards);
