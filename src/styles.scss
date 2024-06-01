@@ -2,6 +2,17 @@
 @import 'tailwindcss/components';
 @import 'tailwindcss/utilities';
 
+//Tailwind custom classes
+@layer utilities {
+  .ellipsis-box {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+
+    @apply overflow-ellipsis overflow-hidden
+  }
+}
+
 @import '~simplebar/dist/simplebar.css';
 :root {
   --main: rgba(223, 231, 234, 0.5);

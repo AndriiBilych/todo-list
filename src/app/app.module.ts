@@ -14,7 +14,10 @@ import { TaskComponent } from './components/task/task.component';
 import { GuideComponent } from './components/guide/guide.component';
 import { ColorPickerComponent } from './components/color-picker/color-picker.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { HomepageComponent } from './components/board/homepage/homepage.component';
+import { HomepageComponent } from './components/homepage/homepage.component';
+import { HomepageSectionComponent } from './components/homepage-section/homepage-section.component';
+import { HomepageListItemComponent } from './components/homepage-list-item/homepage-list-item.component';
+import { HomepageListButtonComponent } from "./components/homepage-list-button/homepage-list-button.component";
 
 @NgModule({
   declarations: [
@@ -26,7 +29,10 @@ import { HomepageComponent } from './components/board/homepage/homepage.componen
     TaskComponent,
     GuideComponent,
     ColorPickerComponent,
-    HomepageComponent
+    HomepageComponent,
+    HomepageSectionComponent,
+    HomepageListItemComponent,
+    HomepageListButtonComponent
   ],
   imports: [
     BrowserModule,
