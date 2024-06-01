@@ -1,5 +1,5 @@
-<div class="task-container" *ngIf="task" [attr.uuid]="task.uuid" [class.task-container-selected]="task.selected">
-  <div class="task" [attr.uuid]="task.uuid" *ngIf="!task?.selected">
+<div class="task-container" *ngIf="task" [id]="task.id" [class.task-container-selected]="task.selected">
+  <div class="task" [id]="task.id" *ngIf="!task?.selected">
     <ng-container *ngIf="!isModifyingTask; else textInput">
       <div class="task-title">{{task.content}}</div>
       <button (click)="removeAction.emit()" class="remove-task-button">&times;</button>

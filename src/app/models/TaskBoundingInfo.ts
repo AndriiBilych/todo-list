@@ -3,13 +3,13 @@ export class TaskBoundingInfo {
   y: number;
   bottom: number;
   right: number;
-  uuid: string;
+  id: string;
 
-  constructor(x, y, bottom, right, uuid) {
+  constructor(x, y, bottom, right, id) {
     this.x = x;
     this.y = y;
     this.bottom = bottom;
     this.right = right;
-    this.uuid = uuid;
+    this.id = id;
   }
 }

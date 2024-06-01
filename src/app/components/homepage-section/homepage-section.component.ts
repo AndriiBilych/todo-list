@@ -1,5 +1,5 @@
-import {Component, Input} from '@angular/core';
-import {ISection} from "../../models/interfaces/section.interface";
+import { Component, Input } from '@angular/core';
+import { ISection } from '../../models/interfaces/section.interface';
 
 @Component({
   selector: 'app-homepage-section',

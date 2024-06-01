@@ -3,11 +3,13 @@ import { BoardModel } from '../../models/BoardModel';
 import { TaskBoundingInfo } from '../../models/TaskBoundingInfo';
 import { ListModel } from '../../models/ListModel';
 import { ControlPanelService } from '../../services/control-panel.service';
-import { DataService } from '../../services/data-service.service';
-import {ListBoundingInfo} from '../../models/ListBoundingInfo';
-import {BoardStoreService} from '../../services/board-store.service';
-import {Subscription} from 'rxjs';
-import {TaskModel} from '../../models/TaskModel';
+import { DataService } from '../../services/data.service';
+import { ListBoundingInfo } from '../../models/ListBoundingInfo';
+import { BoardStoreService } from '../../services/board-store.service';
+import { of, Subscription } from 'rxjs';
+import { TaskModel } from '../../models/TaskModel';
+import { ActivatedRoute } from "@angular/router";
+import { catchError, filter, map, switchMap } from "rxjs/operators";
 
 @Component({
   selector: 'app-board',
@@ -30,7 +32,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   targetList: HTMLElement = null;
   taskPositionsByOrder: TaskBoundingInfo[];
 
-  // This holds bounding positions and uuids of all lists and tasks
+  // This holds bounding positions and ids of all lists and tasks
   listsBoundingInfo: ListBoundingInfo[];
 
   isAddingList: boolean;
@@ -45,32 +47,6 @@ export class BoardComponent implements OnInit, OnDestroy {
   scrollContainerRef: any;
   mouseStartingX: number;
   scrollSpeed = 10;
-
-  constructor(
-    private readonly controlPanelService: ControlPanelService,
-    private readonly dataService: DataService,
-    private readonly boardStoreService: BoardStoreService,
-  ) {
-    this.isAddingList = false;
-    this.mouseStartingX = null;
-    this.selectedBoard = null;
-    this.currentIndex = null;
-    this.taskPositionsByOrder = [];
-    this.listsBoundingInfo = [];
-    this.boards = [];
-
-    this.subscription = new Subscription();
-    this.scrollContainerRef = null;
-  }
-
-  ngOnInit(): void {
-    this.subscription.add(this.boardStoreService.selectedBoard$.subscribe(board => this.selectedBoard = board));
-    this.subscription.add(this.boardStoreService.boards$.subscribe(data => this.boards = data));
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
-  }
 
   @HostListener('mousedown', ['$event.target, $event'])
   startDrag(targetElement: HTMLElement, event): void {
@@ -92,10 +68,10 @@ export class BoardComponent implements OnInit, OnDestroy {
           this.targetTask = targetElement.parentElement;
         }
 
-        const targetTaskUuid = this.targetTask.getAttribute('uuid');
-        this.selectedTaskData = this.getTaskDataByUuid(targetTaskUuid);
-        this.currentListIndex = this.selectedBoard.lists.findIndex(list => list.tasks.findIndex(task => task.uuid === targetTaskUuid) !== -1);
-        this.currentTaskIndex = this.selectedBoard.lists[this.currentListIndex].tasks.findIndex(task => task.uuid === targetTaskUuid);
+        const targetTaskId = this.targetTask.getAttribute('id');
+        this.selectedTaskData = this.getTaskDataById(targetTaskId);
+        this.currentListIndex = this.selectedBoard.lists.findIndex(list => list.tasks.findIndex(({id}) => id === targetTaskId) !== -1);
+        this.currentTaskIndex = this.selectedBoard.lists[this.currentListIndex].tasks.findIndex(({id}) => id === targetTaskId);
 
         this.selectedBoard.lists[this.currentListIndex].tasks[this.currentTaskIndex].selected = true;
       }
@@ -111,12 +87,12 @@ export class BoardComponent implements OnInit, OnDestroy {
 
         this.targetList.style.position = 'fixed';
 
-        const uuid = this.targetList.getAttribute('uuid');
-        this.currentListIndex = this.selectedBoard.lists.findIndex(list => list.uuid === uuid);
+        const listId = this.targetList.getAttribute('id');
+        this.currentListIndex = this.selectedBoard.lists.findIndex(({id}) => id === listId);
       }
       else if (this.selectedBoard !== null){
-       this.isDraggingBoard = true;
-       this.mouseStartingX = event.clientX;
+        this.isDraggingBoard = true;
+        this.mouseStartingX = event.clientX;
       }
     }
   }
@@ -139,7 +115,7 @@ export class BoardComponent implements OnInit, OnDestroy {
       if (newListIndex === this.currentListIndex) {
         // if task position is new
         if (newTaskIndex !== this.currentTaskIndex) {
-          const uuid = this.selectedTaskData.uuid;
+          const id = this.selectedTaskData.id;
           const currentTask = currentList.tasks[this.currentTaskIndex];
           currentList.tasks[this.currentTaskIndex] = currentList.tasks[newTaskIndex];
           currentList.tasks[newTaskIndex] = currentTask;
@@ -149,12 +125,12 @@ export class BoardComponent implements OnInit, OnDestroy {
           this.calculateBoundingInfo();
 
           // next line refreshes reference to the correct object !IMPORTANT
-          this.selectedTaskData = this.getTaskDataByUuid(uuid);
+          this.selectedTaskData = this.getTaskDataById(id);
         }
       }
       // if list is different
       else {
-        const uuid = this.selectedTaskData.uuid;
+        const id = this.selectedTaskData.id;
 
         // delete old task, and add new task
         newList.tasks.splice(newTaskIndex, 0, this.selectedTaskData);
@@ -165,10 +141,10 @@ export class BoardComponent implements OnInit, OnDestroy {
         this.currentTaskIndex = newTaskIndex;
 
         this.calculateBoundingInfo();
-        this.taskCleanup(uuid, this.selectedBoard.lists[newListIndex].uuid);
+        this.taskCleanup(id, this.selectedBoard.lists[newListIndex].id);
 
         // next line refreshes reference to the correct object !IMPORTANT
-        this.selectedTaskData = this.getTaskDataByUuid(uuid);
+        this.selectedTaskData = this.getTaskDataById(id);
       }
     }
 
@@ -232,6 +208,54 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.calculateBoundingInfo();
   }
 
+  boards$ = this.boardStoreService.boards$.pipe(
+    filter((boards: BoardModel[]) => !!boards.length)
+  );
+
+  selectedBoard$ = this.activatedRoute.params.pipe(
+    switchMap(({id: routeId}: { id: string }) => this.boards$.pipe(
+      map((boards: BoardModel[]) => boards.find(({id: boardId}) => boardId === routeId)),
+      map((boards) => {
+        if (boards === undefined) {
+          throw new Error('Board not found');
+        }
+        return boards
+      }),
+    ))
+  );
+
+  constructor(
+    private readonly controlPanelService: ControlPanelService,
+    private readonly dataService: DataService,
+    private readonly boardStoreService: BoardStoreService,
+    private readonly activatedRoute: ActivatedRoute,
+  ) {
+    this.isAddingList = false;
+    this.mouseStartingX = null;
+    this.selectedBoard = null;
+    this.currentIndex = null;
+    this.taskPositionsByOrder = [];
+    this.listsBoundingInfo = [];
+    this.boards = [];
+
+    this.subscription = new Subscription();
+    this.scrollContainerRef = null;
+  }
+
+  ngOnInit(): void {
+    this.selectedBoard$.pipe(
+      catchError((error) => {
+        console.error(error)
+        return of(null)
+      })
+    ).subscribe((board) => this.selectedBoard = board);
+    this.boards$.subscribe((boards: BoardModel[]) => this.boards = boards);
+  }
+
+  ngOnDestroy() {
+    this.subscription.unsubscribe();
+  }
+
   @HostListener('document:wheel', ['$event'])
   onScroll(event): void {
     if (!this.scrollContainerRef && this.selectedBoard) {
@@ -278,14 +302,14 @@ export class BoardComponent implements OnInit, OnDestroy {
 
     const first = taskBoundsInfo[0];
     const last = taskBoundsInfo[taskBoundsInfo.length - 1];
-    const selectedListIndex = this.findListIndexByTaskUuid(this.selectedTaskData.uuid);
+    const selectedListIndex = this.findListIndexByTaskId(this.selectedTaskData.id);
 
     if (!first || !last || clientY < first.y) {
       return 0;
     }
 
     if (clientY > last.bottom) {
-      if (taskBoundsInfo.length === 1 && last.uuid !== this.selectedTaskData.uuid) {
+      if (taskBoundsInfo.length === 1 && last.id !== this.selectedTaskData.id) {
         return 1;
       }
       return taskBoundsInfo.length - (selectedListIndex === listIndex ? 1 : 0);
@@ -301,10 +325,10 @@ export class BoardComponent implements OnInit, OnDestroy {
     return index;
   }
 
-  findListIndexByTaskUuid(uuid) {
+  findListIndexByTaskId(id: string): number | null {
     for (let i = 0; i < this.selectedBoard.lists.length; i++) {
       for (const task of this.selectedBoard.lists[i].tasks) {
-        if (task !== undefined && task.uuid === uuid) {
+        if (task !== undefined && task.id === id) {
           return i;
         }
       }
@@ -312,10 +336,10 @@ export class BoardComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  getTaskDataByUuid(uuid: string): TaskModel {
+  getTaskDataById(id: string): TaskModel {
     for (const list of this.selectedBoard.lists) {
       for (const task of list.tasks) {
-        if (task !== undefined && task.uuid === uuid) {
+        if (task !== undefined && task.id === id) {
           return task;
         }
       }
@@ -323,10 +347,10 @@ export class BoardComponent implements OnInit, OnDestroy {
     return null;
   }
 
-  taskCleanup(taskUuid: string, listUuid: string) {
+  taskCleanup(taskId: string, listId: string) {
     this.selectedBoard.lists.forEach(list => {
-      if (list.uuid !== listUuid) {
-        list.tasks = list.tasks.filter(task => task.uuid !== taskUuid);
+      if (list.id !== listId) {
+        list.tasks = list.tasks.filter(task => task.id !== taskId);
       }
     });
   }
@@ -339,15 +363,13 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.selectedBoard.lists.push(new ListModel(text));
   }
 
-  loadBoard(uuid: string): void {
+  loadBoard(id: string): void {
     this.boardStoreService.setBoards(this.boards);
-    this.boardStoreService.setSelectedBoard(this.boards.find(b => b.uid === uuid));
   }
 
   createBoard(): void {
     this.boards.push(new BoardModel('New Board'));
     this.boardStoreService.setBoards(this.boards);
-    this.boardStoreService.setSelectedBoard(this.boards[this.boards.length - 1]);
   }
 
   calculateBoundingInfo() {
@@ -356,12 +378,12 @@ export class BoardComponent implements OnInit, OnDestroy {
 
     listElements.forEach((list, i) => {
       const boundingRect = list.getBoundingClientRect();
-      this.listsBoundingInfo.push(new ListBoundingInfo(boundingRect.x, boundingRect.y, boundingRect.bottom, boundingRect.right, list.getAttribute('uuid')));
+      this.listsBoundingInfo.push(new ListBoundingInfo(boundingRect.x, boundingRect.y, boundingRect.bottom, boundingRect.right, list.getAttribute('id')));
 
       const taskElements = Array.from(list.querySelectorAll('div.task-container'));
       taskElements.forEach(ref => {
         const holder = ref.getBoundingClientRect();
-        this.listsBoundingInfo[i].tasksBoundingInfo.push(new TaskBoundingInfo(holder.x, holder.y, holder.bottom, holder.right, ref.getAttribute('uuid')));
+        this.listsBoundingInfo[i].tasksBoundingInfo.push(new TaskBoundingInfo(holder.x, holder.y, holder.bottom, holder.right, ref.getAttribute('id')));
       });
     });
   }

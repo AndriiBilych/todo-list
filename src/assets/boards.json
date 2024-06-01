@@ -1,5 +1,7 @@
 [
   {
+    "id": "0",
+    "title": "Board with many Lists",
     "lists": [
       {
         "tasks": [
@@ -86,11 +88,11 @@
         "title": "Studies",
         "order": 7
       }
-    ],
-    "title": "Board with many Lists",
-    "id": "0"
+    ]
   },
   {
+    "id": "1",
+    "title": "Board with many tasks",
     "lists": [
       {
         "tasks": [
@@ -205,8 +207,6 @@
         "title": "Done",
         "order": 2
       }
-    ],
-    "title": "Board with many tasks",
-    "id": "1"
+    ]
   }
 ]

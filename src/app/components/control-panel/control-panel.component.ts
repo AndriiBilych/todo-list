@@ -18,6 +18,13 @@ export class ControlPanelComponent implements OnInit {
 
   @ViewChild('confirmationRef') confirmation: ElementRef;
 
+  @HostListener('document:mousedown', ['$event.target'])
+  onCloseModalClick(target): void {
+    if (target.classList.contains('modal')) {
+      this.confirmation.nativeElement.style.display = 'none';
+    }
+  }
+
   constructor(
     private readonly boardStoreService: BoardStoreService,
   ) {
@@ -28,36 +35,21 @@ export class ControlPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscription.add(this.boardStoreService.selectedBoard$.subscribe(board => this.selectedBoard = board));
     this.subscription.add(this.boardStoreService.boards$.subscribe(data => this.boards = data));
   }
 
-  @HostListener('document:mousedown', ['$event.target'])
-  onCloseModalClick(target): void {
-    if (target.classList.contains('modal')) {
-      this.confirmation.nativeElement.style.display = 'none';
-    }
-  }
-
-  onClick(uuid: string): void {
+  onClick(id: string): void {
     this.boardStoreService.setBoards(this.boards);
-    this.boardStoreService.setSelectedBoard(this.boards.find(b => b.uid === uuid));
   }
 
-  removeBoard(uuid: string): void {
-    const index = this.boards.findIndex(b => b.uid === uuid);
+  removeBoard(id: string): void {
+    const index = this.boards.findIndex(({id: boardId}) => boardId === id);
     this.boards.splice(index, 1);
     this.boardStoreService.setBoards(this.boards);
-    if (this.boards.length !== 0) {
-      this.boardStoreService.setSelectedBoard(this.boards[this.boards.length - 1]);
-    }
-
-    this.boardStoreService.setSelectedBoard(null);
   }
 
   createBoard(): void {
     this.boards.push(new BoardModel('New Board'));
     this.boardStoreService.setBoards(this.boards);
-    this.boardStoreService.setSelectedBoard(this.boards[this.boards.length - 1]);
   }
 }

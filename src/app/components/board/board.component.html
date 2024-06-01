@@ -1,11 +1,11 @@
 <ng-container *ngIf="selectedBoard !== null; else loadingTemplate">
-  <div class="board" #board [attr.uuid]="selectedBoard.uid">
+  <div class="board" #board [id]="selectedBoard.id">
     <ngx-simplebar [options]="options">
       <div *ngFor="let list of selectedBoard.lists; index as i"
            class="list-placeholder"
-           [attr.uuid]="list.uuid"
+           [id]="list.id"
            [attr.order-index]="list.order">
-        <div class="list-container" [attr.uuid]="list.uuid">
+        <div class="list-container" [id]="list.id">
           <app-list (closeListAction)="removeList(i)" [list]="list"></app-list>
         </div>
       </div>
@@ -31,5 +31,4 @@
 
 <ng-template #loadingTemplate>
   Loading
-<!--  <app-homepage [boards]="boards" [loadBoard]="loadBoard" [createBoard]="createBoard"></app-homepage>-->
 </ng-template>

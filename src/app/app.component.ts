@@ -1,9 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
-import {Subscription} from 'rxjs';
-import {DataService} from './services/data-service.service';
-import {BoardStoreService} from './services/board-store.service';
-import {isNotNullOrUndefined} from 'codelyzer/util/isNotNullOrUndefined';
-
+import { Component, OnInit } from '@angular/core';
+import { DataService } from './services/data.service';
+import { BoardStoreService } from './services/board-store.service';
+import { isNotNullOrUndefined } from 'codelyzer/util/isNotNullOrUndefined';
+import { take } from "rxjs/operators";
+import { BoardModel } from "./models/BoardModel";
 
 @Component({
   selector: 'app-root',
@@ -12,27 +12,19 @@ import {isNotNullOrUndefined} from 'codelyzer/util/isNotNullOrUndefined';
     <router-outlet></router-outlet>
   `,
 })
-export class AppComponent implements OnInit, OnDestroy {
-  title = 'TodoList';
-
-  subscription: Subscription;
+export class AppComponent implements OnInit {
+  title = 'Boards';
 
   constructor(
     private readonly dataService: DataService,
     private readonly boardStoreService: BoardStoreService
-  ) {
-    this.subscription = new Subscription();
-  }
+  ) {}
 
-  ngOnInit() {
-    this.subscription.add(this.dataService.getBoards().subscribe( data => {
-      if (isNotNullOrUndefined(data) && data.length > 0) {
-        this.boardStoreService.setBoards(data);
+  ngOnInit(): void {
+    this.dataService.getBoards$().pipe(take(1)).subscribe((boards: BoardModel[]) => {
+      if (isNotNullOrUndefined(boards) && boards.length > 0) {
+        this.boardStoreService.setBoards(boards);
       }
-    }));
-  }
-
-  ngOnDestroy() {
-    this.subscription.unsubscribe();
+    });
   }
 }

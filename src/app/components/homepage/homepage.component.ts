@@ -1,5 +1,5 @@
-import {Component, Input} from '@angular/core';
-import {ISection} from "../../models/interfaces/section.interface";
+import { Component, Input } from '@angular/core';
+import { ISection } from "../../models/interfaces/section.interface";
 
 @Component({
   selector: 'app-homepage',
@@ -9,7 +9,7 @@ import {ISection} from "../../models/interfaces/section.interface";
   `,
 })
 export class HomepageComponent {
-  @Input() loadBoard: (uuid: string) => void;
+  @Input() loadBoard: (id: string) => void;
   @Input() createBoard: () => void;
 
   exampleSection: ISection = {
@@ -19,17 +19,17 @@ export class HomepageComponent {
     additionAllowed: false,
     boards: [
       {
-        id: 0,
+        id: '0',
         title: 'Groceries list',
         description: 'Simple board of everyday groceries by category, Simple board of everyday groceries by category, Simple board of everyday groceries by category, Simple board of everyday groceries by category'
       },
       {
-        id: 1,
+        id: '1',
         title: 'TODO list',
         description: 'Things that need to be done on weekend'
       },
       {
-        id: 2,
+        id: '2',
         title: 'Favorite games',
         description: 'Collection of my favorite games'
       },

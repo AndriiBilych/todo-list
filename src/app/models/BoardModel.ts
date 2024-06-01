@@ -1,14 +1,12 @@
 import {ListModel} from './ListModel';
 import {IBoard} from './interfaces/board.interface';
 import {DeserializeInterface} from './interfaces/deserializeInterface';
-import {v4 as uuidv4} from 'uuid';
 
 export class BoardModel implements DeserializeInterface<IBoard>, IBoard {
   lists: ListModel[];
   title: string;
   description: string;
-  id: number;
-  uid: string;
+  id: string;
   dateCreated: string;
   dateModified: string;
   color: string;
@@ -17,8 +15,7 @@ export class BoardModel implements DeserializeInterface<IBoard>, IBoard {
     this.title = title;
     this.description = '';
     this.lists = [];
-    this.id = 0;
-    this.uid = uuidv4();
+    this.id = '';
     this.dateCreated = '';
     this.dateModified = '';
     this.color = '';
