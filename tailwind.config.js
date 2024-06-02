@@ -9,7 +9,12 @@ module.exports = {
   },
   darkMode: 'class', // or 'media' or 'class'
   theme: {
-    extend: {},
+    extend: {
+      screens: {
+        'fhd': '1900px',
+        'qhd': '2500px'
+      },
+    },
   },
   plugins: [require('@tailwindcss/forms'),require('@tailwindcss/typography')],
 }

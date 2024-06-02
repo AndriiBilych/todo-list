@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { IBoard } from '../../models/interfaces/board.interface';
-import { RoutingService } from "../../services/routing.service";
+import { RoutingService } from '../../services/routing.service';
 
 @Component({
   selector: 'app-homepage-list-item',
@@ -11,7 +11,14 @@ import { RoutingService } from "../../services/routing.service";
       <span
         class="flex justify-center items-center font-medium text-lg leading-6 sm:col-span-2 text-gray-900 bg-blue-100 rounded-lg">{{ board.title }}</span>
       <span class="flex justify-center items-center sm:col-span-3">
-        <span class="mt-1 text-sm leading-6 text-gray-700 ellipsis-box">{{ board.description }}</span>
+          <span class="mt-1 text-sm leading-6 text-gray-700 ellipsis-box">
+            <ng-container *ngIf="board?.description?.length; else NoDescription">
+              {{ board.description }}
+            </ng-container>
+            <ng-template #NoDescription>
+              No description
+            </ng-template>
+          </span>
       </span>
     </li>
   `,

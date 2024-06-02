@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DataService } from './services/data.service';
 import { BoardStoreService } from './services/board-store.service';
-import { isNotNullOrUndefined } from 'codelyzer/util/isNotNullOrUndefined';
-import { take } from "rxjs/operators";
-import { BoardModel } from "./models/BoardModel";
+import { take } from 'rxjs/operators';
+import { BoardModel } from './models/BoardModel';
 
 @Component({
   selector: 'app-root',
@@ -21,10 +20,9 @@ export class AppComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.dataService.getBoards$().pipe(take(1)).subscribe((boards: BoardModel[]) => {
-      if (isNotNullOrUndefined(boards) && boards.length > 0) {
-        this.boardStoreService.setBoards(boards);
-      }
+    this.dataService.getExampleBoards$().pipe(take(1)).subscribe((boards: BoardModel[]) => {
+      this.boardStoreService.setExampleBoards(boards ?? []);
     });
+    this.boardStoreService.setUserBoards([]);
   }
 }

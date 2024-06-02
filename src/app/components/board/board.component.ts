@@ -66,8 +66,8 @@ export class BoardComponent implements OnInit, OnDestroy {
   mouseStartingX: number;
   scrollSpeed = 10;
 
-  boards$ = this.boardStoreService.boards$.pipe(
-    filter((boards: BoardModel[]) => !!boards.length)
+  boards$ = this.boardStoreService.exampleBoards$.pipe(
+    filter((boards: BoardModel[]) => !!boards?.length)
   );
 
   selectedBoard$ = this.activatedRoute.params.pipe(
@@ -242,6 +242,19 @@ export class BoardComponent implements OnInit, OnDestroy {
     this.calculateBoundingInfo();
   }
 
+  @HostListener('document:wheel', ['$event'])
+  onScroll(event): void {
+    if (!this.scrollContainerRef && this.selectedBoard) {
+      this.scrollContainerRef = this.boardRef.nativeElement.firstChild.firstChild.children[1].firstChild.firstChild;
+    }
+
+    const target = event.target;
+
+    if (target && target.classList === this.scrollContainerRef.classList) {
+      this.scrollContainerRef.scrollLeft += event.deltaY / -1.6;
+    }
+  }
+
   ngOnInit(): void {
     this.selectedBoard$.pipe(
       catchError((error) => {
@@ -254,19 +267,6 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.subscription.unsubscribe();
-  }
-
-  @HostListener('document:wheel', ['$event'])
-  onScroll(event): void {
-    if (!this.scrollContainerRef && this.selectedBoard) {
-      this.scrollContainerRef = this.boardRef.nativeElement.firstChild.firstChild.children[1].firstChild.firstChild;
-    }
-
-    const target = event.target;
-
-    if (target && target.classList === this.scrollContainerRef.classList) {
-      this.scrollContainerRef.scrollLeft += event.deltaY / -1.6;
-    }
   }
 
   findListIndexByMouseX(clientX: number): number {
@@ -364,12 +364,12 @@ export class BoardComponent implements OnInit, OnDestroy {
   }
 
   loadBoard(id: string): void {
-    this.boardStoreService.setBoards(this.boards);
+    this.boardStoreService.setExampleBoards(this.boards);
   }
 
   createBoard(): void {
     this.boards.push(new BoardModel('New Board'));
-    this.boardStoreService.setBoards(this.boards);
+    this.boardStoreService.setExampleBoards(this.boards);
   }
 
   calculateBoundingInfo() {

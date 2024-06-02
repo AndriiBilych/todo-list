@@ -1,10 +1,10 @@
-import {IBoard} from "./board.interface";
+import {BoardModel} from '../BoardModel';
 
 export interface ISection {
   title: string;
   description: string;
-  id: number;
+  id: string;
   additionAllowed: boolean;
 
-  boards: IBoard[];
+  boards: BoardModel[];
 }

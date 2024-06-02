@@ -35,21 +35,21 @@ export class ControlPanelComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.subscription.add(this.boardStoreService.boards$.subscribe(data => this.boards = data));
+    this.subscription.add(this.boardStoreService.exampleBoards$.subscribe(data => this.boards = data));
   }
 
   onClick(id: string): void {
-    this.boardStoreService.setBoards(this.boards);
+    this.boardStoreService.setExampleBoards(this.boards);
   }
 
   removeBoard(id: string): void {
     const index = this.boards.findIndex(({id: boardId}) => boardId === id);
     this.boards.splice(index, 1);
-    this.boardStoreService.setBoards(this.boards);
+    this.boardStoreService.setExampleBoards(this.boards);
   }
 
   createBoard(): void {
     this.boards.push(new BoardModel('New Board'));
-    this.boardStoreService.setBoards(this.boards);
+    this.boardStoreService.setExampleBoards(this.boards);
   }
 }

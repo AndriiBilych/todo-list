@@ -1,19 +1,22 @@
 import { Injectable } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { BoardModel } from '../models/BoardModel';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BoardStoreService {
-  private _boardsSource = new ReplaySubject<BoardModel[]>();
-  boards$ = this._boardsSource.asObservable();
+  #exampleBoardsSource = new BehaviorSubject<BoardModel[] | null>(null);
+  exampleBoards$ = this.#exampleBoardsSource.asObservable();
 
-  constructor() {
-    this._boardsSource.next([]);
+  #userBoardsSource = new BehaviorSubject<BoardModel[] | null>(null);
+  userBoards$ = this.#userBoardsSource.asObservable();
+
+  setExampleBoards(data: BoardModel[]) {
+    this.#exampleBoardsSource.next(data);
   }
 
-  setBoards(data: BoardModel[]) {
-    this._boardsSource.next(data);
+  setUserBoards(data: BoardModel[]) {
+    this.#userBoardsSource.next(data);
   }
 }

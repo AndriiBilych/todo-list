@@ -11,8 +11,8 @@ import { map } from 'rxjs/operators';
 export class DataService {
   constructor(private http: HttpClient) { }
 
-  getBoards$(): Observable<BoardModel[]> {
-    return this.http.get<IBoard[]>('assets/boards.json')
+  getExampleBoards$(): Observable<BoardModel[]> {
+    return this.http.get<IBoard[]>('assets/example-boards.json')
       .pipe(map((list) => {
         return list.map((item) => new BoardModel().deserialize(item));
       }));
