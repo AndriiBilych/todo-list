@@ -48,8 +48,8 @@ export class ControlPanelComponent implements OnInit {
     this.boardStoreService.setExampleBoards(this.boards);
   }
 
-  createBoard(): void {
-    this.boards.push(new BoardModel('New Board'));
-    this.boardStoreService.setExampleBoards(this.boards);
-  }
+  // createBoard(): void {
+  //   this.boards.push(new BoardModel('New Board'));
+  //   this.boardStoreService.setExampleBoards(this.boards);
+  // }
 }

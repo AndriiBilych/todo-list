@@ -11,11 +11,11 @@ export class BoardModel implements DeserializeInterface<IBoard>, IBoard {
   dateModified: string;
   color: string;
 
-  constructor(title?: string) {
-    this.title = title;
-    this.description = '';
+  constructor(id?: string, title?: string, description?: string) {
+    this.id = id ?? '';
+    this.title = title ?? '';
+    this.description = description ?? '';
     this.lists = [];
-    this.id = '';
     this.dateCreated = '';
     this.dateModified = '';
     this.color = '';

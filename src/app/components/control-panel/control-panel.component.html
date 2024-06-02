@@ -11,10 +11,10 @@
         <button
           class="list-name"
           *ngFor="let b of boards; index as i"
-          [class.selected]="selectedBoard?.uid === b.uid"
-          (click)="onClick(b.uid)"
+          [class.selected]="selectedBoard?.id === b.id"
+          (click)="onClick(b.id)"
         >{{b.title}}</button>
-        <button class="list-name" (click)="createBoard()">+ New Board</button>
+<!--        <button class="list-name" (click)="createBoard()">+ New Board</button>-->
       </div>
     </div>
 

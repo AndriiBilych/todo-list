@@ -66,7 +66,7 @@ export class BoardComponent implements OnInit, OnDestroy {
   mouseStartingX: number;
   scrollSpeed = 10;
 
-  boards$ = this.boardStoreService.exampleBoards$.pipe(
+  boards$ = this.boardStoreService.allBoards$.pipe(
     filter((boards: BoardModel[]) => !!boards?.length)
   );
 
@@ -361,15 +361,6 @@ export class BoardComponent implements OnInit, OnDestroy {
 
   pushToArray(text: string): void {
     this.selectedBoard.lists.push(new ListModel(text));
-  }
-
-  loadBoard(id: string): void {
-    this.boardStoreService.setExampleBoards(this.boards);
-  }
-
-  createBoard(): void {
-    this.boards.push(new BoardModel('New Board'));
-    this.boardStoreService.setExampleBoards(this.boards);
   }
 
   calculateBoundingInfo() {
