@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, combineLatest } from 'rxjs';
-import { BoardModel } from '../models/BoardModel';
-import { map } from 'rxjs/operators';
+import { BoardModel } from '../models/board.model';
+import { filter, map } from 'rxjs/operators';
+import { isNotNullOrUndefined } from 'codelyzer/util/isNotNullOrUndefined';
 
 @Injectable({
   providedIn: 'root'
@@ -13,8 +14,14 @@ export class BoardStoreService {
   #userBoardsSource = new BehaviorSubject<BoardModel[] | null>(null);
   userBoards$ = this.#userBoardsSource.asObservable();
 
-  allBoards$ = combineLatest([this.exampleBoards$, this.userBoards$]).pipe(
-    map(([examples, users]) => ([...(examples ?? []), ...(users ?? [])]))
+  #selectedBoardSource = new BehaviorSubject<BoardModel | null>(null);
+  selectedBoard$ = this.#selectedBoardSource.asObservable();
+
+  allBoards$ = combineLatest([
+    this.exampleBoards$.pipe(filter(isNotNullOrUndefined)),
+    this.userBoards$.pipe(filter(isNotNullOrUndefined))
+  ]).pipe(
+    map(([examples, users]) => ([...examples, ...users]))
   );
 
   setExampleBoards(data: BoardModel[]) {
@@ -25,10 +32,23 @@ export class BoardStoreService {
     this.#userBoardsSource.next(data);
   }
 
+  selectBoard(board: BoardModel | null) {
+    if (isNotNullOrUndefined(board)) {
+      this.setSelectedBoard(board);
+      return;
+    }
+
+    this.setSelectedBoard(null);
+  }
+
   createBoard(): string {
     const id = this.newBoardId().toString();
-    this.setUserBoards([...(this.#userBoardsSource?.value ?? []), new BoardModel(id, 'New board')])
+    this.setUserBoards([...(this.#userBoardsSource?.value ?? []), new BoardModel(id, 'New board')]);
     return id;
+  }
+
+  private setSelectedBoard(data: BoardModel | null) {
+    this.#selectedBoardSource.next(data);
   }
 
   private newBoardId(): number {

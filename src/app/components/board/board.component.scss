@@ -1,7 +1,5 @@
 .board {
-  overflow: auto;
-  height: calc(100vh - 60px);
-  /*display: flex;*/
+  height: calc(100vh - 3.5rem);
 }
 
 .list-placeholder {
@@ -14,15 +12,6 @@
 
 ngx-simplebar {
   height: inherit;
-}
-
-svg {
-  height: 10vh;
-  width: 10vw;
-  margin: 44vh 45vw;
-  animation-name: rotation;
-  animation-duration: 5s;
-  animation-iteration-count: infinite;
 }
 
 @keyframes rotation {

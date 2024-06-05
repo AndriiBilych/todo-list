@@ -20,22 +20,6 @@
   text-align: left;
 }
 
-.dropdown:hover .dropdown-content {
-  display: block;
-}
-
-.dropdown:hover .dropBtn, .list-name:hover , .left-button:hover{
-  background-color: var(--highlighted);
-}
-
-svg {
-  width: 2vw;
-  height: 2vh;
-  margin-top: 4px;
-  margin-left: 2px;
-  color: var(--text);
-}
-
 .btn {
   background-color: var(--button);
   padding: 10px;

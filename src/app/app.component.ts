@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from './services/data.service';
 import { BoardStoreService } from './services/board-store.service';
 import { take } from 'rxjs/operators';
-import { BoardModel } from './models/BoardModel';
+import { BoardModel } from './models/board.model';
 
 @Component({
   selector: 'app-root',

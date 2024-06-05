@@ -1,8 +1,8 @@
-import { TaskModel } from './TaskModel';
-import { ListInterface } from './interfaces/list.interface';
-import { DeserializeInterface } from './interfaces/deserializeInterface';
+import { TaskModel } from './task.model';
+import { IList } from './interfaces/list.interface';
+import { IDeserialize } from './interfaces/deserialize.interface';
 
-export class ListModel implements DeserializeInterface<ListInterface>, ListInterface {
+export class ListModel implements IDeserialize<IList>, IList {
   tasks: TaskModel[];
   title = 'New List';
   id: string;
@@ -15,7 +15,7 @@ export class ListModel implements DeserializeInterface<ListInterface>, ListInter
     this.order = order;
   }
 
-  deserialize(input: ListInterface): this {
+  deserialize(input: IList): this {
     Object.assign(this, input);
 
     this.tasks = this.tasks.map((item) => new TaskModel().deserialize(item));

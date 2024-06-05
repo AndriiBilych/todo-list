@@ -1,4 +1,4 @@
-import {ListInterface} from './list.interface';
+import { IList } from './list.interface';
 
 export interface IBoard {
   title: string;
@@ -7,5 +7,5 @@ export interface IBoard {
   dateCreated?: string;
   dateModified?: string;
   color?: string;
-  lists?: ListInterface[];
+  lists?: IList[];
 }

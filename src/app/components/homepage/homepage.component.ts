@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { BoardModel } from '../../models/BoardModel';
+import { BoardModel } from '../../models/board.model';
 import { BoardStoreService } from '../../services/board-store.service';
 import { filter, map } from 'rxjs/operators';
 import { isNotNullOrUndefined } from 'codelyzer/util/isNotNullOrUndefined';
@@ -7,8 +7,10 @@ import { isNotNullOrUndefined } from 'codelyzer/util/isNotNullOrUndefined';
 @Component({
   selector: 'app-homepage',
   template: `
-    <app-homepage-section [section$]="exampleSection$"></app-homepage-section>
-    <app-homepage-section [section$]="userSection$"></app-homepage-section>
+    <div class="pt-14">
+      <app-homepage-section [section$]="exampleSection$"></app-homepage-section>
+      <app-homepage-section [section$]="userSection$"></app-homepage-section>
+    </div>
   `,
 })
 export class HomepageComponent {

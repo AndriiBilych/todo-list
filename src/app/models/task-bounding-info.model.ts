@@ -1,4 +1,4 @@
-export class TaskBoundingInfo {
+export class TaskBoundingInfoModel {
   x: number;
   y: number;
   bottom: number;

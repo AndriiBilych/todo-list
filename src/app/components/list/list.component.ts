@@ -1,17 +1,13 @@
-import {Component, Input, OnInit, Output, EventEmitter, HostListener, ViewChild, ElementRef} from '@angular/core';
-import { ListModel } from '../../models/ListModel';
-import {TaskModel} from '../../models/TaskModel';
-
-export function array(n: number): number[] {
-  return Array(n);
-}
+import { Component, Input, Output, EventEmitter, HostListener, ViewChild, ElementRef } from '@angular/core';
+import { ListModel } from '../../models/list.model';
+import { TaskModel } from '../../models/task.model';
 
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss']
 })
-export class ListComponent implements OnInit {
+export class ListComponent {
   options = { autoHide: false};
   isAddingTask: boolean;
   isChangingName: boolean;
@@ -31,10 +27,6 @@ export class ListComponent implements OnInit {
   constructor() {
     this.isAddingTask = false;
     this.isChangingName = false;
-  }
-
-  ngOnInit(): void {
-    console.log(this.isAddingTask);
   }
 
   pushToArray(text: string): void {

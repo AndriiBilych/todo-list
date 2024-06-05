@@ -1,4 +1,4 @@
-import {BoardModel} from '../BoardModel';
+import { BoardModel } from '../board.model';
 
 export interface ISection {
   title: string;

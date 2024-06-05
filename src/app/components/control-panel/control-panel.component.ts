@@ -1,7 +1,6 @@
-import {Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
-import {BoardModel} from '../../models/BoardModel';
-import {BoardStoreService} from '../../services/board-store.service';
-import {Subscription} from 'rxjs';
+import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
+import { BoardModel } from '../../models/board.model';
+import { BoardStoreService } from '../../services/board-store.service';
 
 @Component({
   selector: 'app-control-panel',
@@ -9,12 +8,8 @@ import {Subscription} from 'rxjs';
   styleUrls: ['./control-panel.component.scss']
 })
 export class ControlPanelComponent implements OnInit {
-  isChangingName: boolean;
-
+  #isChangingName = false;
   selectedBoard: BoardModel;
-  boards: BoardModel[];
-
-  subscription: Subscription;
 
   @ViewChild('confirmationRef') confirmation: ElementRef;
 
@@ -26,30 +21,24 @@ export class ControlPanelComponent implements OnInit {
   }
 
   constructor(
-    private readonly boardStoreService: BoardStoreService,
+    public readonly boardStoreService: BoardStoreService,
   ) {
-    this.isChangingName = false;
+    this.#isChangingName = false;
     this.selectedBoard = null;
-    this.boards = [];
-    this.subscription = new Subscription();
   }
 
   ngOnInit(): void {
-    this.subscription.add(this.boardStoreService.exampleBoards$.subscribe(data => this.boards = data));
-  }
-
-  onClick(id: string): void {
-    this.boardStoreService.setExampleBoards(this.boards);
   }
 
   removeBoard(id: string): void {
-    const index = this.boards.findIndex(({id: boardId}) => boardId === id);
-    this.boards.splice(index, 1);
-    this.boardStoreService.setExampleBoards(this.boards);
+    // this.boardStoreService.setExampleBoards(this.boards);
   }
 
-  // createBoard(): void {
-  //   this.boards.push(new BoardModel('New Board'));
-  //   this.boardStoreService.setExampleBoards(this.boards);
-  // }
+  toggleIsChangingName(force?: boolean): void {
+    this.#isChangingName = force ?? !this.#isChangingName;
+  }
+
+  get isChangingName(): boolean {
+    return this.#isChangingName;
+  }
 }

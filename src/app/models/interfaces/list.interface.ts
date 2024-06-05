@@ -1,7 +1,7 @@
-import {TaskInterface} from './task.interface';
+import { ITask } from './task.interface';
 
-export interface ListInterface {
-  tasks: TaskInterface[];
+export interface IList {
+  tasks: ITask[];
   title: string;
   id: string;
   order: number;

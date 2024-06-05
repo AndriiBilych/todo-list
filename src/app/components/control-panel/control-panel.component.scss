@@ -1,38 +1,3 @@
-.panel {
-  overflow: hidden;
-  background-color: var(--main);
-  padding: 8px;
-  display: flex;
-  justify-content: space-between;
-}
-
-.tools {
-  display: flex;
-}
-
-.dropBtn {
-  display: flex;
-}
-
-.dropdown {
-  position: relative;
-  display: inline-block;
-}
-
-.left-container {
-  display: flex;
-}
-
-.left-button {
-  background-color: var(--button);
-  color: var(--text);
-  border: none;
-  padding: 10px;
-  margin-right: 5px;
-  font-size: 16px;
-  border-radius: 5px;
-}
-
 .dropdown-content {
   display: none;
   position: fixed;
@@ -65,13 +30,6 @@
 
 .selected {
   background-color: var(--highlighted);
-  color: var(--text);
-}
-
-svg {
-  width: 2vw;
-  height: 2vh;
-  margin-left: 2px;
   color: var(--text);
 }
 

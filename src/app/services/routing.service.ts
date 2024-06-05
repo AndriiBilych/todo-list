@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Router } from "@angular/router";
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -14,8 +14,7 @@ export class RoutingService {
     this.router.navigate(['board', id]);
   }
 
-  routeToCreateBoard(): void {
-    this.router.navigate(['board']);
+  routeToHomepage(): void {
+    this.router.navigate(['home']);
   }
-
 }

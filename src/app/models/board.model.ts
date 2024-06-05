@@ -1,8 +1,8 @@
-import {ListModel} from './ListModel';
-import {IBoard} from './interfaces/board.interface';
-import {DeserializeInterface} from './interfaces/deserializeInterface';
+import { ListModel } from './list.model';
+import { IBoard } from './interfaces/board.interface';
+import { IDeserialize } from './interfaces/deserialize.interface';
 
-export class BoardModel implements DeserializeInterface<IBoard>, IBoard {
+export class BoardModel implements IDeserialize<IBoard>, IBoard {
   lists: ListModel[];
   title: string;
   description: string;

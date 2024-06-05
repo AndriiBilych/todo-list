@@ -1,7 +1,7 @@
-import {TaskInterface} from './interfaces/task.interface';
-import {DeserializeInterface} from './interfaces/deserializeInterface';
+import { ITask } from './interfaces/task.interface';
+import { IDeserialize } from './interfaces/deserialize.interface';
 
-export class TaskModel implements DeserializeInterface<TaskInterface>, TaskInterface {
+export class TaskModel implements IDeserialize<ITask>, ITask {
   content: string;
   id: string;
   order: number;
@@ -14,7 +14,7 @@ export class TaskModel implements DeserializeInterface<TaskInterface>, TaskInter
     this.selected = false;
   }
 
-  deserialize(input: TaskInterface): this {
+  deserialize(input: ITask): this {
     return Object.assign(this, input);
   }
 }
