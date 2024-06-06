@@ -4,94 +4,99 @@
       <div class="flex lg:flex-1 lg:gap-x-1 h-full">
         <ng-container *ngIf="obs.board">
           <a (click)="toggleIsChangingName()" *ngIf="!isChangingName; else titleInput"
-            class="flex items-center text-sm font-semibold leading-6 h-full hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer"
+             class="flex items-center text-sm font-semibold leading-6 h-full hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer"
           >
             {{ obs.board.title }}
             <svg fill="none"
                  xmlns="http://www.w3.org/2000/svg"
                  stroke-width="1.5" stroke="currentColor"
                  viewBox="0 0 512 512" class="h-3 ml-2">
-              <path fill="currentColor" d="M290.74 93.24l128.02 128.02-277.99 277.99-114.14 12.6C11.35 513.54-1.56 500.62.14 485.34l12.7-114.22 277.9-277.88zm207.2-19.06l-60.11-60.11c-18.75-18.75-49.16-18.75-67.91 0l-56.55 56.55 128.02 128.02 56.55-56.55c18.75-18.76 18.75-49.16 0-67.91z"></path>
+              <path fill="currentColor"
+                    d="M290.74 93.24l128.02 128.02-277.99 277.99-114.14 12.6C11.35 513.54-1.56 500.62.14 485.34l12.7-114.22 277.9-277.88zm207.2-19.06l-60.11-60.11c-18.75-18.75-49.16-18.75-67.91 0l-56.55 56.55 128.02 128.02 56.55-56.55c18.75-18.76 18.75-49.16 0-67.91z"></path>
             </svg>
           </a>
           <a (click)="DeleteModal.style.display = 'block'"
-            class="flex items-center text-sm font-semibold leading-6 h-full hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer"
+             class="flex items-center text-sm font-semibold leading-6 h-full hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer"
           >Delete board</a>
         </ng-container>
       </div>
-<!--      <div class="flex lg:hidden">-->
-<!--        <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">-->
-<!--          <span class="sr-only">Open main menu</span>-->
-<!--          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">-->
-<!--            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />-->
-<!--          </svg>-->
-<!--        </button>-->
-<!--      </div>-->
+      <!--      <div class="flex lg:hidden">-->
+      <!--        <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">-->
+      <!--          <span class="sr-only">Open main menu</span>-->
+      <!--          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">-->
+      <!--            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />-->
+      <!--          </svg>-->
+      <!--        </button>-->
+      <!--      </div>-->
       <div class="hidden lg:flex h-full">
-        <a routerLink="/home" class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer">Boards</a>
+        <a routerLink="/home"
+           class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer">Boards</a>
       </div>
       <div class="hidden lg:flex lg:flex-1 lg:gap-x-1 lg:justify-end h-full">
-        <a class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer">Dark moode</a>
-        <a class="flex items-center justify-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer">
+        <a
+          class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer">Dark
+          moode</a>
+        <a
+          class="flex items-center justify-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer">
           <app-guide></app-guide>
         </a>
       </div>
     </ng-container>
   </nav>
   <!-- Mobile menu, show/hide based on menu open state. -->
-<!--  <div class="lg:hidden" role="dialog" aria-modal="true">-->
-<!--    &lt;!&ndash; Background backdrop, show/hide based on slide-over state. &ndash;&gt;-->
-<!--    <div class="fixed inset-0 z-10"></div>-->
-<!--    <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">-->
-<!--      <div class="flex items-center justify-between">-->
-<!--        <a href="#" class="-m-1.5 p-1.5">-->
-<!--          <span class="sr-only">Your Company</span>-->
-<!--          <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="">-->
-<!--        </a>-->
-<!--        <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">-->
-<!--          <span class="sr-only">Close menu</span>-->
-<!--          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">-->
-<!--            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />-->
-<!--          </svg>-->
-<!--        </button>-->
-<!--      </div>-->
-<!--      <div class="mt-6 flow-root">-->
-<!--        <div class="-my-6 divide-y divide-gray-500/10">-->
-<!--          <div class="space-y-2 py-6">-->
-<!--            <div class="-mx-3">-->
-<!--              <button type="button" class="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50" aria-controls="disclosure-1" aria-expanded="false">-->
-<!--                Product-->
-<!--                &lt;!&ndash;-->
-<!--                  Expand/collapse icon, toggle classes based on menu open state.-->
+  <!--  <div class="lg:hidden" role="dialog" aria-modal="true">-->
+  <!--    &lt;!&ndash; Background backdrop, show/hide based on slide-over state. &ndash;&gt;-->
+  <!--    <div class="fixed inset-0 z-10"></div>-->
+  <!--    <div class="fixed inset-y-0 right-0 z-10 w-full overflow-y-auto bg-white px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-gray-900/10">-->
+  <!--      <div class="flex items-center justify-between">-->
+  <!--        <a href="#" class="-m-1.5 p-1.5">-->
+  <!--          <span class="sr-only">Your Company</span>-->
+  <!--          <img class="h-8 w-auto" src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="">-->
+  <!--        </a>-->
+  <!--        <button type="button" class="-m-2.5 rounded-md p-2.5 text-gray-700">-->
+  <!--          <span class="sr-only">Close menu</span>-->
+  <!--          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">-->
+  <!--            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />-->
+  <!--          </svg>-->
+  <!--        </button>-->
+  <!--      </div>-->
+  <!--      <div class="mt-6 flow-root">-->
+  <!--        <div class="-my-6 divide-y divide-gray-500/10">-->
+  <!--          <div class="space-y-2 py-6">-->
+  <!--            <div class="-mx-3">-->
+  <!--              <button type="button" class="flex w-full items-center justify-between rounded-lg py-2 pl-3 pr-3.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50" aria-controls="disclosure-1" aria-expanded="false">-->
+  <!--                Product-->
+  <!--                &lt;!&ndash;-->
+  <!--                  Expand/collapse icon, toggle classes based on menu open state.-->
 
-<!--                  Open: "rotate-180", Closed: ""-->
-<!--                &ndash;&gt;-->
-<!--                <svg class="h-5 w-5 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">-->
-<!--                  <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />-->
-<!--                </svg>-->
-<!--              </button>-->
-<!--              &lt;!&ndash; 'Product' sub-menu, show/hide based on menu state. &ndash;&gt;-->
-<!--              <div class="mt-2 space-y-2" id="disclosure-1">-->
-<!--                <a href="#" class="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50">Analytics</a>-->
-<!--                <a href="#" class="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50">Engagement</a>-->
-<!--                <a href="#" class="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50">Security</a>-->
-<!--                <a href="#" class="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50">Integrations</a>-->
-<!--                <a href="#" class="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50">Automations</a>-->
-<!--                <a href="#" class="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50">Watch demo</a>-->
-<!--                <a href="#" class="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50">Contact sales</a>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--            <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Features</a>-->
-<!--            <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Marketplace</a>-->
-<!--            <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Company</a>-->
-<!--          </div>-->
-<!--          <div class="py-6">-->
-<!--            <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log in</a>-->
-<!--          </div>-->
-<!--        </div>-->
-<!--      </div>-->
-<!--    </div>-->
-<!--  </div>-->
+  <!--                  Open: "rotate-180", Closed: ""-->
+  <!--                &ndash;&gt;-->
+  <!--                <svg class="h-5 w-5 flex-none" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">-->
+  <!--                  <path fill-rule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" clip-rule="evenodd" />-->
+  <!--                </svg>-->
+  <!--              </button>-->
+  <!--              &lt;!&ndash; 'Product' sub-menu, show/hide based on menu state. &ndash;&gt;-->
+  <!--              <div class="mt-2 space-y-2" id="disclosure-1">-->
+  <!--                <a href="#" class="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50">Analytics</a>-->
+  <!--                <a href="#" class="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50">Engagement</a>-->
+  <!--                <a href="#" class="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50">Security</a>-->
+  <!--                <a href="#" class="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50">Integrations</a>-->
+  <!--                <a href="#" class="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50">Automations</a>-->
+  <!--                <a href="#" class="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50">Watch demo</a>-->
+  <!--                <a href="#" class="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50">Contact sales</a>-->
+  <!--              </div>-->
+  <!--            </div>-->
+  <!--            <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Features</a>-->
+  <!--            <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Marketplace</a>-->
+  <!--            <a href="#" class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Company</a>-->
+  <!--          </div>-->
+  <!--          <div class="py-6">-->
+  <!--            <a href="#" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50">Log in</a>-->
+  <!--          </div>-->
+  <!--        </div>-->
+  <!--      </div>-->
+  <!--    </div>-->
+  <!--  </div>-->
 </header>
 
 <ng-template #titleInput>
@@ -103,19 +108,28 @@
   </ng-container>
 </ng-template>
 
-<div #DeleteModal class="fixed hidden z-10 left-0 top-0 w-screen h-screen overflow-auto bg-black bg-opacity-40" (click)="DeleteModal.style.display = 'none'">
+<div #DeleteModal class="fixed hidden z-10 left-0 top-0 w-screen h-screen overflow-auto bg-black bg-opacity-40"
+     (click)="DeleteModal.style.display = 'none'">
   <div class="flex justify-center items-center w-full h-full">
     <ng-container *ngIf="boardStoreService.selectedBoard$ | async as board">
       <div class="bg-white p-5 max-w-xl w-3/5 rounded-xl relative" (click)="$event.stopPropagation()">
-        <button class="absolute top-3 right-3 text-xl font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition py-2 px-4 rounded cursor-pointer"
-                (click)="DeleteModal.style.display = 'none'"
-        >&times;</button>
+        <button
+          class="absolute top-3 right-3 text-xl font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition py-2 px-4 rounded cursor-pointer"
+          (click)="DeleteModal.style.display = 'none'"
+        >&times;
+        </button>
         <div class="header">
-          <h3>{{ 'Are you sure you want to delete "' + board.title + '" board?'}}</h3>
+          <h3>{{ 'Are you sure you want to delete "' + board.title + '" board?' }}</h3>
         </div>
         <div class="flex items-center justify-center gap-3.5 mt-3">
-          <button class="text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition py-3 px-6 rounded cursor-pointer" (click)="removeBoard(board.id); DeleteModal.style.display = 'none'">Yes</button>
-          <button class="text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition py-3 px-6 rounded cursor-pointer" (click)="DeleteModal.style.display = 'none'">No</button>
+          <button
+            class="text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition py-3 px-6 rounded cursor-pointer"
+            (click)="removeBoard(board.id); DeleteModal.style.display = 'none'">Yes
+          </button>
+          <button
+            class="text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition py-3 px-6 rounded cursor-pointer"
+            (click)="DeleteModal.style.display = 'none'">No
+          </button>
         </div>
       </div>
     </ng-container>

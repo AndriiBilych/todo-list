@@ -1,21 +1,24 @@
-import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { BoardStoreService } from '../../services/board-store.service';
 import { RoutingService } from '../../services/routing.service';
 
 @Component({
   selector: 'app-control-panel',
-  templateUrl: './control-panel.component.html',
+  templateUrl: './control-panel.component.html'
 })
 export class ControlPanelComponent {
-  #isChangingName = false;
-
   @ViewChild('DeleteModal') confirmation: ElementRef;
+  #isChangingName = false;
 
   constructor(
     public readonly boardStoreService: BoardStoreService,
-    public readonly routingService: RoutingService,
+    public readonly routingService: RoutingService
   ) {
     this.#isChangingName = false;
+  }
+
+  get isChangingName(): boolean {
+    return this.#isChangingName;
   }
 
   removeBoard(id: string): void {
@@ -25,9 +28,5 @@ export class ControlPanelComponent {
 
   toggleIsChangingName(force?: boolean): void {
     this.#isChangingName = force ?? !this.#isChangingName;
-  }
-
-  get isChangingName(): boolean {
-    return this.#isChangingName;
   }
 }
