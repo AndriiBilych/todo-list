@@ -10,6 +10,7 @@ import { ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { isNotNullOrUndefined } from 'codelyzer/util/isNotNullOrUndefined';
 import { ReactiveComponent } from '../../tools/reactive';
+import { RoutingService } from '../../services/routing.service';
 
 @Component({
   selector: 'app-board',
@@ -21,6 +22,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   constructor(
     private readonly boardStoreService: BoardStoreService,
     private readonly activatedRoute: ActivatedRoute,
+    private readonly routingService: RoutingService,
   ) {
     super();
     this.isAddingList = false;
@@ -234,11 +236,10 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   }
 
   ngOnInit(): void {
-    combineLatest([this.activatedRoute.params, this.boardStoreService.allBoards$]).pipe(this.takeUntil()).subscribe(([{id}, boards]) => {
+    combineLatest([this.activatedRoute.params, this.boardStoreService.boards$.pipe(filter(isNotNullOrUndefined))]).pipe(this.takeUntil()).subscribe(([{id}, boards]) => {
       const board = boards.find(({id: boardId}) => boardId === id);
       if (board === undefined) {
-        // TODO: route to board not found
-        throw new Error('Board not found');
+        this.routingService.routeToNotFound();
       }
       this.boardStoreService.selectBoard(board);
     });

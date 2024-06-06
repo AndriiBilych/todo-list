@@ -4,7 +4,7 @@
       <div class="flex lg:flex-1 lg:gap-x-1 h-full">
         <ng-container *ngIf="obs.board">
           <a (click)="toggleIsChangingName()" *ngIf="!isChangingName; else titleInput"
-            class="flex items-center text-sm font-semibold leading-6 h-full hover:bg-blue-100 px-4 rounded cursor-pointer"
+            class="flex items-center text-sm font-semibold leading-6 h-full hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer"
           >
             {{ obs.board.title }}
             <svg fill="none"
@@ -14,8 +14,8 @@
               <path fill="currentColor" d="M290.74 93.24l128.02 128.02-277.99 277.99-114.14 12.6C11.35 513.54-1.56 500.62.14 485.34l12.7-114.22 277.9-277.88zm207.2-19.06l-60.11-60.11c-18.75-18.75-49.16-18.75-67.91 0l-56.55 56.55 128.02 128.02 56.55-56.55c18.75-18.76 18.75-49.16 0-67.91z"></path>
             </svg>
           </a>
-          <a (click)="confirmationRef.style.display = 'block'"
-            class="flex items-center text-sm font-semibold leading-6 h-full hover:bg-blue-100 px-4 rounded cursor-pointer"
+          <a (click)="DeleteModal.style.display = 'block'"
+            class="flex items-center text-sm font-semibold leading-6 h-full hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer"
           >Delete board</a>
         </ng-container>
       </div>
@@ -28,11 +28,11 @@
 <!--        </button>-->
 <!--      </div>-->
       <div class="hidden lg:flex h-full">
-        <a routerLink="home" class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 px-4 rounded cursor-pointer">Boards</a>
+        <a routerLink="/home" class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer">Boards</a>
       </div>
       <div class="hidden lg:flex lg:flex-1 lg:gap-x-1 lg:justify-end h-full">
-        <a class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 px-4 rounded cursor-pointer">Dark moode</a>
-        <a class="flex items-center justify-center text-sm font-semibold leading-6 hover:bg-blue-100 px-4 rounded cursor-pointer">
+        <a class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer">Dark moode</a>
+        <a class="flex items-center justify-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer">
           <app-guide></app-guide>
         </a>
       </div>
@@ -95,22 +95,29 @@
 </header>
 
 <ng-template #titleInput>
-  <app-input-form
-    (textSubmissionAction)="toggleIsChangingName(); selectedBoard.title = $event.text.length > 0 ? $event.text : selectedBoard.title"
-    [textToShow]="selectedBoard.title"
-    [targetClass]="'left-button'"
-  ></app-input-form>
+  <ng-container *ngIf="boardStoreService.selectedBoard$ | async as board">
+    <app-input-form
+      (textSubmissionAction)="toggleIsChangingName(); board.title = $event.text.length > 0 ? $event.text : board.title"
+      [textToShow]="board.title"
+    ></app-input-form>
+  </ng-container>
 </ng-template>
 
-<div #confirmationRef class="modal">
-  <div class="modal-content">
-    <button class="close" (click)="confirmationRef.style.display = 'none'">&times;</button>
-    <div class="header">
-      <h3>Are you sure you want to delete "{{selectedBoard?.title}}" board?</h3>
-    </div>
-    <div class="choice-container">
-      <button class="choice" (click)="removeBoard(selectedBoard.id); confirmationRef.style.display = 'none'">Yes</button>
-      <button class="choice" (click)="confirmationRef.style.display = 'none'">No</button>
-    </div>
+<div #DeleteModal class="fixed hidden z-10 left-0 top-0 w-screen h-screen overflow-auto bg-black bg-opacity-40" (click)="DeleteModal.style.display = 'none'">
+  <div class="flex justify-center items-center w-full h-full">
+    <ng-container *ngIf="boardStoreService.selectedBoard$ | async as board">
+      <div class="bg-white p-5 max-w-xl w-3/5 rounded-xl relative" (click)="$event.stopPropagation()">
+        <button class="absolute top-3 right-3 text-xl font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition py-2 px-4 rounded cursor-pointer"
+                (click)="DeleteModal.style.display = 'none'"
+        >&times;</button>
+        <div class="header">
+          <h3>{{ 'Are you sure you want to delete "' + board.title + '" board?'}}</h3>
+        </div>
+        <div class="flex items-center justify-center gap-3.5 mt-3">
+          <button class="text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition py-3 px-6 rounded cursor-pointer" (click)="removeBoard(board.id); DeleteModal.style.display = 'none'">Yes</button>
+          <button class="text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition py-3 px-6 rounded cursor-pointer" (click)="DeleteModal.style.display = 'none'">No</button>
+        </div>
+      </div>
+    </ng-container>
   </div>
 </div>

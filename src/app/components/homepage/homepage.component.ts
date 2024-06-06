@@ -8,8 +8,7 @@ import { isNotNullOrUndefined } from 'codelyzer/util/isNotNullOrUndefined';
   selector: 'app-homepage',
   template: `
     <div class="pt-14">
-      <app-homepage-section [section$]="exampleSection$"></app-homepage-section>
-      <app-homepage-section [section$]="userSection$"></app-homepage-section>
+      <app-homepage-section [section$]="section$"></app-homepage-section>
     </div>
   `,
 })
@@ -17,23 +16,13 @@ export class HomepageComponent {
   @Input() loadBoard: (id: string) => void;
   @Input() createBoard: () => void;
 
-  exampleSection$ = this.boardStoreService.exampleBoards$.pipe(
+
+  section$ = this.boardStoreService.boards$.pipe(
     filter((boards: BoardModel[] | null) => isNotNullOrUndefined(boards)),
     map((boards) => ({
       id: '0',
-      title: 'Example boards',
-      description: 'Created by developer',
-      additionAllowed: false,
-      boards
-    }))
-  );
-
-  userSection$ = this.boardStoreService.userBoards$.pipe(
-    filter((boards: BoardModel[] | null) => isNotNullOrUndefined(boards)),
-    map((boards) => ({
-      id: '1',
-      title: 'Your boards',
-      description: 'Created by you',
+      title: 'All boards',
+      description: 'Explore or create your own board',
       additionAllowed: true,
       boards
     }))

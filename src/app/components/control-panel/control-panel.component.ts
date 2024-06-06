@@ -1,37 +1,26 @@
-import { Component, ElementRef, HostListener, OnInit, ViewChild } from '@angular/core';
-import { BoardModel } from '../../models/board.model';
+import { Component, ElementRef, HostListener, ViewChild } from '@angular/core';
 import { BoardStoreService } from '../../services/board-store.service';
+import { RoutingService } from '../../services/routing.service';
 
 @Component({
   selector: 'app-control-panel',
   templateUrl: './control-panel.component.html',
-  styleUrls: ['./control-panel.component.scss']
 })
-export class ControlPanelComponent implements OnInit {
+export class ControlPanelComponent {
   #isChangingName = false;
-  selectedBoard: BoardModel;
 
-  @ViewChild('confirmationRef') confirmation: ElementRef;
-
-  @HostListener('document:mousedown', ['$event.target'])
-  onCloseModalClick(target): void {
-    if (target.classList.contains('modal')) {
-      this.confirmation.nativeElement.style.display = 'none';
-    }
-  }
+  @ViewChild('DeleteModal') confirmation: ElementRef;
 
   constructor(
     public readonly boardStoreService: BoardStoreService,
+    public readonly routingService: RoutingService,
   ) {
     this.#isChangingName = false;
-    this.selectedBoard = null;
-  }
-
-  ngOnInit(): void {
   }
 
   removeBoard(id: string): void {
-    // this.boardStoreService.setExampleBoards(this.boards);
+    this.boardStoreService.removeBoard(id);
+    this.routingService.routeToHomepage();
   }
 
   toggleIsChangingName(force?: boolean): void {

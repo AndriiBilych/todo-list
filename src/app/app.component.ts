@@ -21,8 +21,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.dataService.getExampleBoards$().pipe(take(1)).subscribe((boards: BoardModel[]) => {
-      this.boardStoreService.setExampleBoards(boards ?? []);
+      this.boardStoreService.setBoards(boards ?? []);
     });
-    this.boardStoreService.setUserBoards([]);
   }
 }

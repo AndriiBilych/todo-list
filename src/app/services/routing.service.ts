@@ -17,4 +17,8 @@ export class RoutingService {
   routeToHomepage(): void {
     this.router.navigate(['home']);
   }
+
+  routeToNotFound(): void {
+    this.router.navigate(['not-found']);
+  }
 }

@@ -17,7 +17,8 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomepageComponent } from './components/homepage/homepage.component';
 import { HomepageSectionComponent } from './components/homepage-section/homepage-section.component';
 import { HomepageListItemComponent } from './components/homepage-list-item/homepage-list-item.component';
-import { HomepageListButtonComponent } from "./components/homepage-list-button/homepage-list-button.component";
+import { HomepageListButtonComponent } from './components/homepage-list-button/homepage-list-button.component';
+import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { HomepageListButtonComponent } from "./components/homepage-list-button/h
     HomepageComponent,
     HomepageSectionComponent,
     HomepageListItemComponent,
-    HomepageListButtonComponent
+    HomepageListButtonComponent,
+    NotFoundPageComponent
   ],
   imports: [
     BrowserModule,
