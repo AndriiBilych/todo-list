@@ -4,12 +4,36 @@
 
 //Tailwind custom classes
 @layer utilities {
-  .ellipsis-box {
+  .ellipsis-base {
     display: -webkit-box;
-    -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
 
     @apply overflow-ellipsis overflow-hidden
+  }
+
+  .ellipsis-box-1 {
+    -webkit-line-clamp: 1;
+    @apply ellipsis-base
+  }
+
+  .ellipsis-box-2 {
+    -webkit-line-clamp: 2;
+    @apply ellipsis-base
+  }
+
+  .ellipsis-box-3 {
+    -webkit-line-clamp: 3;
+    @apply ellipsis-base
+  }
+
+  .ellipsis-box-4 {
+    -webkit-line-clamp: 4;
+    @apply ellipsis-base
+  }
+
+  .ellipsis-box-5 {
+    -webkit-line-clamp: 5;
+    @apply ellipsis-base
   }
 }
 

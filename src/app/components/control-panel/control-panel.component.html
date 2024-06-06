@@ -3,41 +3,34 @@
     <ng-container *ngIf="{board: boardStoreService.selectedBoard$ | async} as obs">
       <div class="flex lg:flex-1 lg:gap-x-1 h-full">
         <ng-container *ngIf="obs.board">
-          <a (click)="toggleIsChangingName()" *ngIf="!isChangingName; else titleInput"
-             class="flex items-center text-sm font-semibold leading-6 h-full hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer"
-          >
-            {{ obs.board.title }}
-            <svg fill="none"
-                 xmlns="http://www.w3.org/2000/svg"
-                 stroke-width="1.5" stroke="currentColor"
-                 viewBox="0 0 512 512" class="h-3 ml-2">
-              <path fill="currentColor"
-                    d="M290.74 93.24l128.02 128.02-277.99 277.99-114.14 12.6C11.35 513.54-1.56 500.62.14 485.34l12.7-114.22 277.9-277.88zm207.2-19.06l-60.11-60.11c-18.75-18.75-49.16-18.75-67.91 0l-56.55 56.55 128.02 128.02 56.55-56.55c18.75-18.76 18.75-49.16 0-67.91z"></path>
-            </svg>
-          </a>
+          <div class="flex items-center text-sm font-semibold leading-6 h-full hover:bg-blue-100 hover:text-gray-500
+             transition px-4 rounded cursor-pointer w-200">
+            <span (click)="toggleIsChangingName()" *ngIf="!isChangingName; else titleInput"
+               class="ellipsis-box-1"
+            >
+              {{ obs.board.title }}
+            </span>
+          </div>
           <a (click)="DeleteModal.style.display = 'block'"
-             class="flex items-center text-sm font-semibold leading-6 h-full hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer"
+             class="flex items-center text-sm font-semibold leading-6 h-full hover:bg-blue-100 hover:text-gray-500
+             transition px-4 rounded cursor-pointer"
           >Delete board</a>
         </ng-container>
       </div>
-      <!--      <div class="flex lg:hidden">-->
-      <!--        <button type="button" class="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700">-->
-      <!--          <span class="sr-only">Open main menu</span>-->
-      <!--          <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" aria-hidden="true">-->
-      <!--            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />-->
-      <!--          </svg>-->
-      <!--        </button>-->
-      <!--      </div>-->
       <div class="hidden lg:flex h-full">
         <a routerLink="/home"
-           class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer">Boards</a>
+           class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition
+           px-4 rounded cursor-pointer"
+        >Boards</a>
       </div>
       <div class="hidden lg:flex lg:flex-1 lg:gap-x-1 lg:justify-end h-full">
         <a
-          class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer">Dark
-          moode</a>
+          class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition
+          px-4 rounded cursor-pointer"
+        >Dark mode</a>
         <a
-          class="flex items-center justify-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition px-4 rounded cursor-pointer">
+          class="flex items-center justify-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500
+          transition px-4 rounded cursor-pointer">
           <app-guide></app-guide>
         </a>
       </div>

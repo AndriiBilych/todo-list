@@ -11,7 +11,7 @@ import { RoutingService } from '../../services/routing.service';
       <span
         class="flex justify-center items-center font-medium text-lg leading-6 sm:col-span-2 group-hover:text-gray-500 text-gray-900 bg-blue-100 rounded-lg">{{ board.title }}</span>
       <span class="flex justify-center items-center sm:col-span-3">
-          <span class="mt-1 text-sm leading-6 text-gray-700 ellipsis-box">
+          <span class="mt-1 text-sm leading-6 text-gray-700 ellipsis-box-3">
             <ng-container *ngIf="board?.description?.length; else NoDescription">
               {{ board.description }}
             </ng-container>

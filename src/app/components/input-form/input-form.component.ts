@@ -1,73 +1,53 @@
 import {
   Component,
-  OnInit,
   EventEmitter,
   Output,
   ViewChild,
   ElementRef,
   AfterViewInit,
-  HostListener,
   Input,
-  OnDestroy
 } from '@angular/core';
 
 @Component({
   selector: 'app-input-form',
-  templateUrl: './input-form.component.html',
-  styleUrls: ['./input-form.component.scss']
+  template: `
+    <div class="h-full flex items-center">
+      <input #input
+             name="input"
+             class="rounded text-sm w-140"
+             type="text"
+             [(ngModel)]="textToShow"
+             (keyup.enter)="submit()"
+      >
+      <button #button (click)="submit()"
+              class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500
+              transition py-3.5 px-4 rounded cursor-pointer"
+      >
+        <svg role="img" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="h-3">
+          <path fill="currentColor"
+                d="M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z"></path>
+        </svg>
+      </button>
+    </div>
+  `,
+  styles: [`
+
+  `]
 })
-export class InputFormComponent implements OnInit, AfterViewInit, OnDestroy {
-
-  static inputForm: InputFormComponent = null;
-
+export class InputFormComponent implements AfterViewInit {
   @Output() textSubmissionAction = new EventEmitter();
   @Input() textToShow: string;
+  @Input() id = 'input-form';
   @Input() targetClass: string;
+
   @ViewChild('input') inputRef: ElementRef;
-  @ViewChild('button') buttonRef: ElementRef;
-
-  // @HostListener(`document:click`, ['$event.target'])
-  // clickedOut(targetElement: HTMLElement): void {
-  //   const openForms = this.elementRef.nativeElement.querySelectorAll('button.add_task');
-  //   if (!targetElement.classList.contains('add-task')
-  //     && !targetElement.classList.contains(this.targetClass)
-  //     && !targetElement.classList.contains('input-task')) {
-  //     if (openForms.length > 0) {
-  //       openForms.forEach(el => el.click());
-  //     }
-  //   }
-  // }
-
-  @HostListener('document:keydown.escape')
-  pressedEscape(): void {
-    this.buttonRef.nativeElement.click();
-  }
-
-  constructor(
-    private elementRef: ElementRef
-  ) {}
-
-  ngOnInit(): void {}
 
   ngAfterViewInit(): void {
-    // setTimeout makes the code inside asynchronous, which prevents "NG0100: Expression has changed after it was checked" error
-    setTimeout(() => {
-      if (InputFormComponent.inputForm !== null) {
-        InputFormComponent.inputForm.buttonRef.nativeElement.click();
-      }
-      InputFormComponent.inputForm = this;
-    });
     this.inputRef.nativeElement.focus();
   }
 
-  onEnterPressed(event): void {
-    if (event.key === 'Enter') {
-      this.textSubmissionAction.emit({ text: this.textToShow, keep: true });
-      this.textToShow = '';
-    }
-  }
-
-  ngOnDestroy(): void {
-    InputFormComponent.inputForm = null;
+  submit(): void {
+    this.textSubmissionAction.emit({ text: this.textToShow, keep: true });
+    this.textToShow = '';
   }
 }
