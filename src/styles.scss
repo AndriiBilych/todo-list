@@ -8,7 +8,7 @@
     display: -webkit-box;
     -webkit-box-orient: vertical;
 
-    @apply overflow-ellipsis overflow-hidden break-all
+      @apply overflow-ellipsis overflow-hidden break-words
   }
 
   .ellipsis-box-1 {
