@@ -4,7 +4,7 @@
       <div class="flex lg:flex-1 lg:gap-x-1 h-full">
         <ng-container *ngIf="obs.board">
           <div class="flex items-center text-sm font-semibold leading-6 h-full hover:bg-blue-100 hover:text-gray-500
-             transition px-4 rounded cursor-pointer w-200">
+             transition px-4 rounded cursor-pointer w-200" [title]="obs.board.title">
             <span (click)="toggleIsChangingName()" *ngIf="!isChangingName; else titleInput"
                class="ellipsis-box-1"
             >
@@ -13,26 +13,25 @@
           </div>
           <a (click)="DeleteModal.style.display = 'block'"
              class="flex items-center text-sm font-semibold leading-6 h-full hover:bg-blue-100 hover:text-gray-500
-             transition px-4 rounded cursor-pointer"
+             transition px-4 rounded cursor-pointer" title="Delete board"
           >Delete board</a>
         </ng-container>
       </div>
       <div class="hidden lg:flex h-full">
         <a routerLink="/home"
            class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition
-           px-4 rounded cursor-pointer"
+           px-4 rounded cursor-pointer" title="Boards"
         >Boards</a>
       </div>
       <div class="hidden lg:flex lg:flex-1 lg:gap-x-1 lg:justify-end h-full">
         <a
           class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition
-          px-4 rounded cursor-pointer"
+          px-4 rounded cursor-pointer" title="Dark mode"
         >Dark mode</a>
-        <a
+        <a (click)="AboutModal.style.display = 'block'"
           class="flex items-center justify-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500
-          transition px-4 rounded cursor-pointer">
-          <app-guide></app-guide>
-        </a>
+          transition px-4 rounded cursor-pointer" title="About"
+        >About</a>
       </div>
     </ng-container>
   </nav>
@@ -126,5 +125,53 @@
         </div>
       </div>
     </ng-container>
+  </div>
+</div>
+
+<div #AboutModal class="fixed hidden z-10 left-0 top-0 w-screen h-screen overflow-auto bg-black bg-opacity-40">
+  <div class="flex justify-center items-center w-full h-full">
+    <div class="bg-white p-5 max-w-xl w-3/5 rounded-xl relative">
+
+      <button class="absolute top-3 right-3 text-xl font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition py-2 px-4 rounded cursor-pointer"
+              (click)="AboutModal.style.display = 'none'"
+      >
+        &times;
+      </button>
+      <div class="flex justify-center font-semibold leading-6">
+        <h3>Description</h3>
+      </div>
+
+      <p class="mt-5">
+        <span class="mb-9">This website is a todo manager inspired by Trello.</span>
+        It resembles a frontend prototype of a board styled list of lists, there is no database or backend server.
+        Data is currently only stored locally and in session. Created with Angular 11. Feel free to browse provided
+        examples of boards or create your own.
+      </p>
+
+      <div class="mt-5">
+        <div class="flex justify-center font-semibold leading-6">
+          <h3>How to use</h3>
+        </div>
+        <div class="flex justify-center">
+          <ul>
+            <li>Left mouse to drag tasks or lists</li>
+            <li>Right click to edit tasks or list name</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="flex justify-center mt-5">
+        <div class="author">
+          <div class="flex justify-center">Made by<strong>&nbsp;Andrii Bilych</strong></div>
+          <div class="flex justify-center gap-3">
+            <a class="text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition py-3 px-6 rounded cursor-pointer"
+              href="https://www.linkedin.com/in/andrii-bilych/" target="_blank">LinkedIn</a>
+            <a class="text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition py-3 px-6 rounded cursor-pointer"
+              href="https://github.com/AndriiBilych" target="_blank">Github</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>

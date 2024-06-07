@@ -11,7 +11,6 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SimplebarAngularModule } from 'simplebar-angular';
 import { InputFormComponent } from './components/input-form/input-form.component';
 import { TaskComponent } from './components/task/task.component';
-import { GuideComponent } from './components/guide/guide.component';
 import { ColorPickerComponent } from './components/color-picker/color-picker.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HomepageComponent } from './components/homepage/homepage.component';
@@ -28,7 +27,6 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
     ControlPanelComponent,
     InputFormComponent,
     TaskComponent,
-    GuideComponent,
     ColorPickerComponent,
     HomepageComponent,
     HomepageSectionComponent,

@@ -1,7 +1,7 @@
 <div class="header" [id]="list.id">
   <div class="title-container">
     <ng-container *ngIf="!isChangingName; else titleInput">
-      <div #titleRef class="title">{{list.title}}</div>
+      <div #titleRef class="title ellipsis-box-1" [title]="list.title">{{list.title}}</div>
       <button (click)="closeListAction.emit()" class="remove-list">&times;</button>
     </ng-container>
     <ng-template #titleInput>

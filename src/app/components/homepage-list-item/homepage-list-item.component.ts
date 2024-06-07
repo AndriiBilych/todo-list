@@ -10,12 +10,13 @@ import { RoutingService } from '../../services/routing.service';
       (click)="routingService.routeToEditBoard(board.id)">
       <span
         class="flex justify-center items-center sm:col-span-2 bg-blue-100 rounded-lg">
-        <span class="font-medium text-lg leading-6 group-hover:text-gray-500 text-gray-900 ellipsis-box-2 px-4">
+        <span [title]="board.title"
+              class="font-medium text-lg leading-6 group-hover:text-gray-500 text-gray-900 ellipsis-box-2 px-4">
           {{ board.title }}
         </span>
       </span>
       <span class="flex justify-center items-center sm:col-span-3">
-          <span class="mt-1 text-sm leading-6 text-gray-700 ellipsis-box-3">
+          <span class="mt-1 text-sm leading-6 text-gray-700 ellipsis-box-3" [title]="board.description">
             <ng-container *ngIf="board?.description?.length; else NoDescription">
               {{ board.description }}
             </ng-container>
