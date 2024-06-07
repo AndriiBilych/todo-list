@@ -14,7 +14,7 @@ import { TaskModel } from '../../models/task.model';
   template: `
     <div class="mt-2 mx-3.5 rounded cursor-pointer" *ngIf="task" [id]="task.id"
          [class.task-container-selected]="task.selected">
-      <div #Task class="flex justify-between rounded break-words bg-blue-100 h-auto p-1 group"
+      <div #Task class="task flex justify-between rounded break-words bg-blue-100 h-auto p-1 group border-2 border-blue-100 hover:border-black"
            [id]="task.id" *ngIf="!task?.selected">
         <ng-container *ngIf="!isModifyingTask; else textInput">
           <div class="pl-2.5">{{task.content}}</div>
