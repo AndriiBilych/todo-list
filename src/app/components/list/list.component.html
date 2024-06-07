@@ -1,20 +1,22 @@
-<div class="header" [id]="list.id">
-  <div class="title-container">
+<div class="mt-2 mx-1.5 bg-gray-100 rounded-t-xl group"
+     [id]="list.id">
+  <div class="flex justify-between px-5 py-2.5">
     <ng-container *ngIf="!isChangingName; else titleInput">
       <div #titleRef class="title ellipsis-box-1" [title]="list.title">{{list.title}}</div>
-      <button (click)="closeListAction.emit()" class="remove-list">&times;</button>
+      <button (click)="closeListAction.emit()"
+              class="remove-list-button hidden border-none mb-auto"
+      >&times;</button>
     </ng-container>
     <ng-template #titleInput>
       <app-input-form
         (textSubmissionAction)="isChangingName = false; list.title = $event.text.length > 0 ? $event.text : list.title"
         [textToShow]="list.title"
-        [targetClass]="'title'"
       ></app-input-form>
     </ng-template>
   </div>
 </div>
 
-<div class="list" [id]="list.id">
+<div class="list bg-gray-100 my-0 mx-1.5" [id]="list.id">
   <ngx-simplebar [options]="options">
       <app-task
         *ngFor="let task of list.tasks; index as i"
@@ -24,17 +26,18 @@
   </ngx-simplebar>
 </div>
 
-<div class="footer" [id]="list.id">
-  <div class="button-container">
+<div class="bg-gray-100 px-4 py-0 mx-1.5 my-0 rounded-b-xl" [id]="list.id">
+  <div class="mb-2 py-2.5 px-1.5">
     <ng-container *ngIf="!isAddingTask; else taskInput">
-      <button (click)="isAddingTask = !isAddingTask" class="open-form-to-add-task">+ Add another task</button>
+      <button (click)="isAddingTask = !isAddingTask"
+              class="border-none"
+      >+ Add another task</button>
     </ng-container>
     <ng-template #taskInput>
       <app-input-form
         (textSubmissionAction)="pushToArray($event.text.length > 0 && $event.text !== '\n' ? $event.text : 'New Task');
         isAddingTask = $event.keep"
         [textToShow]="''"
-        [targetClass]="'open-form-to-add-task'"
       ></app-input-form>
     </ng-template>
   </div>

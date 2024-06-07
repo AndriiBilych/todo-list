@@ -26,7 +26,6 @@ import { TaskModel } from '../../models/task.model';
           <app-input-form
             (textSubmissionAction)="toggle($event)"
             [textToShow]="task.content"
-            [targetClass]="'pl-2.5'"
           ></app-input-form>
         </ng-template>
       </div>

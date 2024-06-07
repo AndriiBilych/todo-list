@@ -1,4 +1,4 @@
-import {Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import { Component, ElementRef, HostListener, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { BoardModel } from '../../models/board.model';
 import { TaskBoundingInfoModel } from '../../models/task-bounding-info.model';
 import { ListModel } from '../../models/list.model';
@@ -15,7 +15,20 @@ import { RoutingService } from '../../services/routing.service';
 @Component({
   selector: 'app-board',
   templateUrl: './board.component.html',
-  styleUrls: ['./board.component.scss']
+  styles: [`
+    .board {
+      height: calc(100vh - 3.5rem);
+    }
+    .list-placeholder {
+      min-width: 230px;
+    }
+    .list-container {
+      min-width: 230px;
+    }
+    ngx-simplebar {
+      height: inherit;
+    }
+  `]
 })
 export class BoardComponent extends ReactiveComponent implements OnInit, OnDestroy {
 
@@ -56,7 +69,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   isDraggingList = false;
   isDraggingBoard = false;
 
-  @ViewChild('fakeTask') fakeTask: ElementRef;
+  @ViewChild('FakeTask') fakeTask: ElementRef;
   @ViewChild('board') boardRef: ElementRef;
   scrollContainerRef: any;
   mouseStartingX: number;

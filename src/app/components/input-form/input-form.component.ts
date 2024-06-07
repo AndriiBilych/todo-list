@@ -38,7 +38,6 @@ export class InputFormComponent implements AfterViewInit {
   @Output() textSubmissionAction = new EventEmitter();
   @Input() textToShow: string;
   @Input() id = 'input-form';
-  @Input() targetClass: string;
 
   @ViewChild('input') inputRef: ElementRef;
 

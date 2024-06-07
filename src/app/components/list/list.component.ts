@@ -5,7 +5,19 @@ import { TaskModel } from '../../models/task.model';
 @Component({
   selector: 'app-list',
   templateUrl: './list.component.html',
-  styleUrls: ['./list.component.scss']
+  styles: [`
+    .list {
+      max-height: calc(75vh + 5px);
+    }
+
+    ngx-simplebar {
+      max-height: inherit;
+    }
+
+    .group:hover .remove-list-button {
+      display: block;
+    }
+  `]
 })
 export class ListComponent {
   options = { autoHide: false};

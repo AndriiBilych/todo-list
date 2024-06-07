@@ -11,21 +11,24 @@
       </div>
       <div class="add-list-container">
         <ng-container *ngIf="!isAddingList; else titleInput">
-            <button (click)="isAddingList = !isAddingList" class="add-list">+ Add another list</button>
+            <button (click)="isAddingList = !isAddingList"
+                    class="border-none bg-gray-100 my-2 mx-1.5 py-1.5 px-3 rounded w-max"
+            >+ Add another list</button>
         </ng-container>
         <ng-template #titleInput>
           <app-input-form
             (textSubmissionAction)="isAddingList = !isAddingList;
             pushToArray($event.text.length > 0 && $event.text !== '\n' ? $event.text : 'New List');
             isAddingList = $event.keep"
-            [targetClass]="'add-list'"
           ></app-input-form>
         </ng-template>
       </div>
     </ngx-simplebar>
   </div>
-  <div #fakeTask class="task" *ngIf="isDraggingTask">
-    <div class="task-title">{{selectedTaskData.content}}</div>
+  <div #FakeTask
+       *ngIf="isDraggingTask"
+       class="task flex justify-between rounded break-words bg-blue-100 h-auto p-1">
+    <div class="pl-2.5">{{selectedTaskData.content}}</div>
   </div>
 </ng-container>
 
