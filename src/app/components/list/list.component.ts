@@ -1,6 +1,15 @@
-import { Component, Input, Output, EventEmitter, HostListener, ViewChild, ElementRef } from '@angular/core';
+import {
+  Component,
+  Input,
+  Output,
+  EventEmitter,
+  ViewChild,
+  ElementRef,
+  AfterViewInit
+} from '@angular/core';
 import { ListModel } from '../../models/list.model';
 import { TaskModel } from '../../models/task.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-list',
@@ -19,26 +28,33 @@ import { TaskModel } from '../../models/task.model';
     }
   `]
 })
-export class ListComponent {
+export class ListComponent implements AfterViewInit {
   options = { autoHide: false};
   isAddingTask: boolean;
   isChangingName: boolean;
 
   @Input() list: ListModel;
   @Output() closeListAction = new EventEmitter();
-  @ViewChild('titleRef') titleRef: ElementRef;
+  @ViewChild('TitleRef') titleRef: ElementRef;
 
-  @HostListener('contextmenu', ['$event'])
-  onRightClick(event): void {
-    event.preventDefault();
-    if (event.target.classList.contains('header') || event.target.classList.contains('title') || event.target.classList.contains('title-container')) {
-      this.isChangingName = !this.isChangingName;
-    }
-  }
-
-  constructor() {
+  constructor(
+    public readonly elementRef: ElementRef,
+  ) {
     this.isAddingTask = false;
     this.isChangingName = false;
+  }
+
+  ngAfterViewInit(): void {
+    if (!this.titleRef?.nativeElement) {
+      throw new Error('Task ref not found');
+    }
+
+    this.titleRef.nativeElement.addEventListener('contextmenu', this.onRightClick.bind(this));
+  }
+
+  onRightClick(event: Event): void {
+    event.preventDefault();
+    this.isChangingName = !this.isChangingName;
   }
 
   pushToArray(text: string): void {
