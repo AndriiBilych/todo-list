@@ -98,6 +98,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, AfterVi
       (list: QueryList<ListComponent>) => {
         const currentLength = list.length;
         const listsHtmlElems: HTMLElement[] = list.toArray().map(({ elementRef }) => elementRef.nativeElement);
+        console.log(listsHtmlElems);
 
         this.calculationService.calculateBoundingInfo(listsHtmlElems);
         this.handleListChanges(currentLength, this.previousListsLength, listsHtmlElems);
@@ -108,6 +109,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, AfterVi
   }
 
   handleListChanges(currentLength: number, previousLength: number, lists: HTMLElement[]): void {
+    console.log(previousLength);
     if (previousLength === 0) {
       console.log('[list changes init all lists]');
       lists.forEach((element: HTMLElement) => this.initListEventListeners(element));
