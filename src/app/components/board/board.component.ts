@@ -172,11 +172,11 @@ export class BoardComponent extends ReactiveComponent implements OnInit, AfterVi
     //     }
   }
 
-  listMouseUp(element: HTMLElement, event: MouseEvent, controller: AbortController): void {
+  listMouseUp(element: HTMLElement, controller: AbortController, event: MouseEvent): void {
     console.log('[list mouse up]', element, event);
     element.onmousemove = null;
     // element.removeEventListener(EEvenType.mousemove, this.listMouseMove);
-    element.removeEventListener(EEvenType.mouseup, this.listMouseUp.bind(this, element));
+    // element.removeEventListener(EEvenType.mouseup, this.listMouseUp.bind(this, element));
     controller.abort();
     // this.isDraggingList = false;
     //

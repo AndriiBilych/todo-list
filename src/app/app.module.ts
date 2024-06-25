@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HttpClientModule } from '@angular/common/http';
+import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -20,31 +20,24 @@ import { HomepageListItemComponent } from './components/homepage-list-item/homep
 import { HomepageListButtonComponent } from './components/homepage-list-button/homepage-list-button.component';
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 
-@NgModule({
-  declarations: [
-    AppComponent,
-    BoardComponent,
-    ListComponent,
-    ControlPanelComponent,
-    InputFormComponent,
-    TaskComponent,
-    ColorPickerComponent,
-    HomepageComponent,
-    HomepageSectionComponent,
-    HomepageListItemComponent,
-    HomepageListButtonComponent,
-    NotFoundPageComponent
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    HttpClientModule,
-    FormsModule,
-    ReactiveFormsModule,
-    SimplebarAngularModule,
-    BrowserAnimationsModule,
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
-})
+@NgModule({ declarations: [
+        AppComponent,
+        BoardComponent,
+        ListComponent,
+        ControlPanelComponent,
+        InputFormComponent,
+        TaskComponent,
+        ColorPickerComponent,
+        HomepageComponent,
+        HomepageSectionComponent,
+        HomepageListItemComponent,
+        HomepageListButtonComponent,
+        NotFoundPageComponent
+    ],
+    bootstrap: [AppComponent], imports: [BrowserModule,
+        AppRoutingModule,
+        FormsModule,
+        ReactiveFormsModule,
+        SimplebarAngularModule,
+        BrowserAnimationsModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }

@@ -20,7 +20,7 @@ export class CalculationService {
           boundingRect.y,
           boundingRect.bottom,
           boundingRect.right,
-          list.getAttribute('id')
+          list.getAttribute('id') ?? ''
         )
       );
 

@@ -9,8 +9,8 @@ export class TaskModel implements IDeserialize<ITask>, ITask {
 
   constructor(text?: string, orderIndex?: number) {
     this.id = '';
-    this.content = text;
-    this.order = orderIndex;
+    this.content = text ?? '';
+    this.order = orderIndex ?? 0;
     this.selected = false;
   }
 

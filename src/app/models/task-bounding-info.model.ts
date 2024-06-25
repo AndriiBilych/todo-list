@@ -5,11 +5,11 @@ export class TaskBoundingInfoModel {
   right: number;
   id: string;
 
-  constructor(x, y, bottom, right, id) {
+  constructor(x: number, y: number, bottom: number, right: number, id: string | null) {
     this.x = x;
     this.y = y;
     this.bottom = bottom;
     this.right = right;
-    this.id = id;
+    this.id = id ?? '';
   }
 }
