@@ -1,13 +1,14 @@
 import {
-  AfterViewInit,
+  ChangeDetectorRef,
   Component,
   ElementRef,
   HostListener,
+  inject,
   OnDestroy,
   OnInit,
   QueryList,
   ViewChild,
-  ViewChildren, ViewContainerRef
+  ViewChildren
 } from '@angular/core';
 import { BoardModel } from '../../models/board.model';
 import { TaskBoundingInfoModel } from '../../models/task-bounding-info.model';
@@ -45,7 +46,7 @@ import { EEvenType } from '../../enums/even-type.enum';
     }
   `]
 })
-export class BoardComponent extends ReactiveComponent implements OnInit, AfterViewInit, OnDestroy {
+export class BoardComponent extends ReactiveComponent implements OnInit, OnDestroy {
 
   options = { autoHide: false };
   selectedBoard: BoardModel;
@@ -71,10 +72,6 @@ export class BoardComponent extends ReactiveComponent implements OnInit, AfterVi
 
   @ViewChildren(ListComponent)
   lists: QueryList<ListComponent>;
-  @ViewChildren(ListComponent, {read: ElementRef})
-  listsElementRef: QueryList<ListComponent>;
-  @ViewChildren(ListComponent, {read: ViewContainerRef})
-  listsViewContainerRef: QueryList<ListComponent>;
 
   constructor(
     private readonly boardStoreService: BoardStoreService,
@@ -89,43 +86,67 @@ export class BoardComponent extends ReactiveComponent implements OnInit, AfterVi
     this.scrollContainerRef = null;
   }
 
-  ngAfterViewInit(): void {
-    this.initListChangesHandler();
+  ngOnInit(): void {
+    combineLatest([this.activatedRoute.params, this.boardStoreService.boards$.pipe(filter(isNotNullOrUndefined))]).pipe(this.takeUntil()).subscribe(([{ id }, boards]) => {
+      const board = boards.find(({ id: boardId }) => boardId === id);
+      if (board === undefined) {
+        this.routingService.routeToNotFound();
+      }
+      this.boardStoreService.selectBoard(board);
+    });
+
+    this.boardStoreService.selectedBoard$.pipe(
+      filter((board: BoardModel) => isNotNullOrUndefined(board)),
+      this.takeUntil()
+    ).subscribe((board: BoardModel) => {
+      this.selectedBoard = board;
+      const interval = setInterval(() => {
+        // console.log('initListHandlers', this.lists.toArray());
+        const length = this.lists.toArray().length;
+        this.handleListChanges(length, this.lists);
+
+        if (length === this.selectedBoard.lists.length) {
+          clearInterval(interval);
+        }
+      }, 50);
+    });
+  }
+
+  ngOnDestroy(): void {
+    super.ngOnDestroy();
+    this.boardStoreService.selectBoard(null);
   }
 
   initListChangesHandler(): void {
-    this.lists.changes.pipe(this.takeUntil()).subscribe(
-      (list: QueryList<ListComponent>) => {
-        const currentLength = list.length;
-        const listsHtmlElems: HTMLElement[] = list.toArray().map(({ elementRef }) => elementRef.nativeElement);
-        console.log(listsHtmlElems);
-
-        this.calculationService.calculateBoundingInfo(listsHtmlElems);
-        this.handleListChanges(currentLength, this.previousListsLength, listsHtmlElems);
-
-        this.previousListsLength = currentLength;
-      }
-    );
+    // this.lists.changes.pipe(this.takeUntil()).subscribe(
+    //   (list: QueryList<ListComponent>) => {
+    //     this.handleListChanges(list.length, this.previousListsLength, list);
+    //   }
+    // );
   }
 
-  handleListChanges(currentLength: number, previousLength: number, lists: HTMLElement[]): void {
-    console.log(previousLength);
+  handleListChanges(currentLength: number, list: QueryList<ListComponent>): void {
+    const previousLength = this.previousListsLength;
+    this.previousListsLength = currentLength;
+    const listsHtmlElems: HTMLElement[] = list.toArray().map(({ elementRef }) => elementRef.nativeElement);
+    this.calculationService.calculateBoundingInfo(listsHtmlElems);
+
     if (previousLength === 0) {
       console.log('[list changes init all lists]');
-      lists.forEach((element: HTMLElement) => this.initListEventListeners(element));
-      this.calculationService.calculateBoundingInfo(lists);
+      listsHtmlElems.forEach((element: HTMLElement) => this.initListEventListeners(element));
+      this.calculationService.calculateBoundingInfo(listsHtmlElems);
       return;
     }
 
     if (currentLength <= previousLength) {
       console.log('[list changes calculate new bounding info]');
-      this.calculationService.calculateBoundingInfo(lists);
+      this.calculationService.calculateBoundingInfo(listsHtmlElems);
       return;
     }
 
     if (currentLength > previousLength) {
       console.log('[list changes init last list]');
-      this.initListEventListeners(lists[lists.length - 1]);
+      this.initListEventListeners(listsHtmlElems[listsHtmlElems.length - 1]);
       return;
     }
   }
@@ -190,7 +211,6 @@ export class BoardComponent extends ReactiveComponent implements OnInit, AfterVi
     //
     //     this.targetList = null;
   }
-
   // taskMouseDown(event: MouseEvent): void {
   //   this.isDraggingTask = true;
   //   this.targetTask = targetElement;
@@ -290,6 +310,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, AfterVi
   //
   //   // calculate board bounding info
   //   this.calculateBoundingInfo();
+
   // }
 
   @HostListener('document:wheel', ['$event'])
@@ -303,27 +324,6 @@ export class BoardComponent extends ReactiveComponent implements OnInit, AfterVi
     if (target && target.classList === this.scrollContainerRef.classList) {
       this.scrollContainerRef.scrollLeft += event.deltaY / -1.6;
     }
-  }
-
-  ngOnInit(): void {
-    combineLatest([this.activatedRoute.params, this.boardStoreService.boards$.pipe(filter(isNotNullOrUndefined))]).pipe(this.takeUntil()).subscribe(([{ id }, boards]) => {
-      const board = boards.find(({ id: boardId }) => boardId === id);
-      if (board === undefined) {
-        this.routingService.routeToNotFound();
-      }
-      this.boardStoreService.selectBoard(board);
-    });
-
-    this.boardStoreService.selectedBoard$.pipe(
-      filter((board: BoardModel) => isNotNullOrUndefined(board)),
-      this.takeUntil()
-    ).subscribe((board: BoardModel) => this.selectedBoard = board);
-  }
-
-
-  ngOnDestroy(): void {
-    super.ngOnDestroy();
-    this.boardStoreService.selectBoard(null);
   }
 
   findListIndexByMouseX(clientX: number): number {

@@ -5,8 +5,8 @@
            class="list-placeholder"
            [id]="list.id"
            [attr.order-index]="list.order">
-        <div class="list-container" [id]="list.id">
-          <app-list (closeListAction)="removeList(i)" [list]="list"></app-list>
+        <div class="list-container" [id]="selectedBoard.lists[0].id">
+          <app-list (closeListAction)="removeList(0)" [list]="selectedBoard.lists[0]"></app-list>
         </div>
       </div>
       <div class="add-list-container">
