@@ -19,10 +19,10 @@ import { filter } from 'rxjs/operators';
 import { isNotNullOrUndefined } from 'codelyzer/util/isNotNullOrUndefined';
 import { ReactiveComponent } from '../../tools/reactive';
 import { RoutingService } from '../../services/routing.service';
-import { ListComponent } from '../list/list.component';
 import { CalculationService } from '../../services/calculation.service';
 import { EEvenType } from '../../enums/even-type.enum';
 import { DOCUMENT } from '@angular/common';
+import { getIdFromAttribute } from '../../tools/html-element.tools';
 
 @Component({
   selector: 'app-board',
@@ -52,7 +52,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   selectedTaskData: TaskModel;
   currentIndex: number;
   currentTaskIndex = 0;
-  currentListIndex = 0;
+  currentListIndex: number | null = null;
   newListOrderIndex = 0;
   targetTask: HTMLElement = null;
   targetList: HTMLElement = null;
@@ -69,8 +69,8 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   scrollSpeed = 10;
   previousListsLength = 0;
 
-  @ViewChildren(ListComponent)
-  lists: QueryList<ListComponent>;
+  @ViewChildren('ListContainer')
+  lists: QueryList<ElementRef>;
 
   constructor(
     @Inject(DOCUMENT)
@@ -126,10 +126,10 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     // );
   }
 
-  handleListChanges(currentLength: number, list: QueryList<ListComponent>): void {
+  handleListChanges(currentLength: number, list: QueryList<ElementRef>): void {
     const previousLength = this.previousListsLength;
     this.previousListsLength = currentLength;
-    const listsHtmlElems: HTMLElement[] = list.toArray().map(({ elementRef }) => elementRef.nativeElement);
+    const listsHtmlElems: HTMLElement[] = list.toArray().map(({nativeElement}) => nativeElement);
     this.calculationService.calculateBoundingInfo(listsHtmlElems);
 
     if (previousLength === 0) {
@@ -157,30 +157,21 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   }
 
   listMouseDown(element: HTMLElement, mouseDownEvent: MouseEvent): void {
-    console.log('[list mouse down]', this.previousListsLength);
+    const listId = getIdFromAttribute(element);
+    this.currentListIndex = this.selectedBoard.lists.findIndex(({ id }) => id === listId);
+    console.log('[list mouse down]', this.previousListsLength, this.currentListIndex);
     const controller = new AbortController();
     const { signal } = controller;
-    this.document.addEventListener(EEvenType.mousemove, this.listMouseMove.bind(this), { signal });
-    this.document.addEventListener(EEvenType.mouseup, this.listMouseUp.bind(this, element, controller));
-  //   this.isDraggingList = true;
-  //
-  //   // reference to list-container in board.html
-  //   this.targetList = targetElement.parentElement.parentElement.parentElement;
-  //
-  //   if (targetElement.classList.contains('title')) {
-  //     this.targetList = this.targetList.parentElement;
-  //   }
-  //
-  //   this.targetList.style.position = 'fixed';
-  //
-  //   const listId = this.targetList.getAttribute('id');
-  //   this.currentListIndex = this.selectedBoard.lists.findIndex(({ id }) => id === listId);
+    this.document.addEventListener(EEvenType.mousemove, this.listMouseMove.bind(this, element), { signal });
+    this.document.addEventListener(EEvenType.mouseup, this.listMouseUp.bind(this, element, controller), { signal });
+
+    // element.style.position = 'fixed';
   }
 
-  listMouseMove(event: MouseEvent): void {
+  listMouseMove(element: HTMLElement, event: MouseEvent): void {
     console.log('[list mouse move]', this.previousListsLength, event);
-    // this.targetList.style.top = `${event.clientY}px`;
-    //     this.targetList.style.left = `${event.clientX}px`;
+    // element.style.top = `${event.clientY}px`;
+    // element.style.left = `${event.clientX}px`;
     //
     //     this.newListOrderIndex = this.findListIndexByMouseX(event.clientX);
     //     if (this.newListOrderIndex !== this.currentListIndex) {
@@ -196,10 +187,8 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
 
   listMouseUp(element: HTMLElement, controller: AbortController, event: MouseEvent): void {
     console.log('[list mouse up]', element, event);
-    // element.onmousemove = null;
-    // element.removeEventListener(EEvenType.mousemove, this.listMouseMove);
-    // element.removeEventListener(EEvenType.mouseup, this.listMouseUp.bind(this, element));
     controller.abort();
+    this.currentListIndex = null;
     // this.isDraggingList = false;
     //
     //     this.targetList.style.removeProperty('position');
@@ -421,3 +410,4 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     this.selectedBoard.lists.push(new ListModel(text));
   }
 }
+

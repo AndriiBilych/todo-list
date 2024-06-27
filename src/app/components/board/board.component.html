@@ -1,14 +1,17 @@
 <ng-container *ngIf="selectedBoard !== null; else loadingTemplate">
   <div class="overflow-auto board mt-14" #board [id]="selectedBoard.id">
     <ngx-simplebar [options]="options">
-      <div *ngFor="let list of selectedBoard.lists; index as i"
-           class="list-placeholder"
-           [id]="list.id"
-           [attr.order-index]="list.order">
-        <div class="list-container" [id]="selectedBoard.lists[0].id">
-          <app-list (closeListAction)="removeList(0)" [list]="selectedBoard.lists[0]"></app-list>
+      <ng-container *ngFor="let list of selectedBoard.lists; index as i">
+        <div class="list-placeholder">
+          <div #ListContainer
+               class="list-container"
+               *ngIf="i !== currentListIndex"
+               [id]="list.id">
+            <app-list (closeListAction)="removeList(i)"
+                      [list]="list"></app-list>
+          </div>
         </div>
-      </div>
+      </ng-container>
       <div class="add-list-container">
         <ng-container *ngIf="!isAddingList; else titleInput">
             <button (click)="isAddingList = !isAddingList"

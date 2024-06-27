@@ -19,12 +19,12 @@
           }
         ],
         "title": "Groceries",
-        "order": 1
+        "id": "0001"
       },
       {
         "tasks": [],
         "title": "Done",
-        "order": 4
+        "id": "0004"
       },
       {
         "tasks": [
@@ -46,7 +46,7 @@
           }
         ],
         "title": "Ikea",
-        "order": 3
+        "id": "0003"
       },
       {
         "tasks": [
@@ -56,7 +56,7 @@
           }
         ],
         "title": "Work",
-        "order": 6
+        "id": "0006"
       },
       {
         "tasks": [
@@ -66,7 +66,7 @@
           }
         ],
         "title": "Guitar practice",
-        "order": 5
+        "id": "0005"
       },
       {
         "tasks": [
@@ -76,7 +76,7 @@
           }
         ],
         "title": "Legal",
-        "order": 2
+        "id": "0002"
       },
       {
         "tasks": [
@@ -86,7 +86,7 @@
           }
         ],
         "title": "Studies",
-        "order": 7
+        "id": "0007"
       }
     ]
   },
