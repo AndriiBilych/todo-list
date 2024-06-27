@@ -1,9 +1,7 @@
 import {
-  ChangeDetectorRef,
   Component,
   ElementRef,
-  HostListener,
-  inject,
+  HostListener, Inject,
   OnDestroy,
   OnInit,
   QueryList,
@@ -24,6 +22,7 @@ import { RoutingService } from '../../services/routing.service';
 import { ListComponent } from '../list/list.component';
 import { CalculationService } from '../../services/calculation.service';
 import { EEvenType } from '../../enums/even-type.enum';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-board',
@@ -74,6 +73,8 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   lists: QueryList<ListComponent>;
 
   constructor(
+    @Inject(DOCUMENT)
+    private document: Document,
     private readonly boardStoreService: BoardStoreService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly calculationService: CalculationService,
@@ -159,8 +160,8 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     console.log('[list mouse down]', this.previousListsLength);
     const controller = new AbortController();
     const { signal } = controller;
-    element.addEventListener(EEvenType.mousemove, this.listMouseMove.bind(this), { signal });
-    element.addEventListener(EEvenType.mouseup, this.listMouseUp.bind(this, element, controller));
+    this.document.addEventListener(EEvenType.mousemove, this.listMouseMove.bind(this), { signal });
+    this.document.addEventListener(EEvenType.mouseup, this.listMouseUp.bind(this, element, controller));
   //   this.isDraggingList = true;
   //
   //   // reference to list-container in board.html
@@ -195,7 +196,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
 
   listMouseUp(element: HTMLElement, controller: AbortController, event: MouseEvent): void {
     console.log('[list mouse up]', element, event);
-    element.onmousemove = null;
+    // element.onmousemove = null;
     // element.removeEventListener(EEvenType.mousemove, this.listMouseMove);
     // element.removeEventListener(EEvenType.mouseup, this.listMouseUp.bind(this, element));
     controller.abort();
