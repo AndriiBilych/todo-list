@@ -33,10 +33,10 @@ import { getIdFromAttribute } from '../../tools/html-element.tools';
     }
 
     .list-placeholder {
-      min-width: 230px;
+      width: calc(100% - .85rem);
     }
 
-    .list-container {
+    .min-width-230px {
       min-width: 230px;
     }
 
@@ -52,7 +52,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   selectedTaskData: TaskModel;
   currentIndex: number;
   currentTaskIndex = 0;
-  currentListIndex: number | null = null;
+  draggedListIndex: number | null = null;
   newListOrderIndex = 0;
   targetTask: HTMLElement = null;
   targetList: HTMLElement = null;
@@ -158,8 +158,8 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
 
   listMouseDown(element: HTMLElement, mouseDownEvent: MouseEvent): void {
     const listId = getIdFromAttribute(element);
-    this.currentListIndex = this.selectedBoard.lists.findIndex(({ id }) => id === listId);
-    console.log('[list mouse down]', this.previousListsLength, this.currentListIndex);
+    this.draggedListIndex = this.selectedBoard.lists.findIndex(({ id }) => id === listId);
+    console.log('[list mouse down]', this.previousListsLength, this.draggedListIndex);
     const controller = new AbortController();
     const { signal } = controller;
     this.document.addEventListener(EEvenType.mousemove, this.listMouseMove.bind(this, element), { signal });
@@ -188,7 +188,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   listMouseUp(element: HTMLElement, controller: AbortController, event: MouseEvent): void {
     console.log('[list mouse up]', element, event);
     controller.abort();
-    this.currentListIndex = null;
+    this.draggedListIndex = null;
     // this.isDraggingList = false;
     //
     //     this.targetList.style.removeProperty('position');

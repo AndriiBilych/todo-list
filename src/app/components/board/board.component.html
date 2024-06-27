@@ -2,13 +2,15 @@
   <div class="overflow-auto board mt-14" #board [id]="selectedBoard.id">
     <ngx-simplebar [options]="options">
       <ng-container *ngFor="let list of selectedBoard.lists; index as i">
-        <div class="list-placeholder">
+        <div class="min-width-230px">
           <div #ListContainer
-               class="list-container"
-               *ngIf="i !== currentListIndex"
+               class="min-width-230px relative"
                [id]="list.id">
             <app-list (closeListAction)="removeList(i)"
                       [list]="list"></app-list>
+            <div [class.hidden]="i !== draggedListIndex"
+                 class="list-placeholder absolute top-0 left-0 h-full ml-1.5 bg-gray-100 rounded-xl"
+            ></div>
           </div>
         </div>
       </ng-container>
