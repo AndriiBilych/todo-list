@@ -12,10 +12,10 @@ import { BoardModel } from '../../models/board.model';
 import { TaskBoundingInfoModel } from '../../models/task-bounding-info.model';
 import { ListModel } from '../../models/list.model';
 import { BoardStoreService } from '../../services/board-store.service';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { TaskModel } from '../../models/task.model';
 import { ActivatedRoute } from '@angular/router';
-import { filter } from 'rxjs/operators';
+import { filter, skip, take, takeLast, tap } from 'rxjs/operators';
 import { isNotNullOrUndefined } from 'codelyzer/util/isNotNullOrUndefined';
 import { ReactiveComponent } from '../../tools/reactive';
 import { RoutingService } from '../../services/routing.service';
@@ -53,9 +53,9 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   currentIndex: number;
   currentTaskIndex = 0;
   draggedListIndex: number | null = null;
-  newListOrderIndex = 0;
+  draggedListNewIndex: number | null = null;
   targetTask: HTMLElement = null;
-  targetList: HTMLElement = null;
+  draggedList: ListModel | null = null;
   taskPositionsByOrder: TaskBoundingInfoModel[] = [];
 
   isAddingList = false;
@@ -71,6 +71,10 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
 
   @ViewChildren('ListContainer')
   lists: QueryList<ElementRef>;
+
+  private initAbortController = new AbortController();
+
+  sub = new Subscription();
 
   constructor(
     @Inject(DOCUMENT)
@@ -102,11 +106,11 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     ).subscribe((board: BoardModel) => {
       this.selectedBoard = board;
       const interval = setInterval(() => {
-        // console.log('initListHandlers', this.lists.toArray());
         const length = this.lists.toArray().length;
-        this.handleListChanges(length, this.lists);
-
         if (length === this.selectedBoard.lists.length) {
+          const elements = this.lists.toArray().map(({nativeElement}) => nativeElement);
+          this.initListEventListeners(elements);
+          this.initBoundingInfo(elements);
           clearInterval(interval);
         }
       }, 50);
@@ -118,77 +122,103 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     this.boardStoreService.selectBoard(null);
   }
 
-  initListChangesHandler(): void {
-    // this.lists.changes.pipe(this.takeUntil()).subscribe(
-    //   (list: QueryList<ListComponent>) => {
-    //     this.handleListChanges(list.length, this.previousListsLength, list);
-    //   }
-    // );
+  initListChangesHandler(): Subscription {
+    return this.lists.changes.pipe(
+      this.takeUntil(),
+      // tap((item) => console.log('[before skip]', item)),
+      skip(1) // Skipping the first update after splicing on mouseDown
+    ).subscribe(
+      (list: QueryList<HTMLElement>) => {
+        const elements: HTMLElement[] = this.lists.toArray().map(({nativeElement}) => nativeElement);
+        console.log('[changes]', elements);
+        // this.initBoundingInfo(elements);
+        // this.initAbortController.abort();
+        // this.initListEventListeners([elements.find(item => item.getAttribute('id') === this.draggedList.id)]);
+        this.draggedList = null;
+        this.sub.unsubscribe(); // Unsubscribing itself after the update after inserting on mouseup
+      }
+    );
+  }
+  // handleListChanges(currentLength: number, list: QueryList<ElementRef>): void {
+  //   const previousLength = this.previousListsLength;
+  //   this.previousListsLength = currentLength;
+  //
+  //   if (previousLength === 0) {
+  //     console.log('[list changes init all lists]');
+  //     listsHtmlElems.forEach((element: HTMLElement) => this.initListEventListeners(element));
+  //     this.calculationService.calculateBoundingInfo(listsHtmlElems);
+  //     return;
+  //   }
+  //
+  //   if (currentLength <= previousLength) {
+  //     console.log('[list changes calculate new bounding info]');
+  //     this.calculationService.calculateBoundingInfo(listsHtmlElems);
+  //     return;
+  //   }
+  //
+  //   if (currentLength > previousLength) {
+  //     console.log('[list changes init last list]');
+  //     this.initListEventListeners(listsHtmlElems[listsHtmlElems.length - 1]);
+  //     return;
+  //   }
+
+  // }
+
+  initBoundingInfo(elements: HTMLElement[]): void {
+      this.calculationService.calculateBoundingInfo(elements);
   }
 
-  handleListChanges(currentLength: number, list: QueryList<ElementRef>): void {
-    const previousLength = this.previousListsLength;
-    this.previousListsLength = currentLength;
-    const listsHtmlElems: HTMLElement[] = list.toArray().map(({nativeElement}) => nativeElement);
-    this.calculationService.calculateBoundingInfo(listsHtmlElems);
-
-    if (previousLength === 0) {
-      console.log('[list changes init all lists]');
-      listsHtmlElems.forEach((element: HTMLElement) => this.initListEventListeners(element));
-      this.calculationService.calculateBoundingInfo(listsHtmlElems);
-      return;
-    }
-
-    if (currentLength <= previousLength) {
-      console.log('[list changes calculate new bounding info]');
-      this.calculationService.calculateBoundingInfo(listsHtmlElems);
-      return;
-    }
-
-    if (currentLength > previousLength) {
-      console.log('[list changes init last list]');
-      this.initListEventListeners(listsHtmlElems[listsHtmlElems.length - 1]);
-      return;
-    }
-  }
-
-  initListEventListeners(element: HTMLElement): void {
-    element.addEventListener(EEvenType.mousedown, (event: MouseEvent) => this.listMouseDown(element, event));
+  initListEventListeners(elements: HTMLElement[]): void {
+    // Reset mousedown eventListeners
+    // this.initAbortController.abort();
+    elements.forEach((element) => {
+      element.addEventListener(
+        EEvenType.mousedown,
+        (event: MouseEvent) => this.listMouseDown(element, event),
+        {signal: this.initAbortController.signal});
+    });
   }
 
   listMouseDown(element: HTMLElement, mouseDownEvent: MouseEvent): void {
     const listId = getIdFromAttribute(element);
     this.draggedListIndex = this.selectedBoard.lists.findIndex(({ id }) => id === listId);
-    console.log('[list mouse down]', this.previousListsLength, this.draggedListIndex);
+    console.log(this.lists.toArray());
+    console.log('[list mouse down]', this.previousListsLength, this.draggedListIndex, );
     const controller = new AbortController();
     const { signal } = controller;
     this.document.addEventListener(EEvenType.mousemove, this.listMouseMove.bind(this, element), { signal });
     this.document.addEventListener(EEvenType.mouseup, this.listMouseUp.bind(this, element, controller), { signal });
+    this.sub.add(this.initListChangesHandler());
+
+    // this.draggedList = this.selectedBoard.lists.splice(this.draggedListIndex, 1)[0];
 
     // element.style.position = 'fixed';
   }
 
   listMouseMove(element: HTMLElement, event: MouseEvent): void {
-    console.log('[list mouse move]', this.previousListsLength, event);
+    const newIndex = this.findListIndexByMouseX(event.clientX);
+    console.log('[list mouse move]', newIndex);
+    this.draggedListNewIndex = newIndex;
     // element.style.top = `${event.clientY}px`;
     // element.style.left = `${event.clientX}px`;
     //
-    //     this.newListOrderIndex = this.findListIndexByMouseX(event.clientX);
-    //     if (this.newListOrderIndex !== this.currentListIndex) {
-    //       const currentList = this.selectedBoard.lists[this.currentListIndex];
-    //
-    //       // switch neighbouring lists
-    //       this.selectedBoard.lists[this.currentListIndex] = this.selectedBoard.lists[this.newListOrderIndex];
-    //       this.selectedBoard.lists[this.newListOrderIndex] = currentList;
-    //
-    //       this.currentListIndex = this.newListOrderIndex;
-    //     }
+    // if (this.newListOrderIndex !== this.draggedListIndex) {
+      // const currentList = this.selectedBoard.lists[this.draggedListIndex];
+
+      // switch neighbouring lists
+      // this.selectedBoard.lists[this.draggedListIndex] = this.selectedBoard.lists[this.newListOrderIndex];
+      // this.selectedBoard.lists[this.newListOrderIndex] = currentList;
+
+      // this.draggedListIndex = this.newListOrderIndex;
+    // }
   }
 
   listMouseUp(element: HTMLElement, controller: AbortController, event: MouseEvent): void {
     console.log('[list mouse up]', element, event);
     controller.abort();
+    // this.selectedBoard.lists.splice(this.draggedListNewIndex, 0, this.draggedList);
     this.draggedListIndex = null;
+    this.draggedListNewIndex = null;
     // this.isDraggingList = false;
     //
     //     this.targetList.style.removeProperty('position');
