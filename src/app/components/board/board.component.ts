@@ -219,10 +219,13 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   listMouseUp(element: HTMLElement, controller: AbortController, event: MouseEvent): void {
     console.log('[list mouse up]', element, event);
     controller.abort();
-    this.selectedBoard.lists.splice(this.draggedListNewIndex, 0, this.draggedList);
+    if (this.shouldInsert) {
+      this.selectedBoard.lists.splice(this.draggedListNewIndex, 0, this.draggedList);
+      this.shouldInsert = false;
+    }
+    // console.log(this.test().map(({nativeElement}) => nativeElement));
     this.draggedListIndex = null;
     this.draggedListNewIndex = null;
-    this.shouldInsert = false;
     // this.isDraggingList = false;
     //
     //     this.targetList.style.removeProperty('position');
