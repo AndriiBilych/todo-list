@@ -51,17 +51,18 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   selectedBoard: BoardModel;
   selectedTaskData: TaskModel;
   currentIndex: number;
-  currentTaskIndex = 0;
   draggedListIndex: number | null = null;
   draggedListNewIndex: number | null = null;
-  targetTask: HTMLElement = null;
   draggedList: ListModel | null = null;
-  taskPositionsByOrder: TaskBoundingInfoModel[] = [];
+  // currentTaskIndex = 0;
+  // taskPositionsByOrder: TaskBoundingInfoModel[] = [];
+  // targetTask: HTMLElement = null;
+  shouldInsert = false;
 
   isAddingList = false;
   isDraggingTask = false;
-  isDraggingList = false;
-  isDraggingBoard = false;
+  // isDraggingList = false;
+  // isDraggingBoard = false;
   @ViewChild('FakeTask') fakeTask: ElementRef;
   @ViewChild('board') boardRef: ElementRef;
   scrollContainerRef: any;
@@ -190,14 +191,16 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     this.document.addEventListener(EEvenType.mouseup, this.listMouseUp.bind(this, element, controller), { signal });
     this.sub.add(this.initListChangesHandler());
 
-    // this.draggedList = this.selectedBoard.lists.splice(this.draggedListIndex, 1)[0];
-
     // element.style.position = 'fixed';
   }
 
   listMouseMove(element: HTMLElement, event: MouseEvent): void {
     const newIndex = this.findListIndexByMouseX(event.clientX);
-    console.log('[list mouse move]', newIndex);
+    console.log('[list mouse move]', this.draggedListIndex, newIndex);
+    if (this.draggedListIndex !== newIndex && !this.shouldInsert) {
+      this.shouldInsert = true;
+      this.draggedList = this.selectedBoard.lists.splice(this.draggedListIndex, 1)[0];
+    }
     this.draggedListNewIndex = newIndex;
     // element.style.top = `${event.clientY}px`;
     // element.style.left = `${event.clientX}px`;
@@ -216,9 +219,10 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   listMouseUp(element: HTMLElement, controller: AbortController, event: MouseEvent): void {
     console.log('[list mouse up]', element, event);
     controller.abort();
-    // this.selectedBoard.lists.splice(this.draggedListNewIndex, 0, this.draggedList);
+    this.selectedBoard.lists.splice(this.draggedListNewIndex, 0, this.draggedList);
     this.draggedListIndex = null;
     this.draggedListNewIndex = null;
+    this.shouldInsert = false;
     // this.isDraggingList = false;
     //
     //     this.targetList.style.removeProperty('position');
