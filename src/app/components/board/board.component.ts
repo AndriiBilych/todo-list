@@ -1,21 +1,20 @@
 import {
-  Component,
+  Component, computed,
   ElementRef,
   HostListener, Inject,
   OnDestroy,
   OnInit,
   QueryList,
-  ViewChild,
+  ViewChild, viewChildren,
   ViewChildren
 } from '@angular/core';
 import { BoardModel } from '../../models/board.model';
-import { TaskBoundingInfoModel } from '../../models/task-bounding-info.model';
 import { ListModel } from '../../models/list.model';
 import { BoardStoreService } from '../../services/board-store.service';
 import { combineLatest, Subscription } from 'rxjs';
 import { TaskModel } from '../../models/task.model';
 import { ActivatedRoute } from '@angular/router';
-import { filter, skip, take, takeLast, tap } from 'rxjs/operators';
+import { filter, skip } from 'rxjs/operators';
 import { isNotNullOrUndefined } from 'codelyzer/util/isNotNullOrUndefined';
 import { ReactiveComponent } from '../../tools/reactive';
 import { RoutingService } from '../../services/routing.service';
@@ -126,7 +125,6 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   initListChangesHandler(): Subscription {
     return this.lists.changes.pipe(
       this.takeUntil(),
-      // tap((item) => console.log('[before skip]', item)),
       skip(1) // Skipping the first update after splicing on mouseDown
     ).subscribe(
       (list: QueryList<HTMLElement>) => {

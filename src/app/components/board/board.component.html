@@ -1,13 +1,15 @@
-<ng-container *ngIf="selectedBoard !== null; else loadingTemplate">
+@if (selectedBoard !== null) {
   <div class="overflow-auto board mt-14" #board [id]="selectedBoard.id">
     <ngx-simplebar [options]="options">
-      <ng-container *ngFor="let list of selectedBoard.lists; index as i">
-        <div #ListPlaceholderContainer class="min-width-230px" *ngIf="i === draggedListNewIndex && shouldInsert">
-          <div class="min-width-230px relative">
-            <app-list [list]="draggedList"></app-list>
-            <div class="list-placeholder absolute top-0 left-0 h-full ml-1.5 bg-gray-100 rounded-xl"></div>
+      @for (list of selectedBoard.lists; track list.id; let i = $index) {
+        @if (i === draggedListNewIndex && shouldInsert) {
+          <div #ListPlaceholderContainer class="min-width-230px">
+            <div class="min-width-230px relative">
+              <app-list [list]="draggedList"></app-list>
+              <div class="list-placeholder absolute top-0 left-0 h-full ml-1.5 bg-gray-100 rounded-xl"></div>
+            </div>
           </div>
-        </div>
+        }
         <div class="min-width-230px">
           <div #ListContainer
                class="min-width-230px relative"
@@ -19,18 +21,18 @@
             ></div>
           </div>
         </div>
-      </ng-container>
+      }
       <div class="add-list-container">
         <ng-container *ngIf="!isAddingList; else titleInput">
-            <button (click)="isAddingList = !isAddingList"
-                    class="border-none bg-gray-100 my-2 mx-1.5 py-1.5 px-3 rounded w-max"
-            >+ Add another list</button>
+          <button (click)="isAddingList = !isAddingList"
+                  class="border-none bg-gray-100 my-2 mx-1.5 py-1.5 px-3 rounded w-max"
+          >+ Add another list</button>
         </ng-container>
         <ng-template #titleInput>
           <app-input-form
             (textSubmissionAction)="isAddingList = !isAddingList;
-            pushToArray($event.text.length > 0 && $event.text !== '\n' ? $event.text : 'New List');
-            isAddingList = $event.keep"
+          pushToArray($event.text.length > 0 && $event.text !== '\n' ? $event.text : 'New List');
+          isAddingList = $event.keep"
           ></app-input-form>
         </ng-template>
       </div>
@@ -41,10 +43,9 @@
        class="task flex justify-between rounded break-words bg-blue-100 h-auto p-1">
     <div class="pl-2.5">{{selectedTaskData.content}}</div>
   </div>
-</ng-container>
-
-<ng-template #loadingTemplate>
+} @else {
   <div class="pt-14 w-full h-screen flex justify-center items-center">
     ...Loading
   </div>
-</ng-template>
+}
+
