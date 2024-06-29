@@ -1,20 +1,20 @@
 import {
-  Component, computed,
+  Component,
   ElementRef,
   HostListener, Inject,
   OnDestroy,
   OnInit,
   QueryList,
-  ViewChild, viewChildren,
+  ViewChild,
   ViewChildren
 } from '@angular/core';
 import { BoardModel } from '../../models/board.model';
 import { ListModel } from '../../models/list.model';
 import { BoardStoreService } from '../../services/board-store.service';
-import { combineLatest, Subscription } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { TaskModel } from '../../models/task.model';
 import { ActivatedRoute } from '@angular/router';
-import { filter, skip } from 'rxjs/operators';
+import { filter, map } from 'rxjs/operators';
 import { isNotNullOrUndefined } from 'codelyzer/util/isNotNullOrUndefined';
 import { ReactiveComponent } from '../../tools/reactive';
 import { RoutingService } from '../../services/routing.service';
@@ -72,10 +72,6 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   @ViewChildren('ListContainer')
   lists: QueryList<ElementRef>;
 
-  private initAbortController = new AbortController();
-
-  sub = new Subscription();
-
   constructor(
     @Inject(DOCUMENT)
     private document: Document,
@@ -92,7 +88,19 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   }
 
   ngOnInit(): void {
-    combineLatest([this.activatedRoute.params, this.boardStoreService.boards$.pipe(filter(isNotNullOrUndefined))]).pipe(this.takeUntil()).subscribe(([{ id }, boards]) => {
+    combineLatest([
+      this.activatedRoute.params,
+      this.boardStoreService.boards$.pipe(
+        filter(isNotNullOrUndefined),
+        map((boards: BoardModel[] | null) => boards.map((board) => {
+          board.lists.map((list: ListModel) => {
+            list.id = 'list' + list.id;
+            return list;
+          });
+          return board;
+        })),
+      )
+    ]).pipe(this.takeUntil()).subscribe(([{ id }, boards]) => {
       const board = boards.find(({ id: boardId }) => boardId === id);
       if (board === undefined) {
         this.routingService.routeToNotFound();
@@ -122,72 +130,27 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     this.boardStoreService.selectBoard(null);
   }
 
-  initListChangesHandler(): Subscription {
-    return this.lists.changes.pipe(
-      this.takeUntil(),
-      skip(1) // Skipping the first update after splicing on mouseDown
-    ).subscribe(
-      (list: QueryList<HTMLElement>) => {
-        const elements: HTMLElement[] = this.lists.toArray().map(({nativeElement}) => nativeElement);
-        console.log('[changes]', elements);
-        // this.initBoundingInfo(elements);
-        // this.initAbortController.abort();
-        // this.initListEventListeners([elements.find(item => item.getAttribute('id') === this.draggedList.id)]);
-        this.draggedList = null;
-        this.sub.unsubscribe(); // Unsubscribing itself after the update after inserting on mouseup
-      }
-    );
-  }
-  // handleListChanges(currentLength: number, list: QueryList<ElementRef>): void {
-  //   const previousLength = this.previousListsLength;
-  //   this.previousListsLength = currentLength;
-  //
-  //   if (previousLength === 0) {
-  //     console.log('[list changes init all lists]');
-  //     listsHtmlElems.forEach((element: HTMLElement) => this.initListEventListeners(element));
-  //     this.calculationService.calculateBoundingInfo(listsHtmlElems);
-  //     return;
-  //   }
-  //
-  //   if (currentLength <= previousLength) {
-  //     console.log('[list changes calculate new bounding info]');
-  //     this.calculationService.calculateBoundingInfo(listsHtmlElems);
-  //     return;
-  //   }
-  //
-  //   if (currentLength > previousLength) {
-  //     console.log('[list changes init last list]');
-  //     this.initListEventListeners(listsHtmlElems[listsHtmlElems.length - 1]);
-  //     return;
-  //   }
-
-  // }
-
   initBoundingInfo(elements: HTMLElement[]): void {
       this.calculationService.calculateBoundingInfo(elements);
   }
 
   initListEventListeners(elements: HTMLElement[]): void {
-    // Reset mousedown eventListeners
-    // this.initAbortController.abort();
     elements.forEach((element) => {
       element.addEventListener(
         EEvenType.mousedown,
-        (event: MouseEvent) => this.listMouseDown(element, event),
-        {signal: this.initAbortController.signal});
+        (event: MouseEvent) => this.listMouseDown(element, event)
+      );
     });
   }
 
   listMouseDown(element: HTMLElement, mouseDownEvent: MouseEvent): void {
     const listId = getIdFromAttribute(element);
     this.draggedListIndex = this.selectedBoard.lists.findIndex(({ id }) => id === listId);
-    console.log(this.lists.toArray());
-    console.log('[list mouse down]', this.previousListsLength, this.draggedListIndex, );
+    console.log('[list mouse down]', this.previousListsLength, this.draggedListIndex, this.lists.toArray());
     const controller = new AbortController();
     const { signal } = controller;
     this.document.addEventListener(EEvenType.mousemove, this.listMouseMove.bind(this, element), { signal });
     this.document.addEventListener(EEvenType.mouseup, this.listMouseUp.bind(this, element, controller), { signal });
-    this.sub.add(this.initListChangesHandler());
 
     // element.style.position = 'fixed';
   }
@@ -220,8 +183,15 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     if (this.shouldInsert) {
       this.selectedBoard.lists.splice(this.draggedListNewIndex, 0, this.draggedList);
       this.shouldInsert = false;
+      const interval = setInterval(() => {
+        const elem = this.document.querySelector<HTMLElement>(`#${this.draggedList.id}`);
+        if (elem) {
+          this.initListEventListeners([elem]);
+          this.draggedList = null;
+          clearInterval(interval);
+        }
+      }, 50);
     }
-    // console.log(this.test().map(({nativeElement}) => nativeElement));
     this.draggedListIndex = null;
     this.draggedListNewIndex = null;
     // this.isDraggingList = false;
