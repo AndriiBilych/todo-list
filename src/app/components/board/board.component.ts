@@ -22,6 +22,7 @@ import { CalculationService } from '../../services/calculation.service';
 import { EEvenType } from '../../enums/even-type.enum';
 import { DOCUMENT } from '@angular/common';
 import { getIdFromAttribute } from '../../tools/html-element.tools';
+import { IList } from '../../models/interfaces/list.interface';
 
 @Component({
   selector: 'app-board',
@@ -52,7 +53,8 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   currentIndex: number;
   draggedListIndex: number | null = null;
   draggedListNewIndex: number | null = null;
-  draggedList: ListModel | null = null;
+  draggedListData: ListModel | null = null;
+  draggedListVisual: IList | null = null;
   // currentTaskIndex = 0;
   // taskPositionsByOrder: TaskBoundingInfoModel[] = [];
   // targetTask: HTMLElement = null;
@@ -64,6 +66,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   // isDraggingBoard = false;
   @ViewChild('FakeTask') fakeTask: ElementRef;
   @ViewChild('board') boardRef: ElementRef;
+  @ViewChild('ListAtMousePosition') listAtMousePosition: ElementRef;
   scrollContainerRef: any;
   mouseStartingX: number;
   scrollSpeed = 10;
@@ -138,74 +141,52 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     elements.forEach((element) => {
       element.addEventListener(
         EEvenType.mousedown,
-        (event: MouseEvent) => this.listMouseDown(element, event)
+        () => this.listMouseDown(element)
       );
     });
   }
 
-  listMouseDown(element: HTMLElement, mouseDownEvent: MouseEvent): void {
+  listMouseDown(element: HTMLElement): void {
     const listId = getIdFromAttribute(element);
     this.draggedListIndex = this.selectedBoard.lists.findIndex(({ id }) => id === listId);
+    this.draggedListVisual = { ...this.selectedBoard.lists[this.draggedListIndex] };
     console.log('[list mouse down]', this.previousListsLength, this.draggedListIndex, this.lists.toArray());
     const controller = new AbortController();
     const { signal } = controller;
-    this.document.addEventListener(EEvenType.mousemove, this.listMouseMove.bind(this, element), { signal });
-    this.document.addEventListener(EEvenType.mouseup, this.listMouseUp.bind(this, element, controller), { signal });
-
-    // element.style.position = 'fixed';
+    this.document.addEventListener(EEvenType.mousemove, this.listMouseMove.bind(this), { signal });
+    this.document.addEventListener(EEvenType.mouseup, this.listMouseUp.bind(this, controller), { signal });
   }
 
-  listMouseMove(element: HTMLElement, event: MouseEvent): void {
+  listMouseMove(event: MouseEvent): void {
     const newIndex = this.findListIndexByMouseX(event.clientX);
     console.log('[list mouse move]', this.draggedListIndex, newIndex);
     if (this.draggedListIndex !== newIndex && !this.shouldInsert) {
       this.shouldInsert = true;
-      this.draggedList = this.selectedBoard.lists.splice(this.draggedListIndex, 1)[0];
+      this.draggedListData = this.selectedBoard.lists.splice(this.draggedListIndex, 1)[0];
     }
     this.draggedListNewIndex = newIndex;
-    // element.style.top = `${event.clientY}px`;
-    // element.style.left = `${event.clientX}px`;
-    //
-    // if (this.newListOrderIndex !== this.draggedListIndex) {
-      // const currentList = this.selectedBoard.lists[this.draggedListIndex];
-
-      // switch neighbouring lists
-      // this.selectedBoard.lists[this.draggedListIndex] = this.selectedBoard.lists[this.newListOrderIndex];
-      // this.selectedBoard.lists[this.newListOrderIndex] = currentList;
-
-      // this.draggedListIndex = this.newListOrderIndex;
-    // }
+    this.listAtMousePosition.nativeElement.style.left = `${event.clientX}px`;
+    this.listAtMousePosition.nativeElement.style.top = `${event.clientY}px`;
   }
 
-  listMouseUp(element: HTMLElement, controller: AbortController, event: MouseEvent): void {
-    console.log('[list mouse up]', element, event);
+  listMouseUp(controller: AbortController, event: MouseEvent): void {
+    console.log('[list mouse up]', event);
     controller.abort();
     if (this.shouldInsert) {
-      this.selectedBoard.lists.splice(this.draggedListNewIndex, 0, this.draggedList);
+      this.selectedBoard.lists.splice(this.draggedListNewIndex, 0, this.draggedListData);
       this.shouldInsert = false;
       const interval = setInterval(() => {
-        const elem = this.document.querySelector<HTMLElement>(`#${this.draggedList.id}`);
+        const elem = this.document.querySelector<HTMLElement>(`#${this.draggedListData.id}`);
         if (elem) {
           this.initListEventListeners([elem]);
-          this.draggedList = null;
+          this.draggedListData = null;
           clearInterval(interval);
         }
       }, 50);
     }
-    this.draggedListIndex = null;
-    this.draggedListNewIndex = null;
-    // this.isDraggingList = false;
-    //
-    //     this.targetList.style.removeProperty('position');
-    //     this.targetList.style.removeProperty('top');
-    //     this.targetList.style.removeProperty('left');
-    //     this.targetList.style.height = 'auto';
-    //
-    //     this.targetList.parentElement.style.background = 'none';
-    //     this.targetList.parentElement.style.height = 'auto';
-    //
-    //     this.targetList = null;
+    this.resetDraggingListStatus();
   }
+
   // taskMouseDown(event: MouseEvent): void {
   //   this.isDraggingTask = true;
   //   this.targetTask = targetElement;
@@ -307,6 +288,14 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   //   this.calculateBoundingInfo();
 
   // }
+
+  private resetDraggingListStatus(): void {
+    this.draggedListIndex = null;
+    this.draggedListNewIndex = null;
+    this.draggedListVisual = null;
+    this.listAtMousePosition.nativeElement.style.removeProperty('top');
+    this.listAtMousePosition.nativeElement.style.removeProperty('left');
+  }
 
   @HostListener('document:wheel', ['$event'])
   onScroll(event): void {

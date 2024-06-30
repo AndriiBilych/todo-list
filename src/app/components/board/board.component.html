@@ -3,9 +3,9 @@
     <ngx-simplebar [options]="options">
       @for (list of selectedBoard.lists; track list.id; let i = $index) {
         @if (i === draggedListNewIndex && shouldInsert) {
-          <div #ListPlaceholderContainer class="min-width-230px">
+          <div class="min-width-230px">
             <div class="min-width-230px relative">
-              <app-list [list]="draggedList"></app-list>
+              <app-list [list]="draggedListData"></app-list>
               <div class="list-placeholder absolute top-0 left-0 h-full ml-1.5 bg-gray-100 rounded-xl"></div>
             </div>
           </div>
@@ -43,9 +43,17 @@
        class="task flex justify-between rounded break-words bg-blue-100 h-auto p-1">
     <div class="pl-2.5">{{selectedTaskData.content}}</div>
   </div>
+  <div #ListAtMousePosition class="min-width-230px fixed">
+    <div id="list-at-mouse-position" class="min-width-230px relative">
+      @if (draggedListVisual !== null) {
+        <app-list [list]="draggedListVisual"></app-list>
+      }
+    </div>
+  </div>
 } @else {
   <div class="pt-14 w-full h-screen flex justify-center items-center">
     ...Loading
   </div>
 }
+
 

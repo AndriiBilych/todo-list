@@ -7,9 +7,8 @@ import {
   ElementRef,
   AfterViewInit
 } from '@angular/core';
-import { ListModel } from '../../models/list.model';
 import { TaskModel } from '../../models/task.model';
-import { Router } from '@angular/router';
+import { IList } from '../../models/interfaces/list.interface';
 
 @Component({
   selector: 'app-list',
@@ -33,7 +32,7 @@ export class ListComponent implements AfterViewInit {
   isAddingTask: boolean;
   isChangingName: boolean;
 
-  @Input() list: ListModel;
+  @Input() list: IList;
   @Output() closeListAction = new EventEmitter();
   @ViewChild('TitleRef') titleRef: ElementRef;
 
