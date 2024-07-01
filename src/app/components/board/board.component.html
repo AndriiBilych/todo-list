@@ -2,10 +2,10 @@
   <div class="overflow-auto board mt-14" #board [id]="selectedBoard.id">
     <ngx-simplebar [options]="options">
       @for (list of selectedBoard.lists; track list.id; let i = $index) {
-        @if (i === draggedListNewIndex && shouldInsert) {
+        @if (i === listDraggingService.draggedListNewIndex && listDraggingService.shouldInsert) {
           <div class="min-width-230px">
             <div class="min-width-230px relative">
-              <app-list [list]="draggedListData"></app-list>
+              <app-list [list]="listDraggingService.draggedListData"></app-list>
               <div class="list-placeholder absolute top-0 left-0 h-full ml-1.5 bg-gray-100 rounded-xl"></div>
             </div>
           </div>
@@ -16,7 +16,7 @@
                [id]="list.id">
             <app-list (closeListAction)="removeList(i)"
                       [list]="list"></app-list>
-            <div [class.hidden]="!(i === draggedListIndex && !shouldInsert)"
+            <div [class.hidden]="!(i === listDraggingService.draggedListIndex && !listDraggingService.shouldInsert)"
                  class="list-placeholder absolute top-0 left-0 h-full ml-1.5 bg-gray-100 rounded-xl"
             ></div>
           </div>
@@ -45,8 +45,8 @@
   </div>
   <div #ListAtMousePosition class="min-width-230px fixed">
     <div id="list-at-mouse-position" class="min-width-230px relative">
-      @if (draggedListVisual !== null) {
-        <app-list [list]="draggedListVisual"></app-list>
+      @if (listDraggingService.draggedListVisual !== null) {
+        <app-list [list]="listDraggingService.draggedListVisual"></app-list>
       }
     </div>
   </div>

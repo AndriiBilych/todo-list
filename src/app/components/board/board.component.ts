@@ -52,14 +52,10 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   selectedBoard: BoardModel;
   selectedTaskData: TaskModel;
   currentIndex: number;
-  draggedListIndex: number | null = null;
-  draggedListNewIndex: number | null = null;
-  draggedListData: ListModel | null = null;
-  draggedListVisual: IList | null = null;
+
   // currentTaskIndex = 0;
   // taskPositionsByOrder: TaskBoundingInfoModel[] = [];
   // targetTask: HTMLElement = null;
-  shouldInsert = false;
 
   isAddingList = false;
   isDraggingTask = false;
@@ -122,7 +118,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
         const length = this.lists.toArray().length;
         if (length === this.selectedBoard.lists.length) {
           const elements = this.lists.toArray().map(({nativeElement}) => nativeElement);
-          this.listDraggingService.initListEventListeners(elements, this.listMouseDown, this.selectedBoard, this);
+          this.listDraggingService.initListMouseDownListeners(elements, this.selectedBoard, this.listAtMousePosition.nativeElement);
           this.#calculationService.calculateBoundingInfo(elements);
           clearInterval(interval);
         }
@@ -133,47 +129,6 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   ngOnDestroy(): void {
     super.ngOnDestroy();
     this.boardStoreService.selectBoard(null);
-  }
-
-  listMouseDown(element: HTMLElement, selectedBoard: BoardModel): void {
-    const listId = getIdFromAttribute(element);
-    this.draggedListIndex = selectedBoard.lists.findIndex(({ id }) => id === listId);
-    this.draggedListVisual = { ...selectedBoard.lists[this.draggedListIndex] };
-    console.log('[list mouse down]', this.previousListsLength, this.draggedListIndex, this.lists.toArray());
-    const controller = new AbortController();
-    const { signal } = controller;
-    this.document.addEventListener(EEvenType.mousemove, this.listMouseMove.bind(this), { signal });
-    this.document.addEventListener(EEvenType.mouseup, this.listMouseUp.bind(this, controller), { signal });
-  }
-
-  listMouseMove(event: MouseEvent): void {
-    const newIndex = this.findListIndexByMouseX(event.clientX);
-    console.log('[list mouse move]', this.draggedListIndex, newIndex);
-    if (this.draggedListIndex !== newIndex && !this.shouldInsert) {
-      this.shouldInsert = true;
-      this.draggedListData = this.selectedBoard.lists.splice(this.draggedListIndex, 1)[0];
-    }
-    this.draggedListNewIndex = newIndex;
-    this.listAtMousePosition.nativeElement.style.left = `${event.clientX}px`;
-    this.listAtMousePosition.nativeElement.style.top = `${event.clientY}px`;
-  }
-
-  listMouseUp(controller: AbortController, event: MouseEvent): void {
-    console.log('[list mouse up]', event);
-    controller.abort();
-    if (this.shouldInsert) {
-      this.selectedBoard.lists.splice(this.draggedListNewIndex, 0, this.draggedListData);
-      this.shouldInsert = false;
-      const interval = setInterval(() => {
-        const elem = this.document.querySelector<HTMLElement>(`#${this.draggedListData.id}`);
-        if (elem) {
-          this.listDraggingService.initListEventListeners([elem], this.listMouseDown, this.selectedBoard, this);
-          this.draggedListData = null;
-          clearInterval(interval);
-        }
-      }, 50);
-    }
-    this.resetDraggingListStatus();
   }
 
   // taskMouseDown(event: MouseEvent): void {
@@ -278,14 +233,6 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
 
   // }
 
-  private resetDraggingListStatus(): void {
-    this.draggedListIndex = null;
-    this.draggedListNewIndex = null;
-    this.draggedListVisual = null;
-    this.listAtMousePosition.nativeElement.style.removeProperty('top');
-    this.listAtMousePosition.nativeElement.style.removeProperty('left');
-  }
-
   @HostListener('document:wheel', ['$event'])
   onScroll(event): void {
     if (!this.scrollContainerRef && this.selectedBoard) {
@@ -297,26 +244,6 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     if (target && target.classList === this.scrollContainerRef.classList) {
       this.scrollContainerRef.scrollLeft += event.deltaY / -1.6;
     }
-  }
-
-  findListIndexByMouseX(clientX: number): number {
-    if (!this.#calculationService.listsBoundingInfo || this.#calculationService.listsBoundingInfo.length === 0) {
-      return 0;
-    }
-
-    const index = this.#calculationService.listsBoundingInfo.findIndex(list => clientX >= list.x && clientX <= list.right);
-    const first = this.#calculationService.listsBoundingInfo[0];
-    const last = this.#calculationService.listsBoundingInfo[this.#calculationService.listsBoundingInfo.length - 1];
-
-    if (clientX > last.right) {
-      return this.#calculationService.listsBoundingInfo.length - 1;
-    }
-
-    if (clientX < first.x) {
-      return 0;
-    }
-
-    return index === -1 ? 0 : index;
   }
 
   findTaskIndexByMouseY(clientY: number, listIndex: number): number {
