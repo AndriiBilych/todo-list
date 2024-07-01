@@ -1,7 +1,7 @@
 import {
   Component,
   ElementRef,
-  HostListener, Inject,
+  HostListener, inject, Inject,
   OnDestroy,
   OnInit,
   QueryList,
@@ -23,6 +23,7 @@ import { EEvenType } from '../../enums/even-type.enum';
 import { DOCUMENT } from '@angular/common';
 import { getIdFromAttribute } from '../../tools/html-element.tools';
 import { IList } from '../../models/interfaces/list.interface';
+import { ListDraggingService } from '../../services/list-dragging.service';
 
 @Component({
   selector: 'app-board',
@@ -62,7 +63,6 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
 
   isAddingList = false;
   isDraggingTask = false;
-  // isDraggingList = false;
   // isDraggingBoard = false;
   @ViewChild('FakeTask') fakeTask: ElementRef;
   @ViewChild('board') boardRef: ElementRef;
@@ -75,12 +75,14 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   @ViewChildren('ListContainer')
   lists: QueryList<ElementRef>;
 
+  listDraggingService = inject(ListDraggingService);
+  #calculationService = inject(CalculationService);
+
   constructor(
     @Inject(DOCUMENT)
     private document: Document,
     private readonly boardStoreService: BoardStoreService,
     private readonly activatedRoute: ActivatedRoute,
-    private readonly calculationService: CalculationService,
     private readonly routingService: RoutingService
   ) {
     super();
@@ -120,8 +122,8 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
         const length = this.lists.toArray().length;
         if (length === this.selectedBoard.lists.length) {
           const elements = this.lists.toArray().map(({nativeElement}) => nativeElement);
-          this.initListEventListeners(elements);
-          this.initBoundingInfo(elements);
+          this.listDraggingService.initListEventListeners(elements, this.listMouseDown, this.selectedBoard, this);
+          this.#calculationService.calculateBoundingInfo(elements);
           clearInterval(interval);
         }
       }, 50);
@@ -133,23 +135,10 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     this.boardStoreService.selectBoard(null);
   }
 
-  initBoundingInfo(elements: HTMLElement[]): void {
-      this.calculationService.calculateBoundingInfo(elements);
-  }
-
-  initListEventListeners(elements: HTMLElement[]): void {
-    elements.forEach((element) => {
-      element.addEventListener(
-        EEvenType.mousedown,
-        () => this.listMouseDown(element)
-      );
-    });
-  }
-
-  listMouseDown(element: HTMLElement): void {
+  listMouseDown(element: HTMLElement, selectedBoard: BoardModel): void {
     const listId = getIdFromAttribute(element);
-    this.draggedListIndex = this.selectedBoard.lists.findIndex(({ id }) => id === listId);
-    this.draggedListVisual = { ...this.selectedBoard.lists[this.draggedListIndex] };
+    this.draggedListIndex = selectedBoard.lists.findIndex(({ id }) => id === listId);
+    this.draggedListVisual = { ...selectedBoard.lists[this.draggedListIndex] };
     console.log('[list mouse down]', this.previousListsLength, this.draggedListIndex, this.lists.toArray());
     const controller = new AbortController();
     const { signal } = controller;
@@ -178,7 +167,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
       const interval = setInterval(() => {
         const elem = this.document.querySelector<HTMLElement>(`#${this.draggedListData.id}`);
         if (elem) {
-          this.initListEventListeners([elem]);
+          this.listDraggingService.initListEventListeners([elem], this.listMouseDown, this.selectedBoard, this);
           this.draggedListData = null;
           clearInterval(interval);
         }
@@ -311,16 +300,16 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   }
 
   findListIndexByMouseX(clientX: number): number {
-    if (!this.calculationService.listsBoundingInfo || this.calculationService.listsBoundingInfo.length === 0) {
+    if (!this.#calculationService.listsBoundingInfo || this.#calculationService.listsBoundingInfo.length === 0) {
       return 0;
     }
 
-    const index = this.calculationService.listsBoundingInfo.findIndex(list => clientX >= list.x && clientX <= list.right);
-    const first = this.calculationService.listsBoundingInfo[0];
-    const last = this.calculationService.listsBoundingInfo[this.calculationService.listsBoundingInfo.length - 1];
+    const index = this.#calculationService.listsBoundingInfo.findIndex(list => clientX >= list.x && clientX <= list.right);
+    const first = this.#calculationService.listsBoundingInfo[0];
+    const last = this.#calculationService.listsBoundingInfo[this.#calculationService.listsBoundingInfo.length - 1];
 
     if (clientX > last.right) {
-      return this.calculationService.listsBoundingInfo.length - 1;
+      return this.#calculationService.listsBoundingInfo.length - 1;
     }
 
     if (clientX < first.x) {
@@ -331,11 +320,11 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   }
 
   findTaskIndexByMouseY(clientY: number, listIndex: number): number {
-    if (!this.calculationService.listsBoundingInfo || this.calculationService.listsBoundingInfo.length === 0) {
+    if (!this.#calculationService.listsBoundingInfo || this.#calculationService.listsBoundingInfo.length === 0) {
       return 0;
     }
 
-    const taskBoundsInfo = this.calculationService.listsBoundingInfo[listIndex].tasksBoundingInfo;
+    const taskBoundsInfo = this.#calculationService.listsBoundingInfo[listIndex].tasksBoundingInfo;
 
     if (!taskBoundsInfo || taskBoundsInfo.length === 0) {
       return 0;
