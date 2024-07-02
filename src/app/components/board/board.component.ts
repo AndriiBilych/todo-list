@@ -242,7 +242,8 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     const target = event.target;
 
     if (target && target.classList === this.scrollContainerRef.classList) {
-      this.scrollContainerRef.scrollLeft += event.deltaY / -1.6;
+      this.#calculationService.calculateBoundingInfo(this.lists.toArray().map(({nativeElement}) => nativeElement));
+      this.scrollContainerRef.scrollLeft -= event.deltaY / -1.6;
     }
   }
 
