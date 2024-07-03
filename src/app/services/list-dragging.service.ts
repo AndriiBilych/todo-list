@@ -23,7 +23,7 @@ export class ListDraggingService {
   public initListMouseDownListeners(
     elements: HTMLElement[],
     selectedBoard: BoardModel,
-    listAtMousePosition: HTMLElement
+    listAtMousePosition: HTMLElement,
   ): void {
     elements.forEach((element) => {
       element.addEventListener(

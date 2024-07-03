@@ -1,7 +1,7 @@
 import {
   Component,
   ElementRef,
-  HostListener, inject, Inject,
+  HostListener, inject,
   OnDestroy,
   OnInit,
   QueryList,
@@ -19,10 +19,6 @@ import { isNotNullOrUndefined } from 'codelyzer/util/isNotNullOrUndefined';
 import { ReactiveComponent } from '../../tools/reactive';
 import { RoutingService } from '../../services/routing.service';
 import { CalculationService } from '../../services/calculation.service';
-import { EEvenType } from '../../enums/even-type.enum';
-import { DOCUMENT } from '@angular/common';
-import { getIdFromAttribute } from '../../tools/html-element.tools';
-import { IList } from '../../models/interfaces/list.interface';
 import { ListDraggingService } from '../../services/list-dragging.service';
 
 @Component({
@@ -32,23 +28,10 @@ import { ListDraggingService } from '../../services/list-dragging.service';
     .board {
       height: calc(100vh - 3.5rem);
     }
-
-    .list-placeholder {
-      width: calc(100% - .85rem);
-    }
-
-    .min-width-230px {
-      min-width: 230px;
-    }
-
-    ngx-simplebar {
-      height: inherit;
-    }
   `]
 })
 export class BoardComponent extends ReactiveComponent implements OnInit, OnDestroy {
 
-  options = { autoHide: false };
   selectedBoard: BoardModel;
   selectedTaskData: TaskModel;
   currentIndex: number;
@@ -63,11 +46,10 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   @ViewChild('FakeTask') fakeTask: ElementRef;
   @ViewChild('board') boardRef: ElementRef;
   @ViewChild('ListAtMousePosition') listAtMousePosition: ElementRef;
-  scrollContainerRef: any;
+
   mouseStartingX: number;
   scrollSpeed = 10;
-  previousListsLength = 0;
-
+  #scrollLeft = 0;
   @ViewChildren('ListContainer')
   lists: QueryList<ElementRef>;
 
@@ -75,8 +57,6 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   #calculationService = inject(CalculationService);
 
   constructor(
-    @Inject(DOCUMENT)
-    private document: Document,
     private readonly boardStoreService: BoardStoreService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly routingService: RoutingService
@@ -85,7 +65,6 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     this.mouseStartingX = null;
     this.selectedBoard = null;
     this.currentIndex = null;
-    this.scrollContainerRef = null;
   }
 
   ngOnInit(): void {
@@ -234,16 +213,27 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   // }
 
   @HostListener('document:wheel', ['$event'])
-  onScroll(event): void {
-    if (!this.scrollContainerRef && this.selectedBoard) {
-      this.scrollContainerRef = this.boardRef.nativeElement.firstChild.firstChild.children[1].firstChild.firstChild;
-    }
+  onWheel(event: any): void {
+    const target = event?.target;
 
-    const target = event.target;
-
-    if (target && target.classList === this.scrollContainerRef.classList) {
+    console.log('[wheel]', target, this.boardRef.nativeElement, target.isEqualNode(this.boardRef.nativeElement), this.boardRef.nativeElement.scrollLeft);
+    if (target && target.isEqualNode(this.boardRef.nativeElement)) {
       this.#calculationService.calculateBoundingInfo(this.lists.toArray().map(({nativeElement}) => nativeElement));
-      this.scrollContainerRef.scrollLeft -= event.deltaY / -1.6;
+      this.boardRef.nativeElement.scrollLeft -= event.deltaY / -1.6;
+    }
+  }
+
+  @HostListener('document:mousedown')
+  onMousedown(): void {
+    console.log('[mousedown]', this.boardRef?.nativeElement?.scrollLeft);
+    this.#scrollLeft = this.boardRef?.nativeElement?.scrollLeft ?? 0;
+  }
+
+  @HostListener('document:mouseup')
+  onMouseup(): void {
+    console.log('[mouseup]', (this.boardRef?.nativeElement as Element), this.#scrollLeft);
+    if (this.boardRef?.nativeElement?.scrollLeft !== this.#scrollLeft) {
+      this.#calculationService.calculateBoundingInfo(this.lists.toArray().map(({nativeElement}) => nativeElement));
     }
   }
 

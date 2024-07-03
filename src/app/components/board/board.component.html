@@ -1,50 +1,44 @@
 @if (selectedBoard !== null) {
-  <div class="overflow-auto board mt-14" #board [id]="selectedBoard.id">
-    <ngx-simplebar [options]="options">
-      @for (list of selectedBoard.lists; track list.id; let i = $index) {
-        @if (i === listDraggingService.draggedListNewIndex && listDraggingService.shouldInsert) {
-          <div class="min-width-230px">
-            <div class="min-width-230px relative">
-              <app-list [list]="listDraggingService.draggedListData"></app-list>
-              <div class="list-placeholder absolute top-0 left-0 h-full ml-1.5 bg-gray-100 rounded-xl"></div>
-            </div>
-          </div>
-        }
-        <div class="min-width-230px">
-          <div #ListContainer
-               class="min-width-230px relative"
-               [id]="list.id">
-            <app-list (closeListAction)="removeList(i)"
-                      [list]="list"></app-list>
-            <div [class.hidden]="!(i === listDraggingService.draggedListIndex && !listDraggingService.shouldInsert)"
-                 class="list-placeholder absolute top-0 left-0 h-full ml-1.5 bg-gray-100 rounded-xl"
-            ></div>
-          </div>
+  <div class="overflow-x-auto overflow-y-hidden board inline-flex mt-14" #board [id]="selectedBoard.id">
+    @for (list of selectedBoard.lists; track list.id; let i = $index) {
+      @if (i === listDraggingService.draggedListNewIndex && listDraggingService.shouldInsert) {
+        <div class="width-230px relative h-min-content mt-2">
+          <app-list [list]="listDraggingService.draggedListData"
+                    [hidden]="true"
+          ></app-list>
         </div>
       }
-      <div class="add-list-container">
-        <ng-container *ngIf="!isAddingList; else titleInput">
-          <button (click)="isAddingList = !isAddingList"
-                  class="border-none bg-gray-100 my-2 mx-1.5 py-1.5 px-3 rounded w-max"
-          >+ Add another list</button>
-        </ng-container>
-        <ng-template #titleInput>
-          <app-input-form
-            (textSubmissionAction)="isAddingList = !isAddingList;
-          pushToArray($event.text.length > 0 && $event.text !== '\n' ? $event.text : 'New List');
-          isAddingList = $event.keep"
-          ></app-input-form>
-        </ng-template>
+      <div #ListContainer
+           class="width-230px relative h-min-content mt-2"
+           [id]="list.id">
+        <app-list (closeListAction)="removeList(i)"
+                  [list]="list"
+                  [hidden]="i === listDraggingService.draggedListIndex && !listDraggingService.shouldInsert"
+        ></app-list>
       </div>
-    </ngx-simplebar>
+    }
+    <div class="add-list-container">
+      <ng-container *ngIf="!isAddingList; else titleInput">
+        <button (click)="isAddingList = !isAddingList"
+                class="border-none bg-gray-100 my-2 mx-1.5 py-1.5 px-3 rounded w-max"
+        >+ Add another list</button>
+      </ng-container>
+      <ng-template #titleInput>
+        <app-input-form
+          (textSubmissionAction)="isAddingList = !isAddingList;
+        pushToArray($event.text.length > 0 && $event.text !== '\n' ? $event.text : 'New List');
+        isAddingList = $event.keep"
+        ></app-input-form>
+      </ng-template>
+    </div>
   </div>
   <div #FakeTask
        *ngIf="isDraggingTask"
        class="task flex justify-between rounded break-words bg-blue-100 h-auto p-1">
     <div class="pl-2.5">{{selectedTaskData.content}}</div>
   </div>
-  <div #ListAtMousePosition class="min-width-230px fixed">
-    <div id="list-at-mouse-position" class="min-width-230px relative">
+  <div #ListAtMousePosition class="width-230px fixed">
+    <div id="list-at-mouse-position" class="width-230px relative">
       @if (listDraggingService.draggedListVisual !== null) {
         <app-list [list]="listDraggingService.draggedListVisual"></app-list>
       }

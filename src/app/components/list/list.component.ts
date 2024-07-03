@@ -18,8 +18,8 @@ import { IList } from '../../models/interfaces/list.interface';
       max-height: calc(75vh + 5px);
     }
 
-    ngx-simplebar {
-      max-height: inherit;
+    .list-placeholder {
+      width: calc(100% - .85rem);
     }
 
     .group:hover .remove-list-button {
@@ -33,6 +33,7 @@ export class ListComponent implements AfterViewInit {
   isChangingName: boolean;
 
   @Input() list: IList;
+  @Input() hidden = false;
   @Output() closeListAction = new EventEmitter();
   @ViewChild('TitleRef') titleRef: ElementRef;
 

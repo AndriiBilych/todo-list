@@ -23,8 +23,6 @@
     "@tailwindcss/forms": "^0.2.1",
     "@tailwindcss/typography": "^0.4.0",
     "rxjs": "~6.6.0",
-    "simplebar-angular": "3.2.4",
-    "simplebar-core": "^1.2.5",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.7"
   },
