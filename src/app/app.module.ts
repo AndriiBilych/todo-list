@@ -4,8 +4,6 @@ import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
-import { SimplebarAngularModule } from 'simplebar-angular';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BoardComponent } from './components/board/board.component';
@@ -38,6 +36,5 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
         AppRoutingModule,
         FormsModule,
         ReactiveFormsModule,
-        SimplebarAngularModule,
         BrowserAnimationsModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class AppModule { }
