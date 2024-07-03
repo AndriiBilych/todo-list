@@ -216,23 +216,20 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   onWheel(event: any): void {
     const target = event?.target;
 
-    console.log('[wheel]', target, this.boardRef.nativeElement, target.isEqualNode(this.boardRef.nativeElement), this.boardRef.nativeElement.scrollLeft);
     if (target && target.isEqualNode(this.boardRef.nativeElement)) {
       this.#calculationService.calculateBoundingInfo(this.lists.toArray().map(({nativeElement}) => nativeElement));
-      this.boardRef.nativeElement.scrollLeft -= event.deltaY / -1.6;
+      window.scrollBy({ left: event.deltaY / -1.6 });
     }
   }
 
   @HostListener('document:mousedown')
   onMousedown(): void {
-    console.log('[mousedown]', this.boardRef?.nativeElement?.scrollLeft);
-    this.#scrollLeft = this.boardRef?.nativeElement?.scrollLeft ?? 0;
+    this.#scrollLeft = window.scrollX;
   }
 
   @HostListener('document:mouseup')
   onMouseup(): void {
-    console.log('[mouseup]', (this.boardRef?.nativeElement as Element), this.#scrollLeft);
-    if (this.boardRef?.nativeElement?.scrollLeft !== this.#scrollLeft) {
+    if (window.scrollX !== this.#scrollLeft) {
       this.#calculationService.calculateBoundingInfo(this.lists.toArray().map(({nativeElement}) => nativeElement));
     }
   }
