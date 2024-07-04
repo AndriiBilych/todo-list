@@ -40,7 +40,7 @@ import { TaskModel } from '../../models/task.model';
     .group:hover .remove-task-button {
       visibility: visible;
     }
-  `]
+  `],
 })
 export class TaskComponent implements AfterViewInit {
 

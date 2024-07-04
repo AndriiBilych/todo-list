@@ -15,7 +15,6 @@ export class ListDraggingService {
   draggedListNewIndex: number | null = null;
   draggedListData: ListModel | null = null;
   draggedListVisual: IList | null = null;
-  shouldInsert = false;
 
   #document: Document = inject(DOCUMENT);
   #calculationService = inject(CalculationService);
@@ -36,6 +35,8 @@ export class ListDraggingService {
     const listId = getIdFromAttribute(element);
     this.draggedListIndex = selectedBoard.lists.findIndex(({ id }) => id === listId);
     this.draggedListVisual = { ...selectedBoard.lists[this.draggedListIndex] };
+    this.draggedListNewIndex = this.draggedListIndex;
+    this.draggedListData = selectedBoard.lists[this.draggedListIndex];
     const controller = new AbortController();
     const { signal } = controller;
     this.#document.addEventListener(EEvenType.mousemove, this.listMouseMove.bind(this, selectedBoard, listAtMousePosition), { signal });
@@ -44,10 +45,10 @@ export class ListDraggingService {
 
   public listMouseMove(selectedBoard: BoardModel, listAtMousePosition: HTMLElement, event: MouseEvent): void {
     const newIndex = this.findListIndexByMouseX(event.clientX);
-    if (this.draggedListIndex !== newIndex && !this.shouldInsert) {
-      this.shouldInsert = true;
-      this.draggedListData = selectedBoard.lists.splice(this.draggedListIndex, 1)[0];
-    }
+    // if (this.draggedListIndex !== newIndex && !this.shouldInsert) {
+    //   this.shouldInsert = true;
+    //   // this.draggedListData = selectedBoard.lists.splice(this.draggedListIndex, 1)[0];
+    // }
     this.draggedListNewIndex = newIndex;
     console.log('[list mouse move]', this.draggedListNewIndex);
     listAtMousePosition.style.left = `${event.clientX}px`;
@@ -57,11 +58,11 @@ export class ListDraggingService {
   public listMouseUp(controller: AbortController, selectedBoard: BoardModel, listAtMousePosition: HTMLElement, event: MouseEvent): void {
     // console.log('[list mouse up]');
     controller.abort();
-    if (this.shouldInsert) {
-      selectedBoard.lists.splice(this.draggedListNewIndex, 0, this.draggedListData);
-      this.shouldInsert = false;
+    // if (this.shouldInsert) {
+      // selectedBoard.lists.splice(this.draggedListNewIndex, 0, this.draggedListData);
+      // this.shouldInsert = false;
       this.draggedListData = null;
-    }
+    // }
     this.resetDraggingListStatus(listAtMousePosition);
   }
 
@@ -79,7 +80,7 @@ export class ListDraggingService {
     }
 
     const values = [...this.#calculationService.listsBoundingInfo.values()];
-    const index = values.findIndex(list => clientX >= list.x && clientX <= list.right);
+    const index = values.findIndex(({ x, right }) => clientX >= x && clientX <= right);
     const first = values[0];
     const last = values[values.length - 1];
 

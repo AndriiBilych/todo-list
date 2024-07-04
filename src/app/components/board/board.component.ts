@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   ElementRef,
   HostListener, inject,
@@ -31,7 +32,7 @@ import { ListComponent } from '../list/list.component';
     }
   `]
 })
-export class BoardComponent extends ReactiveComponent implements OnInit, OnDestroy {
+export class BoardComponent extends ReactiveComponent implements OnInit, AfterViewInit, OnDestroy {
 
   selectedBoard: BoardModel;
   selectedTaskData: TaskModel;
@@ -52,7 +53,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   scrollSpeed = 10;
   #scrollLeft = 0;
   @ViewChildren(ListComponent)
-  _lists: QueryList<ListComponent>;
+  lists: QueryList<ListComponent>;
 
   listDraggingService = inject(ListDraggingService);
   #calculationService = inject(CalculationService);
@@ -94,6 +95,13 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
       this.takeUntil()
     ).subscribe((board: BoardModel) => {
       this.selectedBoard = board;
+    });
+  }
+
+  ngAfterViewInit(): void {
+    this.lists.changes.subscribe((list: ListModel[]) => {
+      this.calculateBoundingInfoForAll();
+      console.log('this._lists.changes', list, this.#calculationService.listsBoundingInfo);
     });
   }
 
@@ -227,6 +235,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   }
 
   calculateBoundingInfoForAll(): void {
+    this.#calculationService.listsBoundingInfo.clear();
     this.lists.forEach((list: ListComponent) => list.calculateBoundingInfo());
   }
 
@@ -310,10 +319,6 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
 
   pushToArray(text: string): void {
     this.selectedBoard.lists.push(new ListModel(text));
-  }
-
-  private get lists(): ListComponent[] {
-    return this._lists.toArray().filter(({ hidden }) => !hidden);
   }
 }
 

@@ -1,17 +1,16 @@
 @if (selectedBoard !== null && listAtMousePosition !== null) {
   <div class="overflow-x-auto overflow-y-hidden board inline-flex mt-14" #board [id]="selectedBoard.id">
     @for (list of selectedBoard.lists; track list.id; let i = $index) {
-      @if (i === listDraggingService.draggedListNewIndex && listDraggingService.shouldInsert) {
+      @if (i === listDraggingService.draggedListNewIndex) {
         <div class="width-230px relative h-min-content mt-2">
-          <app-list [list]="listDraggingService.draggedListData"
+          <app-list-placeholder [list]="listDraggingService.draggedListData"
                     [hidden]="true"
-          ></app-list>
+          ></app-list-placeholder>
         </div>
       }
-      <div class="width-230px relative h-min-content mt-2">
+      <div class="width-230px relative h-min-content mt-2" [class.hidden]="i === listDraggingService.draggedListIndex">
         <app-list (closeListAction)="removeList(i)"
                   [list]="list"
-                  [hidden]="i === listDraggingService.draggedListIndex && !listDraggingService.shouldInsert"
                   [initListener]="true"
                   [selectedBoard]="selectedBoard"
                   [listAtMousePosition]="listAtMousePosition.nativeElement"
@@ -47,7 +46,7 @@
 <div #ListAtMousePosition class="width-230px fixed">
   <div id="list-at-mouse-position" class="width-230px relative">
     @if (listDraggingService.draggedListVisual !== null) {
-      <app-list [list]="listDraggingService.draggedListVisual"></app-list>
+      <app-list-placeholder [list]="listDraggingService.draggedListVisual"></app-list-placeholder>
     }
   </div>
 </div>

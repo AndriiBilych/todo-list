@@ -17,24 +17,29 @@ import { HomepageSectionComponent } from './components/homepage-section/homepage
 import { HomepageListItemComponent } from './components/homepage-list-item/homepage-list-item.component';
 import { HomepageListButtonComponent } from './components/homepage-list-button/homepage-list-button.component';
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
+import { ListPlaceholderComponent } from './components/list-placeholder/list-placeholder.component';
 
-@NgModule({ declarations: [
-        AppComponent,
-        BoardComponent,
-        ListComponent,
-        ControlPanelComponent,
-        InputFormComponent,
-        TaskComponent,
-        ColorPickerComponent,
-        HomepageComponent,
-        HomepageSectionComponent,
-        HomepageListItemComponent,
-        HomepageListButtonComponent,
-        NotFoundPageComponent
-    ],
-    bootstrap: [AppComponent], imports: [BrowserModule,
-        AppRoutingModule,
-        FormsModule,
-        ReactiveFormsModule,
-        BrowserAnimationsModule], providers: [provideHttpClient(withInterceptorsFromDi())] })
+@NgModule({
+  declarations: [
+    AppComponent,
+    BoardComponent,
+    ListComponent,
+    ControlPanelComponent,
+    InputFormComponent,
+    TaskComponent,
+    ColorPickerComponent,
+    HomepageComponent,
+    HomepageSectionComponent,
+    HomepageListItemComponent,
+    HomepageListButtonComponent,
+    NotFoundPageComponent,
+    ListPlaceholderComponent
+  ],
+  bootstrap: [AppComponent], imports: [BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule],
+  providers: [provideHttpClient(withInterceptorsFromDi())]
+})
 export class AppModule { }
