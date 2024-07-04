@@ -178,7 +178,7 @@
           }
         ],
         "title": "Today",
-        "order": 0
+        "id": "0001"
       },
       {
         "tasks": [
@@ -200,12 +200,12 @@
           }
         ],
         "title": "Tomorrow",
-        "order": 1
+        "id": "0002"
       },
       {
         "tasks": [],
         "title": "Done",
-        "order": 2
+        "id": "0003"
       }
     ]
   }

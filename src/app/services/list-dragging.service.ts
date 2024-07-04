@@ -43,13 +43,13 @@ export class ListDraggingService {
   }
 
   public listMouseMove(selectedBoard: BoardModel, listAtMousePosition: HTMLElement, event: MouseEvent): void {
-    // console.log('[list mouse move]');
     const newIndex = this.findListIndexByMouseX(event.clientX);
     if (this.draggedListIndex !== newIndex && !this.shouldInsert) {
       this.shouldInsert = true;
       this.draggedListData = selectedBoard.lists.splice(this.draggedListIndex, 1)[0];
     }
     this.draggedListNewIndex = newIndex;
+    console.log('[list mouse move]', this.draggedListNewIndex);
     listAtMousePosition.style.left = `${event.clientX}px`;
     listAtMousePosition.style.top = `${event.clientY}px`;
   }

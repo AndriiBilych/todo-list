@@ -33,4 +33,8 @@ export class CalculationService {
       );
     });
   }
+
+  public removeBoundingInfo(id: string): void {
+    this.listsBoundingInfo.delete(id);
+  }
 }

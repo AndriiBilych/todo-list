@@ -3,7 +3,7 @@
     <div #TitleRef class="flex justify-between px-5 py-2.5" [id]="list.id">
       <ng-container *ngIf="!isChangingName; else titleInput">
         <div class="title ellipsis-box-1" [title]="list.title">{{list.title}}</div>
-        <button (click)="closeListAction.emit()"
+        <button (mousedown)="closeListAction.emit()"
                 class="remove-list-button hidden border-none mb-auto"
         >&times;</button>
       </ng-container>

@@ -209,7 +209,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     const target = event?.target;
 
     if (target && target.isEqualNode(this.boardRef.nativeElement)) {
-      this.lists.forEach((list: ListComponent) => list.calculateBoundingInfo());
+      this.calculateBoundingInfoForAll();
       window.scrollBy({ left: event.deltaY / -1.6 });
     }
   }
@@ -222,8 +222,12 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   @HostListener('document:mouseup')
   onMouseup(): void {
     if (window.scrollX !== this.#scrollLeft) {
-      this.lists.forEach((list: ListComponent) => list.calculateBoundingInfo());
+      this.calculateBoundingInfoForAll();
     }
+  }
+
+  calculateBoundingInfoForAll(): void {
+    this.lists.forEach((list: ListComponent) => list.calculateBoundingInfo());
   }
 
   findTaskIndexByMouseY(clientY: number, listIndex: number): number {
@@ -292,8 +296,16 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     });
   }
 
-  removeList(index): void {
-    this.selectedBoard.lists.splice(index, 1);
+  removeList(index: number): void {
+    const removed = this.selectedBoard.lists.splice(index, 1);
+    const length = this.lists.length;
+    const interval = setInterval(() => {
+      if (this.lists.length === length - 1) {
+        this.#calculationService.removeBoundingInfo(removed[0].id);
+        this.calculateBoundingInfoForAll();
+        clearInterval(interval);
+      }
+    }, 50);
   }
 
   pushToArray(text: string): void {
