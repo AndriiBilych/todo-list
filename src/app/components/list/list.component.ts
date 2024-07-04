@@ -5,10 +5,12 @@ import {
   EventEmitter,
   ViewChild,
   ElementRef,
-  AfterViewInit
+  AfterViewInit, OnDestroy, inject
 } from '@angular/core';
 import { TaskModel } from '../../models/task.model';
 import { IList } from '../../models/interfaces/list.interface';
+import { ListDraggingService } from '../../services/list-dragging.service';
+import { BoardModel } from '../../models/board.model';
 
 @Component({
   selector: 'app-list',
@@ -27,15 +29,18 @@ import { IList } from '../../models/interfaces/list.interface';
     }
   `]
 })
-export class ListComponent implements AfterViewInit {
-  options = { autoHide: false};
+export class ListComponent implements AfterViewInit, OnDestroy {
   isAddingTask: boolean;
   isChangingName: boolean;
 
   @Input() list: IList;
+  @Input() selectedBoard: BoardModel | null = null;
+  @Input() listAtMousePosition: HTMLElement | null = null;
   @Input() hidden = false;
+  @Input() initListener = false;
   @Output() closeListAction = new EventEmitter();
   @ViewChild('TitleRef') titleRef: ElementRef;
+  #listDraggingService = inject(ListDraggingService);
 
   constructor(
     public readonly elementRef: ElementRef,
@@ -49,7 +54,18 @@ export class ListComponent implements AfterViewInit {
       throw new Error('Task ref not found');
     }
 
+    if (this.initListener && this.selectedBoard && this.listAtMousePosition) {
+      console.log('ngAfterViewInit', this.titleRef.nativeElement);
+      this.#listDraggingService.initListMouseDownListener(this.titleRef.nativeElement, this.selectedBoard, this.listAtMousePosition);
+    }
+
     this.titleRef.nativeElement.addEventListener('contextmenu', this.onRightClick.bind(this));
+  }
+
+  ngOnDestroy(): void {
+    if (this.initListener) {
+      this.titleRef.nativeElement.removeAllListeners();
+    }
   }
 
   onRightClick(event: Event): void {

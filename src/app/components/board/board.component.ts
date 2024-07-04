@@ -97,7 +97,6 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
         const length = this.lists.toArray().length;
         if (length === this.selectedBoard.lists.length) {
           const elements = this.lists.toArray().map(({nativeElement}) => nativeElement);
-          this.listDraggingService.initListMouseDownListeners(elements, this.selectedBoard, this.listAtMousePosition.nativeElement);
           this.#calculationService.calculateBoundingInfo(elements);
           clearInterval(interval);
         }

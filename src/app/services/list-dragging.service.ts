@@ -20,21 +20,19 @@ export class ListDraggingService {
   #document: Document = inject(DOCUMENT);
   #calculationService = inject(CalculationService);
 
-  public initListMouseDownListeners(
-    elements: HTMLElement[],
+  public initListMouseDownListener(
+    element: HTMLElement,
     selectedBoard: BoardModel,
     listAtMousePosition: HTMLElement,
   ): void {
-    elements.forEach((element) => {
-      element.addEventListener(
-        EEvenType.mousedown,
-        () => this.listMouseDown(element, selectedBoard, listAtMousePosition),
-      );
-    });
+    element.addEventListener(
+      EEvenType.mousedown,
+      () => this.listMouseDown(element, selectedBoard, listAtMousePosition),
+    );
   }
 
   public listMouseDown(element: HTMLElement, selectedBoard: BoardModel, listAtMousePosition: HTMLElement): void {
-    console.log('[list mouse down]');
+    // console.log('[list mouse down]');
     const listId = getIdFromAttribute(element);
     this.draggedListIndex = selectedBoard.lists.findIndex(({ id }) => id === listId);
     this.draggedListVisual = { ...selectedBoard.lists[this.draggedListIndex] };
@@ -45,7 +43,7 @@ export class ListDraggingService {
   }
 
   public listMouseMove(selectedBoard: BoardModel, listAtMousePosition: HTMLElement, event: MouseEvent): void {
-    console.log('[list mouse move]', event.clientX, event.clientY);
+    // console.log('[list mouse move]');
     const newIndex = this.findListIndexByMouseX(event.clientX);
     if (this.draggedListIndex !== newIndex && !this.shouldInsert) {
       this.shouldInsert = true;
@@ -57,19 +55,12 @@ export class ListDraggingService {
   }
 
   public listMouseUp(controller: AbortController, selectedBoard: BoardModel, listAtMousePosition: HTMLElement, event: MouseEvent): void {
-    console.log('[list mouse up]', event);
+    // console.log('[list mouse up]');
     controller.abort();
     if (this.shouldInsert) {
       selectedBoard.lists.splice(this.draggedListNewIndex, 0, this.draggedListData);
       this.shouldInsert = false;
-      const interval = setInterval(() => {
-        const elem = this.#document.querySelector<HTMLElement>(`#${this.draggedListData.id}`);
-        if (elem) {
-          this.initListMouseDownListeners([elem], selectedBoard, listAtMousePosition);
-          this.draggedListData = null;
-          clearInterval(interval);
-        }
-      }, 50);
+      this.draggedListData = null;
     }
     this.resetDraggingListStatus(listAtMousePosition);
   }
