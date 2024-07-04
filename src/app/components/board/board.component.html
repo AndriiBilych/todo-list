@@ -8,8 +8,7 @@
           ></app-list>
         </div>
       }
-      <div #ListContainer
-           class="width-230px relative h-min-content mt-2">
+      <div class="width-230px relative h-min-content mt-2">
         <app-list (closeListAction)="removeList(i)"
                   [list]="list"
                   [hidden]="i === listDraggingService.draggedListIndex && !listDraggingService.shouldInsert"

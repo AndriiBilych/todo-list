@@ -74,16 +74,17 @@ export class ListDraggingService {
   }
 
   findListIndexByMouseX(clientX: number): number {
-    if (!this.#calculationService.listsBoundingInfo || this.#calculationService.listsBoundingInfo.length === 0) {
+    if (!this.#calculationService.listsBoundingInfo || this.#calculationService.listsBoundingInfo.size === 0) {
       return 0;
     }
 
-    const index = this.#calculationService.listsBoundingInfo.findIndex(list => clientX >= list.x && clientX <= list.right);
-    const first = this.#calculationService.listsBoundingInfo[0];
-    const last = this.#calculationService.listsBoundingInfo[this.#calculationService.listsBoundingInfo.length - 1];
+    const values = [...this.#calculationService.listsBoundingInfo.values()];
+    const index = values.findIndex(list => clientX >= list.x && clientX <= list.right);
+    const first = values[0];
+    const last = values[values.length - 1];
 
     if (clientX > last.right) {
-      return this.#calculationService.listsBoundingInfo.length - 1;
+      return this.#calculationService.listsBoundingInfo.size - 1;
     }
 
     if (clientX < first.x) {

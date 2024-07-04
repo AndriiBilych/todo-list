@@ -11,6 +11,7 @@ import { TaskModel } from '../../models/task.model';
 import { IList } from '../../models/interfaces/list.interface';
 import { ListDraggingService } from '../../services/list-dragging.service';
 import { BoardModel } from '../../models/board.model';
+import { CalculationService } from '../../services/calculation.service';
 
 @Component({
   selector: 'app-list',
@@ -40,7 +41,9 @@ export class ListComponent implements AfterViewInit, OnDestroy {
   @Input() initListener = false;
   @Output() closeListAction = new EventEmitter();
   @ViewChild('TitleRef') titleRef: ElementRef;
+  @ViewChild('ListContainer') listContainer: ElementRef;
   #listDraggingService = inject(ListDraggingService);
+  #calculationService = inject(CalculationService);
 
   constructor(
     public readonly elementRef: ElementRef,
@@ -55,8 +58,8 @@ export class ListComponent implements AfterViewInit, OnDestroy {
     }
 
     if (this.initListener && this.selectedBoard && this.listAtMousePosition) {
-      console.log('ngAfterViewInit', this.titleRef.nativeElement);
       this.#listDraggingService.initListMouseDownListener(this.titleRef.nativeElement, this.selectedBoard, this.listAtMousePosition);
+      this.calculateBoundingInfo();
     }
 
     this.titleRef.nativeElement.addEventListener('contextmenu', this.onRightClick.bind(this));
@@ -66,6 +69,10 @@ export class ListComponent implements AfterViewInit, OnDestroy {
     if (this.initListener) {
       this.titleRef.nativeElement.removeAllListeners();
     }
+  }
+
+  calculateBoundingInfo(): void {
+    this.#calculationService.calculateBoundingInfoSingle(this.listContainer.nativeElement, this.list.id);
   }
 
   onRightClick(event: Event): void {

@@ -7,36 +7,30 @@ import { TaskBoundingInfoModel } from '../models/task-bounding-info.model';
 })
 export class CalculationService {
   // This holds bounding positions and ids of all lists and tasks
-  public listsBoundingInfo: ListBoundingInfoModel[] = [];
+  public listsBoundingInfo = new Map<string, ListBoundingInfoModel>();
 
-  public calculateBoundingInfo(listsRef: Element[]) {
-    this.listsBoundingInfo = [];
+  public calculateBoundingInfoSingle(elem: HTMLElement, id: string): void {
+    const boundingRect = elem.getBoundingClientRect();
+    this.listsBoundingInfo.set(id, new ListBoundingInfoModel(
+      boundingRect.x,
+      boundingRect.y,
+      boundingRect.bottom,
+      boundingRect.right,
+      id
+    ));
 
-    listsRef.forEach((list, i) => {
-      const boundingRect = list.getBoundingClientRect();
-      this.listsBoundingInfo.push(
-        new ListBoundingInfoModel(
-          boundingRect.x,
-          boundingRect.y,
-          boundingRect.bottom,
-          boundingRect.right,
-          list.getAttribute('id') ?? ''
+    const taskElements = Array.from(elem.querySelectorAll('div.task-container'));
+    taskElements.forEach(ref => {
+      const holder = ref.getBoundingClientRect();
+      this.listsBoundingInfo[id].tasksBoundingInfo.push(
+        new TaskBoundingInfoModel(
+          holder.x,
+          holder.y,
+          holder.bottom,
+          holder.right,
+          ref.getAttribute('id')
         )
       );
-
-      const taskElements = Array.from(list.querySelectorAll('div.task-container'));
-      taskElements.forEach(ref => {
-        const holder = ref.getBoundingClientRect();
-        this.listsBoundingInfo[i].tasksBoundingInfo.push(
-          new TaskBoundingInfoModel(
-            holder.x,
-            holder.y,
-            holder.bottom,
-            holder.right,
-            ref.getAttribute('id')
-          )
-        );
-      });
     });
   }
 }

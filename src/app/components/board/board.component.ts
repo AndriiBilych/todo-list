@@ -20,6 +20,7 @@ import { ReactiveComponent } from '../../tools/reactive';
 import { RoutingService } from '../../services/routing.service';
 import { CalculationService } from '../../services/calculation.service';
 import { ListDraggingService } from '../../services/list-dragging.service';
+import { ListComponent } from '../list/list.component';
 
 @Component({
   selector: 'app-board',
@@ -50,8 +51,8 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   mouseStartingX: number;
   scrollSpeed = 10;
   #scrollLeft = 0;
-  @ViewChildren('ListContainer')
-  lists: QueryList<ElementRef>;
+  @ViewChildren(ListComponent)
+  _lists: QueryList<ListComponent>;
 
   listDraggingService = inject(ListDraggingService);
   #calculationService = inject(CalculationService);
@@ -93,14 +94,6 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
       this.takeUntil()
     ).subscribe((board: BoardModel) => {
       this.selectedBoard = board;
-      const interval = setInterval(() => {
-        const length = this.lists.toArray().length;
-        if (length === this.selectedBoard.lists.length) {
-          const elements = this.lists.toArray().map(({nativeElement}) => nativeElement);
-          this.#calculationService.calculateBoundingInfo(elements);
-          clearInterval(interval);
-        }
-      }, 50);
     });
   }
 
@@ -216,7 +209,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     const target = event?.target;
 
     if (target && target.isEqualNode(this.boardRef.nativeElement)) {
-      this.#calculationService.calculateBoundingInfo(this.lists.toArray().map(({nativeElement}) => nativeElement));
+      this.lists.forEach((list: ListComponent) => list.calculateBoundingInfo());
       window.scrollBy({ left: event.deltaY / -1.6 });
     }
   }
@@ -229,12 +222,12 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   @HostListener('document:mouseup')
   onMouseup(): void {
     if (window.scrollX !== this.#scrollLeft) {
-      this.#calculationService.calculateBoundingInfo(this.lists.toArray().map(({nativeElement}) => nativeElement));
+      this.lists.forEach((list: ListComponent) => list.calculateBoundingInfo());
     }
   }
 
   findTaskIndexByMouseY(clientY: number, listIndex: number): number {
-    if (!this.#calculationService.listsBoundingInfo || this.#calculationService.listsBoundingInfo.length === 0) {
+    if (!this.#calculationService.listsBoundingInfo || this.#calculationService.listsBoundingInfo.size === 0) {
       return 0;
     }
 
@@ -305,6 +298,10 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
 
   pushToArray(text: string): void {
     this.selectedBoard.lists.push(new ListModel(text));
+  }
+
+  private get lists(): ListComponent[] {
+    return this._lists.toArray().filter(({ hidden }) => !hidden);
   }
 }
 
