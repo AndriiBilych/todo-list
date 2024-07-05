@@ -59,7 +59,6 @@ export class ListComponent implements AfterViewInit, OnDestroy {
 
     if (this.initListener && this.selectedBoard && this.listAtMousePosition) {
       this.#listDraggingService.initListMouseDownListener(this.titleRef.nativeElement, this.selectedBoard, this.listAtMousePosition);
-      this.calculateBoundingInfo();
     }
 
     this.titleRef.nativeElement.addEventListener('contextmenu', this.onRightClick.bind(this));
@@ -72,7 +71,9 @@ export class ListComponent implements AfterViewInit, OnDestroy {
   }
 
   calculateBoundingInfo(): void {
-    this.#calculationService.calculateBoundingInfoSingle(this.listContainer.nativeElement, this.list.id);
+    if (this.listContainer?.nativeElement && this.list?.id) {
+      this.#calculationService.calculateBoundingInfoSingle(this.listContainer.nativeElement, this.list.id);
+    }
   }
 
   onRightClick(event: Event): void {

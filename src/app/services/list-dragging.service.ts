@@ -6,11 +6,15 @@ import { ListModel } from '../models/list.model';
 import { IList } from '../models/interfaces/list.interface';
 import { DOCUMENT } from '@angular/common';
 import { CalculationService } from './calculation.service';
+import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ListDraggingService {
+  readonly #onMoved = new Subject<boolean>();
+  public onMoved$ = this.#onMoved.asObservable();
+
   draggedListIndex: number | null = null;
   draggedListNewIndex: number | null = null;
   draggedListData: ListModel | null = null;
@@ -36,7 +40,8 @@ export class ListDraggingService {
     this.draggedListIndex = selectedBoard.lists.findIndex(({ id }) => id === listId);
     this.draggedListVisual = { ...selectedBoard.lists[this.draggedListIndex] };
     this.draggedListNewIndex = this.draggedListIndex;
-    this.draggedListData = selectedBoard.lists[this.draggedListIndex];
+    this.draggedListData = selectedBoard.lists.splice(this.draggedListIndex, 1)[0];
+
     const controller = new AbortController();
     const { signal } = controller;
     this.#document.addEventListener(EEvenType.mousemove, this.listMouseMove.bind(this, selectedBoard, listAtMousePosition), { signal });
@@ -44,13 +49,8 @@ export class ListDraggingService {
   }
 
   public listMouseMove(selectedBoard: BoardModel, listAtMousePosition: HTMLElement, event: MouseEvent): void {
-    const newIndex = this.findListIndexByMouseX(event.clientX);
-    // if (this.draggedListIndex !== newIndex && !this.shouldInsert) {
-    //   this.shouldInsert = true;
-    //   // this.draggedListData = selectedBoard.lists.splice(this.draggedListIndex, 1)[0];
-    // }
-    this.draggedListNewIndex = newIndex;
-    console.log('[list mouse move]', this.draggedListNewIndex);
+    // console.log('[list mouse move]', this.draggedListNewIndex);
+    this.draggedListNewIndex = this.findListIndexByMouseX(event.clientX);
     listAtMousePosition.style.left = `${event.clientX}px`;
     listAtMousePosition.style.top = `${event.clientY}px`;
   }
@@ -58,11 +58,9 @@ export class ListDraggingService {
   public listMouseUp(controller: AbortController, selectedBoard: BoardModel, listAtMousePosition: HTMLElement, event: MouseEvent): void {
     // console.log('[list mouse up]');
     controller.abort();
-    // if (this.shouldInsert) {
-      // selectedBoard.lists.splice(this.draggedListNewIndex, 0, this.draggedListData);
-      // this.shouldInsert = false;
-      this.draggedListData = null;
-    // }
+    selectedBoard.lists.splice(this.draggedListNewIndex, 0, this.draggedListData);
+    this.#onMoved.next(true);
+    this.draggedListData = null;
     this.resetDraggingListStatus(listAtMousePosition);
   }
 

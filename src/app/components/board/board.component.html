@@ -8,7 +8,7 @@
           ></app-list-placeholder>
         </div>
       }
-      <div class="width-230px relative h-min-content mt-2" [class.hidden]="i === listDraggingService.draggedListIndex">
+      <div class="width-230px relative h-min-content mt-2">
         <app-list (closeListAction)="removeList(i)"
                   [list]="list"
                   [initListener]="true"
