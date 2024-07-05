@@ -1,19 +1,18 @@
 <div class="relative" #ListContainer>
   <div class="mx-1.5 bg-gray-100 rounded-t-xl group">
-    <div #TitleRef class="flex justify-between px-5 py-2.5" [id]="list.id">
-      <ng-container *ngIf="!isChangingName; else titleInput">
-        <div class="title ellipsis-box-1" [title]="list.title">{{list.title}}</div>
-        <button (mousedown)="closeListAction.emit()"
-                class="remove-list-button hidden border-none mb-auto"
-        >&times;</button>
-      </ng-container>
-      <ng-template #titleInput>
-        <app-input-form
-          (textSubmissionAction)="isChangingName = false; list.title = $event.text.length > 0 ? $event.text : list.title"
-          [textToShow]="list.title"
-        ></app-input-form>
-      </ng-template>
-    </div>
+      <div #TitleRef class="flex justify-between px-5 py-2.5" [id]="list.id">
+        @if (!isChangingName) {
+          <div class="title ellipsis-box-1" [title]="list.title">{{list.title}}</div>
+          <button (mousedown)="removeListAction.emit()"
+                  class="remove-list-button hidden border-none mb-auto"
+          >&times;</button>
+        } @else {
+          <app-input-form
+            (textSubmissionAction)="isChangingName = false; list.title = $event.text.length > 0 ? $event.text : list.title"
+            [textToShow]="list.title"
+          ></app-input-form>
+        }
+      </div>
   </div>
 
   <div class="list bg-gray-100 my-0 mx-1.5 overflow-y-auto" [id]="list.id">

@@ -39,7 +39,7 @@ export class ListComponent implements AfterViewInit, OnDestroy {
   @Input() listAtMousePosition: HTMLElement | null = null;
   @Input() hidden = false;
   @Input() initListener = false;
-  @Output() closeListAction = new EventEmitter();
+  @Output() removeListAction = new EventEmitter();
   @ViewChild('TitleRef') titleRef: ElementRef;
   @ViewChild('ListContainer') listContainer: ElementRef;
   #listDraggingService = inject(ListDraggingService);
@@ -58,10 +58,8 @@ export class ListComponent implements AfterViewInit, OnDestroy {
     }
 
     if (this.initListener && this.selectedBoard && this.listAtMousePosition) {
-      this.#listDraggingService.initListMouseDownListener(this.titleRef.nativeElement, this.selectedBoard, this.listAtMousePosition);
+      this.#listDraggingService.initListMouseDownListener(this.titleRef.nativeElement, this.selectedBoard, this.listAtMousePosition, () => this.onClick());
     }
-
-    this.titleRef.nativeElement.addEventListener('contextmenu', this.onRightClick.bind(this));
   }
 
   ngOnDestroy(): void {
@@ -76,8 +74,7 @@ export class ListComponent implements AfterViewInit, OnDestroy {
     }
   }
 
-  onRightClick(event: Event): void {
-    event.preventDefault();
+  onClick(): void {
     this.isChangingName = !this.isChangingName;
   }
 

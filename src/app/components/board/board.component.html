@@ -1,7 +1,7 @@
 @if (selectedBoard !== null && listAtMousePosition !== null) {
   <div class="overflow-x-auto overflow-y-hidden board inline-flex mt-14" #board [id]="selectedBoard.id">
     @for (list of selectedBoard.lists; track list.id; let i = $index) {
-      @if (i === listDraggingService.draggedListNewIndex) {
+      @if (i === listDraggingService.draggedListNewIndex && listDraggingService.shouldInsert) {
         <div class="width-230px relative h-min-content mt-2">
           <app-list-placeholder [list]="listDraggingService.draggedListData"
                     [hidden]="true"
@@ -9,14 +9,14 @@
         </div>
       }
       <div class="width-230px relative h-min-content mt-2">
-        <app-list (closeListAction)="removeList(i)"
+        <app-list (removeListAction)="removeList(i)"
                   [list]="list"
                   [initListener]="true"
                   [selectedBoard]="selectedBoard"
                   [listAtMousePosition]="listAtMousePosition.nativeElement"
         ></app-list>
       </div>
-      @if (i === selectedBoard.lists.length - 1 && listDraggingService.draggedListNewIndex > i) {
+      @if (i === selectedBoard.lists.length - 1 && listDraggingService.draggedListNewIndex > i && listDraggingService.shouldInsert) {
         <div class="width-230px relative h-min-content mt-2">
           <app-list-placeholder [list]="listDraggingService.draggedListData"
                                 [hidden]="true"
