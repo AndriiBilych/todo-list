@@ -16,6 +16,13 @@
                   [listAtMousePosition]="listAtMousePosition.nativeElement"
         ></app-list>
       </div>
+      @if (i === selectedBoard.lists.length - 1 && listDraggingService.draggedListNewIndex > i) {
+        <div class="width-230px relative h-min-content mt-2">
+          <app-list-placeholder [list]="listDraggingService.draggedListData"
+                                [hidden]="true"
+          ></app-list-placeholder>
+        </div>
+      }
     }
     <div class="add-list-container">
       <ng-container *ngIf="!isAddingList; else titleInput">
