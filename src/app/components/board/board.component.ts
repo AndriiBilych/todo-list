@@ -119,7 +119,9 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
 
     if (target && target.isEqualNode(this.boardRef.nativeElement)) {
       this.calculateBoundingInfoForAll();
-      window.scrollBy({ left: event.deltaY / -1.6 });
+      if (!event.shiftKey) {
+        window.scrollBy({ left: event.deltaY });
+      }
     }
   }
 
