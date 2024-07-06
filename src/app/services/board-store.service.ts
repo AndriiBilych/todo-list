@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { BoardModel } from '../models/board.model';
 import { isNotNullOrUndefined } from 'codelyzer/util/isNotNullOrUndefined';
+import { BehaviorSubject } from 'rxjs';
+
+import { BoardModel } from '../models/board.model';
 
 @Injectable({
   providedIn: 'root'

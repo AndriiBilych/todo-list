@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+
 import { ListBoundingInfoModel } from '../models/list-bounding-info.model';
 import { TaskBoundingInfoModel } from '../models/task-bounding-info.model';
 

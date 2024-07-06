@@ -6,19 +6,21 @@ import {
   OnInit,
   ViewChild, viewChildren,
 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { filter, map } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+
 import { BoardModel } from '../../models/board.model';
 import { ListModel } from '../../models/list.model';
 import { BoardStoreService } from '../../services/board-store.service';
-import { combineLatest } from 'rxjs';
 import { TaskModel } from '../../models/task.model';
-import { ActivatedRoute } from '@angular/router';
-import { filter, map } from 'rxjs/operators';
 import { isNotNullOrUndefined } from 'codelyzer/util/isNotNullOrUndefined';
 import { ReactiveComponent } from '../../tools/reactive';
 import { RoutingService } from '../../services/routing.service';
 import { CalculationService } from '../../services/calculation.service';
 import { ListDraggingService } from '../../services/list-dragging.service';
 import { ListComponent } from '../list/list.component';
+import { makeId } from '../../tools/make-id.tool';
 
 @Component({
   selector: 'app-board',
@@ -162,23 +164,11 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     let isPresent = false;
     let newId = '';
     do {
-      newId = this.makeId(4);
+      newId = makeId(4);
       isPresent = this.selectedBoard.lists.findIndex(({id}) => id === newId) !== -1;
     } while (isPresent);
 
     return newId;
-  }
-
-  private makeId(length: number): string {
-    let result = '';
-    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    const charactersLength = characters.length;
-    let counter = 0;
-    while (counter < length) {
-      result += characters.charAt(Math.floor(Math.random() * (charactersLength - 1)));
-      counter += 1;
-    }
-    return result;
   }
 
 }

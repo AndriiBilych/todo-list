@@ -1,8 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { BoardModel } from '../../models/board.model';
-import { BoardStoreService } from '../../services/board-store.service';
 import { filter, map } from 'rxjs/operators';
 import { isNotNullOrUndefined } from 'codelyzer/util/isNotNullOrUndefined';
+
+import { BoardModel } from '../../models/board.model';
+import { BoardStoreService } from '../../services/board-store.service';
 
 @Component({
   selector: 'app-homepage',

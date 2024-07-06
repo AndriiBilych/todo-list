@@ -1,12 +1,13 @@
+import { DOCUMENT } from '@angular/common';
 import { inject, Injectable } from '@angular/core';
+import { Subject } from 'rxjs';
+
 import { EEvenType } from '../enums/even-type.enum';
 import { BoardModel } from '../models/board.model';
 import { getIdFromAttribute } from '../tools/html-element.tools';
 import { ListModel } from '../models/list.model';
 import { IList } from '../models/interfaces/list.interface';
-import { DOCUMENT } from '@angular/common';
 import { CalculationService } from './calculation.service';
-import { Subject } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'

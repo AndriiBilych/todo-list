@@ -7,6 +7,7 @@ import {
   ElementRef,
   AfterViewInit, OnDestroy, inject
 } from '@angular/core';
+
 import { TaskModel } from '../../models/task.model';
 import { IList } from '../../models/interfaces/list.interface';
 import { ListDraggingService } from '../../services/list-dragging.service';
