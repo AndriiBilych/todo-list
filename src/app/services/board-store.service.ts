@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 import { isNotNullOrUndefined } from 'codelyzer/util/isNotNullOrUndefined';
 import { BehaviorSubject } from 'rxjs';
 
@@ -11,8 +11,7 @@ export class BoardStoreService {
   #boardsSource = new BehaviorSubject<BoardModel[] | null>(null);
   boards$ = this.#boardsSource.asObservable();
 
-  #selectedBoardSource = new BehaviorSubject<BoardModel | null>(null);
-  selectedBoard$ = this.#selectedBoardSource.asObservable();
+  selectedBoard = signal<BoardModel | null>(null);
 
   setBoards(data: BoardModel[]) {
     this.#boardsSource.next(data);
@@ -39,7 +38,7 @@ export class BoardStoreService {
   }
 
   private setSelectedBoard(data: BoardModel | null) {
-    this.#selectedBoardSource.next(data);
+    this.selectedBoard.set(data);
   }
 
   private newBoardId(): number {

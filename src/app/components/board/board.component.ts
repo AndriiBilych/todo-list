@@ -1,10 +1,10 @@
 import {
-  Component,
+  Component, effect,
   ElementRef,
   HostListener, inject,
   OnDestroy,
   OnInit,
-  ViewChild, viewChildren,
+  ViewChild, viewChildren
 } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { filter, map } from 'rxjs/operators';
@@ -39,7 +39,6 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
 
   isAddingList = false;
   isDraggingTask = false;
-  // isDraggingBoard = false;
   @ViewChild('FakeTask') fakeTask: ElementRef;
   @ViewChild('board') boardRef: ElementRef;
   @ViewChild('ListAtMousePosition') listAtMousePosition: ElementRef;
@@ -60,6 +59,14 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     this.mouseStartingX = null;
     this.selectedBoard = null;
     this.currentIndex = null;
+
+    effect(() => {
+      const data = this.boardStoreService.selectedBoard();
+      if (isNotNullOrUndefined(data)) {
+        this.selectedBoard = data;
+        this.initBoundingInfo();
+      }
+    });
   }
 
   ngOnInit(): void {
@@ -81,14 +88,6 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
         this.routingService.routeToNotFound();
       }
       this.boardStoreService.selectBoard(board);
-    });
-
-    this.boardStoreService.selectedBoard$.pipe(
-      filter((board: BoardModel) => isNotNullOrUndefined(board)),
-      this.takeUntil()
-    ).subscribe((board: BoardModel) => {
-      this.selectedBoard = board;
-      this.initBoundingInfo();
     });
 
     this.listDraggingService.onMoved$.pipe(this.takeUntil()).subscribe(() => this.initBoundingInfo());
