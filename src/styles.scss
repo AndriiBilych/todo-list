@@ -43,17 +43,14 @@ body {
   user-select: none;
   background-color: var(--background);
   font-family: Roboto, "Helvetica Neue", sans-serif;
+
+  // Hide the vertical scrollbar
+  overflow-y: hidden;
 }
 
-.board > ngx-simplebar > .simplebar-wrapper > .simplebar-mask > .simplebar-offset > .simplebar-content-wrapper > .simplebar-content{
-  display: flex;
-}
-
-.simplebar-track.simplebar-vertical {
-  top: 8px !important;
-  width: 10px !important;
-  left: 205px;
-}
+//body::-webkit-scrollbar {
+//
+//}
 
 /*----------------------------------------------- UTILITIES -------------------------------------------------------*/
 
@@ -66,14 +63,3 @@ body {
   width: 230px;
 }
 
-body::-webkit-scrollbar {
-
-}
-
-body {
-  overflow-y: hidden;
-}
-
-.board {
-  overflow-x: scroll;
-}
