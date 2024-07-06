@@ -1,4 +1,4 @@
-@if (selectedBoard !== null && listAtMousePosition !== null) {
+@if (selectedBoard && listAtMousePosition?.nativeElement) {
   <div class="overflow-x-auto overflow-y-hidden board inline-flex mt-14" #board [id]="selectedBoard.id">
     @for (list of selectedBoard.lists; track list.id; let i = $index) {
       @if (i === listDraggingService.draggedListNewIndex && listDraggingService.shouldInsert) {

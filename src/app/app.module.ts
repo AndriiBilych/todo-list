@@ -35,11 +35,13 @@ import { ListPlaceholderComponent } from './components/list-placeholder/list-pla
     NotFoundPageComponent,
     ListPlaceholderComponent
   ],
-  bootstrap: [AppComponent], imports: [BrowserModule,
+  bootstrap: [AppComponent],
+  imports: [
+    BrowserModule,
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule],
-  providers: [provideHttpClient(withInterceptorsFromDi())]
+  providers: [provideHttpClient(withInterceptorsFromDi())],
 })
 export class AppModule { }
