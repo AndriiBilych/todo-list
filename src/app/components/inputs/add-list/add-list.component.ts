@@ -5,7 +5,7 @@ import {
   ViewChild,
   ElementRef,
   AfterViewInit,
-  Input, OnDestroy
+  Input, HostListener
 } from '@angular/core';
 
 @Component({
@@ -36,6 +36,11 @@ export class AddListComponent implements AfterViewInit {
   @Input() textToShow: string;
 
   @ViewChild('input') inputRef: ElementRef;
+
+  @HostListener('document:keydown.escape')
+  onKeyUpEscape() {
+    this.submit();
+  }
 
   ngAfterViewInit(): void {
     this.inputRef.nativeElement.focus();
