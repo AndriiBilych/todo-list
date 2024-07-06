@@ -30,9 +30,6 @@ import {
       </button>
     </div>
   `,
-  styles: [`
-
-  `]
 })
 export class InputFormComponent implements AfterViewInit {
   @Output() textSubmissionAction = new EventEmitter();

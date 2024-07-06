@@ -24,19 +24,18 @@
         </div>
       }
     }
-    <div class="add-list-container">
-      <ng-container *ngIf="!isAddingList; else titleInput">
-        <button (click)="isAddingList = !isAddingList"
-                class="border-none bg-gray-100 my-2 mx-1.5 py-1.5 px-3 rounded w-max"
-        >+ Add another list</button>
-      </ng-container>
-      <ng-template #titleInput>
-        <app-input-form
-          (textSubmissionAction)="isAddingList = !isAddingList;
-        pushToArray($event.text.length > 0 && $event.text !== '\n' ? $event.text : 'New List');
-        isAddingList = $event.keep"
-        ></app-input-form>
-      </ng-template>
+    <div class="width-230px bg-gray-100 rounded-xl relative h-min-content mt-2">
+      <div class="flex justify-between px-5 py-2.5">
+        @if (!isAddingList) {
+          <button (click)="isAddingList = !isAddingList"
+                  class="border-none w-max"
+          >+ Add another list</button>
+        } @else {
+          <app-add-list
+            (textSubmissionAction)="onTextSubmissionAction($event)"
+          ></app-add-list>
+        }
+      </div>
     </div>
   </div>
   <div #FakeTask

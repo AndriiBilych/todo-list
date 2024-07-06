@@ -154,8 +154,37 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     }, 50);
   }
 
-  pushToArray(text: string): void {
-    this.selectedBoard.lists.push(new ListModel(text));
+  onTextSubmissionAction($event: { text: string, keep: boolean }) {
+    this.isAddingList = !this.isAddingList;
+    if ($event?.text?.length) {
+      const newId = this.generateNewId();
+      this.selectedBoard.lists.push(new ListModel($event.text, newId));
+      this.isAddingList = $event.keep;
+    }
   }
+
+  private generateNewId(): string {
+    let isPresent = false;
+    let newId = '';
+    do {
+      newId = this.makeId(4);
+      isPresent = this.selectedBoard.lists.findIndex(({id}) => id === newId) !== -1;
+    } while (isPresent);
+
+    return newId;
+  }
+
+  private makeId(length: number): string {
+    let result = '';
+    const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    const charactersLength = characters.length;
+    let counter = 0;
+    while (counter < length) {
+      result += characters.charAt(Math.floor(Math.random() * (charactersLength - 1)));
+      counter += 1;
+    }
+    return result;
+  }
+
 }
 

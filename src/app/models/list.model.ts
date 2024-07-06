@@ -8,9 +8,9 @@ export class ListModel implements IDeserialize<IList>, IList {
   id: string;
   order: number;
 
-  constructor(text?: string, order?: number) {
+  constructor(text?: string, id?: string, order?: number) {
     this.tasks = [];
-    this.id = '';
+    this.id = id;
     this.title = text;
     this.order = order;
   }

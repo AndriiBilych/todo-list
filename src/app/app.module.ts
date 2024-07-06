@@ -9,7 +9,7 @@ import { AppComponent } from './app.component';
 import { BoardComponent } from './components/board/board.component';
 import { ListComponent } from './components/list/list.component';
 import { ControlPanelComponent } from './components/control-panel/control-panel.component';
-import { InputFormComponent } from './components/input-form/input-form.component';
+import { InputFormComponent } from './components/inputs/input-form/input-form.component';
 import { TaskComponent } from './components/task/task.component';
 import { ColorPickerComponent } from './components/color-picker/color-picker.component';
 import { HomepageComponent } from './components/homepage/homepage.component';
@@ -18,6 +18,7 @@ import { HomepageListItemComponent } from './components/homepage-list-item/homep
 import { HomepageListButtonComponent } from './components/homepage-list-button/homepage-list-button.component';
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 import { ListPlaceholderComponent } from './components/list-placeholder/list-placeholder.component';
+import { AddListComponent } from './components/inputs/add-list/add-list.component';
 
 @NgModule({
   declarations: [
@@ -26,6 +27,7 @@ import { ListPlaceholderComponent } from './components/list-placeholder/list-pla
     ListComponent,
     ControlPanelComponent,
     InputFormComponent,
+    AddListComponent,
     TaskComponent,
     ColorPickerComponent,
     HomepageComponent,
