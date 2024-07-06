@@ -1,13 +1,10 @@
 import {
-  AfterViewInit,
   Component,
   ElementRef,
   HostListener, inject,
   OnDestroy,
   OnInit,
-  QueryList,
-  ViewChild,
-  ViewChildren
+  ViewChild, viewChildren,
 } from '@angular/core';
 import { BoardModel } from '../../models/board.model';
 import { ListModel } from '../../models/list.model';
@@ -46,10 +43,8 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   @ViewChild('ListAtMousePosition') listAtMousePosition: ElementRef;
 
   mouseStartingX: number;
-  scrollSpeed = 10;
   #scrollLeft = 0;
-  @ViewChildren(ListComponent)
-  lists: QueryList<ListComponent>;
+  lists = viewChildren(ListComponent);
 
   listDraggingService = inject(ListDraggingService);
   #calculationService = inject(CalculationService);
@@ -100,7 +95,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   initBoundingInfo() {
     if (this.selectedBoard.lists.length > 0) {
       const interval = setInterval(() => {
-        if (this.lists.length === this.selectedBoard.lists.length) {
+        if (this.lists().length === this.selectedBoard.lists.length) {
           this.calculateBoundingInfoForAll();
           clearInterval(interval);
         }
@@ -139,14 +134,14 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
 
   calculateBoundingInfoForAll(): void {
     this.#calculationService.listsBoundingInfo.clear();
-    this.lists.forEach((list: ListComponent) => list.calculateBoundingInfo());
+    this.lists().forEach((list: ListComponent) => list.calculateBoundingInfo());
   }
 
   removeList(index: number): void {
     const removed = this.selectedBoard.lists.splice(index, 1);
-    const length = this.lists.length;
+    const length = this.lists().length;
     const interval = setInterval(() => {
-      if (this.lists.length === length - 1) {
+      if (this.lists().length === length - 1) {
         this.#calculationService.removeBoundingInfo(removed[0].id);
         this.calculateBoundingInfoForAll();
         clearInterval(interval);
