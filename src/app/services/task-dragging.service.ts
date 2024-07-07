@@ -2,168 +2,91 @@ import { inject, Injectable } from '@angular/core';
 import { EEvenType } from '../enums/even-type.enum';
 import { BoardModel } from '../models/board.model';
 import { getIdFromAttribute } from '../tools/html-element.tools';
-import { ListModel } from '../models/list.model';
-import { IList } from '../models/interfaces/list.interface';
 import { DOCUMENT } from '@angular/common';
 import { CalculationService } from './calculation.service';
 import { TaskModel } from '../models/task.model';
+import { ITask } from '../models/interfaces/task.interface';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TaskDraggingService {
-  // currentTaskIndex = 0;
-  // taskPositionsByOrder: TaskBoundingInfoModel[] = [];
-  // targetTask: HTMLElement = null;
+  draggedTaskIndex: number | null = null;
+  draggedTaskListIndex: number | null = null;
+  draggedTaskNewIndex: number | null = null;
+  draggedTaskNewListIndex: number | null = null;
+  draggedTaskData: TaskModel | null = null;
+  draggedTaskVisual: ITask | null = null;
 
-  // taskMouseDown(event: MouseEvent): void {
-  //   this.isDraggingTask = true;
-  //   this.targetTask = targetElement;
-  //
-  //   if (targetElement.classList.contains('task-title')) {
-  //     this.targetTask = targetElement.parentElement;
-  //   }
-  //
-  //   const targetTaskId = this.targetTask.getAttribute('id');
-  //   this.selectedTaskData = this.getTaskDataById(targetTaskId);
-  //   this.currentListIndex = this.selectedBoard.lists.findIndex(list => list.tasks.findIndex(({ id }) => id === targetTaskId) !== -1);
-  //   this.currentTaskIndex = this.selectedBoard.lists[this.currentListIndex].tasks.findIndex(({ id }) => id === targetTaskId);
-  //
-  //   this.selectedBoard.lists[this.currentListIndex].tasks[this.currentTaskIndex].selected = true;
-  // }
-  //
-  // boardMouseDown(event: MouseEvent): void {
-  //   this.isDraggingBoard = true;
-  //   this.mouseStartingX = event.clientX;
-  // }
-  //
-  // @HostListener('document:mousemove', ['$event'])
-  // drag(event): void {
-  //   if (this.isDraggingTask) {
-  //
-  //     // set fake task's position
-  //     this.fakeTask.nativeElement.style.top = `${event.clientY}px`;
-  //     this.fakeTask.nativeElement.style.left = `${event.clientX}px`;
-  //
-  //     const newListIndex = this.findListIndexByMouseX(event.clientX);
-  //     const newTaskIndex = this.findTaskIndexByMouseY(event.clientY, newListIndex);
-  //
-  //     const currentList = this.selectedBoard.lists[this.currentListIndex];
-  //     const newList = this.selectedBoard.lists[newListIndex];
-  //
-  //     // if list is the same
-  //     if (newListIndex === this.currentListIndex) {
-  //       // if task position is new
-  //       if (newTaskIndex !== this.currentTaskIndex) {
-  //         const id = this.selectedTaskData.id;
-  //         const currentTask = currentList.tasks[this.currentTaskIndex];
-  //         currentList.tasks[this.currentTaskIndex] = currentList.tasks[newTaskIndex];
-  //         currentList.tasks[newTaskIndex] = currentTask;
-  //
-  //         this.currentTaskIndex = newTaskIndex;
-  //
-  //         this.calculateBoundingInfo();
-  //
-  //         // next line refreshes reference to the correct object !IMPORTANT
-  //         this.selectedTaskData = this.getTaskDataById(id);
-  //       }
-  //     }
-  //     // if list is different
-  //     else {
-  //       const id = this.selectedTaskData.id;
-  //
-  //       // delete old task, and add new task
-  //       newList.tasks.splice(newTaskIndex, 0, this.selectedTaskData);
-  //       // next line deletes the object that selectedTaskData is pointing to !IMPORTANT
-  //       currentList.tasks.splice(this.currentTaskIndex, 1);
-  //
-  //       this.currentListIndex = newListIndex;
-  //       this.currentTaskIndex = newTaskIndex;
-  //
-  //       this.calculateBoundingInfo();
-  //       this.taskCleanup(id, this.selectedBoard.lists[newListIndex].id);
-  //
-  //       // next line refreshes reference to the correct object !IMPORTANT
-  //       this.selectedTaskData = this.getTaskDataById(id);
-  //     }
-  //   }
-  //   if (this.isDraggingBoard) {
-  //     this.scrollContainerRef.scrollLeft -= (event.clientX - this.mouseStartingX) / this.scrollSpeed;
-  //   }
-  // }
-  //
-  // @HostListener('mouseup')
-  // endDrag(): void {
-  //   if (this.targetTask !== null) {
-  //     this.isDraggingTask = false;
-  //     this.targetTask = null;
-  //     this.selectedTaskData = null;
-  //     this.listsBoundingInfo = [];
-  //
-  //     // deselect all tasks
-  //     this.selectedBoard.lists.forEach(list => list.tasks.forEach(task => {
-  //       if (task !== undefined) {
-  //         task.selected = false;
-  //       }
-  //     }));
-  //   }
-  //
-  //   if (this.selectedBoard !== null) {
-  //     this.isDraggingBoard = false;
-  //     this.mouseStartingX = null;
-  //   }
-  //
-  //   // calculate board bounding info
-  //   this.calculateBoundingInfo();
+  #document: Document = inject(DOCUMENT);
+  #calculationService = inject(CalculationService);
+  shouldInsert = false;
 
-  // }
+  public initTaskMouseDownListener(
+    element: HTMLElement,
+    selectedBoard: BoardModel,
+    taskAtMousePosition: HTMLElement,
+    clickCallback: (e: MouseEvent) => void,
+  ): void {
+    element.addEventListener(
+      EEvenType.mousedown,
+      () => this.taskMouseDown(element, selectedBoard, taskAtMousePosition, clickCallback),
+    );
+  }
 
-  // findTaskIndexByMouseY(clientY: number, listIndex: number): number {
-  //   if (!this.#calculationService.listsBoundingInfo || this.#calculationService.listsBoundingInfo.size === 0) {
-  //     return 0;
-  //   }
-  //
-  //   const taskBoundsInfo = this.#calculationService.listsBoundingInfo[listIndex].tasksBoundingInfo;
-  //
-  //   if (!taskBoundsInfo || taskBoundsInfo.length === 0) {
-  //     return 0;
-  //   }
-  //
-  //   const first = taskBoundsInfo[0];
-  //   const last = taskBoundsInfo[taskBoundsInfo.length - 1];
-  //   const selectedListIndex = this.findListIndexByTaskId(this.selectedTaskData.id);
-  //
-  //   if (!first || !last || clientY < first.y) {
-  //     return 0;
-  //   }
-  //
-  //   if (clientY > last.bottom) {
-  //     if (taskBoundsInfo.length === 1 && last.id !== this.selectedTaskData.id) {
-  //       return 1;
-  //     }
-  //     return taskBoundsInfo.length - (selectedListIndex === listIndex ? 1 : 0);
-  //   }
-  //
-  //   let index = 0;
-  //   for (let i = 0; i < taskBoundsInfo.length; i++) {
-  //     if (clientY >= taskBoundsInfo[i].y) {
-  //       index = i;
-  //     }
-  //   }
-  //
-  //   return index;
-  // }
+  taskMouseDown(element: HTMLElement, selectedBoard: BoardModel, taskAtMousePosition: HTMLElement, clickCallback: (e: MouseEvent) => void): void {
+    console.log('[task mouse down]');
 
-  // findListIndexByTaskId(id: string): number | null {
-  //   for (let i = 0; i < this.selectedBoard.lists.length; i++) {
-  //     for (const task of this.selectedBoard.lists[i].tasks) {
-  //       if (task !== undefined && task.id === id) {
-  //         return i;
-  //       }
-  //     }
-  //   }
-  //   return null;
-  // }
+    const taskId = getIdFromAttribute(element);
+    this.draggedTaskListIndex = selectedBoard.lists.findIndex(({ tasks }) => {
+      this.draggedTaskIndex = tasks.findIndex(({ id }) => taskId === id);
+      return this.draggedTaskIndex > -1;
+    });
+    this.draggedTaskVisual = { ...selectedBoard.lists[this.draggedTaskListIndex].tasks[this.draggedTaskIndex] };
+    this.draggedTaskNewIndex = this.draggedTaskIndex;
+    this.draggedTaskNewListIndex = this.draggedTaskListIndex;
+    this.draggedTaskData = selectedBoard.lists[this.draggedTaskListIndex].tasks[this.draggedTaskIndex];
+
+    const controller = new AbortController();
+    const { signal } = controller;
+    this.#document.addEventListener(EEvenType.mousemove, this.taskMouseMove.bind(this, selectedBoard, taskAtMousePosition), { signal });
+    this.#document.addEventListener(EEvenType.mouseup, this.taskMouseUp.bind(this, controller, selectedBoard, taskAtMousePosition, clickCallback), { signal });
+  }
+
+  taskMouseMove(): void {
+    console.log('[task mouse move]');
+
+    // this.draggedListNewIndex = this.findListIndexByMouseX(event.clientX);
+    // if (!this.shouldInsert) {
+    //   this.draggedListData = selectedBoard.lists.splice(this.draggedListIndex, 1)[0];
+    //   this.shouldInsert = true;
+    // } else {
+    //   listAtMousePosition.style.left = `${event.clientX}px`;
+    //   listAtMousePosition.style.top = `${event.clientY}px`;
+    // }
+  }
+
+  taskMouseUp(
+    controller: AbortController,
+    selectedBoard: BoardModel,
+    taskAtMousePosition: HTMLElement,
+    clickCallback: (e: MouseEvent) => void,
+    event: MouseEvent
+  ): void {
+    console.log('[task mouse up]');
+
+    controller.abort();
+    // if (this.shouldInsert) {
+    //   selectedBoard.lists.splice(this.draggedListNewIndex, 0, this.draggedListData);
+    //   this.#onMoved.next(true);
+    //   this.shouldInsert = false;
+    // } else {
+    //   clickCallback(event);
+    // }
+    // this.draggedListData = null;
+    // this.resetDraggingListStatus(listAtMousePosition);
+  }
+
   //
   // getTaskDataById(id: string): TaskModel {
   //   for (const list of this.selectedBoard.lists) {

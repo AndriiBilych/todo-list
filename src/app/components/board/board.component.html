@@ -1,4 +1,4 @@
-@if (selectedBoard && listAtMousePosition?.nativeElement) {
+@if (selectedBoard && listAtMousePosition?.nativeElement && taskAtMousePosition?.nativeElement) {
   <div class="overflow-x-auto overflow-y-hidden board inline-flex mt-14" #board [id]="selectedBoard.id">
     @for (list of selectedBoard.lists; track list.id; let i = $index) {
       @if (i === listDraggingService.draggedListNewIndex && listDraggingService.shouldInsert) {
@@ -14,6 +14,7 @@
                   [initListener]="true"
                   [selectedBoard]="selectedBoard"
                   [listAtMousePosition]="listAtMousePosition.nativeElement"
+                  [taskAtMousePosition]="taskAtMousePosition.nativeElement"
         ></app-list>
       </div>
       @if (i === selectedBoard.lists.length - 1 && listDraggingService.draggedListNewIndex > i && listDraggingService.shouldInsert) {
@@ -53,6 +54,14 @@
   <div id="list-at-mouse-position" class="width-230px relative">
     @if (listDraggingService.draggedListVisual !== null) {
       <app-list-placeholder [list]="listDraggingService.draggedListVisual"></app-list-placeholder>
+    }
+  </div>
+</div>
+
+<div #TaskAtMousePosition class="width-230px fixed">
+  <div id="task-at-mouse-position" class="width-230px relative">
+    @if (taskDraggingService.draggedTaskVisual !== null) {
+      <app-task-placeholder [task]="taskDraggingService.draggedTaskVisual"></app-task-placeholder>
     }
   </div>
 </div>

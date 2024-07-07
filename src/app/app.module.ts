@@ -19,6 +19,7 @@ import { HomepageListButtonComponent } from './components/homepage-list-button/h
 import { NotFoundPageComponent } from './components/not-found-page/not-found-page.component';
 import { ListPlaceholderComponent } from './components/list-placeholder/list-placeholder.component';
 import { AddListComponent } from './components/inputs/add-list/add-list.component';
+import { TaskPlaceholderComponent } from './components/task-placeholder/task-placeholder.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { AddListComponent } from './components/inputs/add-list/add-list.componen
     HomepageListItemComponent,
     HomepageListButtonComponent,
     NotFoundPageComponent,
-    ListPlaceholderComponent
+    ListPlaceholderComponent,
+    TaskPlaceholderComponent
   ],
   bootstrap: [AppComponent],
   imports: [

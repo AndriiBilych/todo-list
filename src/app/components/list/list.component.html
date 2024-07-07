@@ -19,6 +19,10 @@
     <app-task
       *ngFor="let task of list.tasks; index as i"
       [task]="task"
+      [list]="list"
+      [selectedBoard]="selectedBoard"
+      [taskAtMousePosition]="taskAtMousePosition"
+      [initListener]="true"
       (removeAction)="list.tasks.splice(i, 1)"
     ></app-task>
   </div>

@@ -21,6 +21,7 @@ import { CalculationService } from '../../services/calculation.service';
 import { ListDraggingService } from '../../services/list-dragging.service';
 import { ListComponent } from '../list/list.component';
 import { makeId } from '../../tools/make-id.tool';
+import { TaskDraggingService } from '../../services/task-dragging.service';
 
 @Component({
   selector: 'app-board',
@@ -42,12 +43,14 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   @ViewChild('FakeTask') fakeTask: ElementRef;
   @ViewChild('board') boardRef: ElementRef;
   @ViewChild('ListAtMousePosition') listAtMousePosition: ElementRef;
+  @ViewChild('TaskAtMousePosition') taskAtMousePosition: ElementRef;
 
   mouseStartingX: number;
   #scrollLeft = 0;
   lists = viewChildren(ListComponent);
 
   listDraggingService = inject(ListDraggingService);
+  taskDraggingService = inject(TaskDraggingService);
   #calculationService = inject(CalculationService);
 
   constructor(
@@ -170,5 +173,10 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     return newId;
   }
 
+  // boardMouseDown(event: MouseEvent): void {
+  //   this.isDraggingBoard = true;
+  //   this.mouseStartingX = event.clientX;
+  // }
+  //
 }
 

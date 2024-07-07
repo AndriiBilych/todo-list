@@ -37,25 +37,27 @@ export class ListComponent implements AfterViewInit, OnDestroy {
 
   @Input() list: IList;
   @Input() selectedBoard: BoardModel | null = null;
-  @Input() listAtMousePosition: HTMLElement | null = null;
+  @Input() listAtMousePosition!: HTMLElement;
+  @Input() taskAtMousePosition!: HTMLElement;
   @Input() hidden = false;
   @Input() initListener = false;
+
   @Output() removeListAction = new EventEmitter();
+
   @ViewChild('TitleRef') titleRef: ElementRef;
   @ViewChild('ListContainer') listContainer: ElementRef;
+
   #listDraggingService = inject(ListDraggingService);
   #calculationService = inject(CalculationService);
 
-  constructor(
-    public readonly elementRef: ElementRef,
-  ) {
+  constructor() {
     this.isAddingTask = false;
     this.isChangingName = false;
   }
 
   ngAfterViewInit(): void {
     if (!this.titleRef?.nativeElement) {
-      throw new Error('Task ref not found');
+      throw new Error('List ref not found');
     }
 
     if (this.initListener && this.selectedBoard && this.listAtMousePosition) {
@@ -71,7 +73,7 @@ export class ListComponent implements AfterViewInit, OnDestroy {
 
   calculateBoundingInfo(): void {
     if (this.listContainer?.nativeElement && this.list?.id) {
-      this.#calculationService.calculateBoundingInfoSingle(this.listContainer.nativeElement, this.list.id);
+      this.#calculationService.calculateListBoundingInfo(this.listContainer.nativeElement, this.list.id);
     }
   }
 
