@@ -6,13 +6,11 @@ export class ListModel implements IDeserialize<IList>, IList {
   tasks: TaskModel[];
   title = 'New List';
   id: string;
-  order: number;
 
-  constructor(text?: string, id?: string, order?: number) {
+  constructor(text?: string, id?: string) {
     this.tasks = [];
     this.id = id;
     this.title = text;
-    this.order = order;
   }
 
   deserialize(input: IList): this {
@@ -20,11 +18,6 @@ export class ListModel implements IDeserialize<IList>, IList {
 
     this.tasks = this.tasks.map((item) => new TaskModel().deserialize(item));
 
-    this.tasks.sort((first, second) =>
-      first.order > second.order ? 1 : first.order < second.order ? -1 : 0
-    );
-
     return this;
-
   }
 }

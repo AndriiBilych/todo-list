@@ -26,10 +26,6 @@ export class BoardModel implements IDeserialize<IBoard>, IBoard {
 
     this.lists = this.lists.map((item) => new ListModel().deserialize(item));
 
-    this.lists.sort((first, second) =>
-      first.order > second.order ? 1 : first.order < second.order ? -1 : 0
-    );
-
     return this;
   }
 }

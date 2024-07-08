@@ -5,7 +5,7 @@ import {
   EventEmitter,
   ViewChild,
   ElementRef,
-  AfterViewInit, OnDestroy, inject
+  AfterViewInit, OnDestroy, inject, viewChildren
 } from '@angular/core';
 
 import { TaskModel } from '../../models/task.model';
@@ -13,6 +13,7 @@ import { IList } from '../../models/interfaces/list.interface';
 import { ListDraggingService } from '../../services/list-dragging.service';
 import { BoardModel } from '../../models/board.model';
 import { CalculationService } from '../../services/calculation.service';
+import { TaskComponent } from '../task/task.component';
 
 @Component({
   selector: 'app-list',
@@ -50,6 +51,8 @@ export class ListComponent implements AfterViewInit, OnDestroy {
   #listDraggingService = inject(ListDraggingService);
   #calculationService = inject(CalculationService);
 
+  tasks = viewChildren(TaskComponent);
+
   constructor() {
     this.isAddingTask = false;
     this.isChangingName = false;
@@ -63,6 +66,13 @@ export class ListComponent implements AfterViewInit, OnDestroy {
     if (this.initListener && this.selectedBoard && this.listAtMousePosition) {
       this.#listDraggingService.initListMouseDownListener(this.titleRef.nativeElement, this.selectedBoard, this.listAtMousePosition, () => this.onClick());
     }
+
+    const interval = setInterval(() => {
+      if (this.tasks().length === this.list.tasks.length) {
+        console.log(this.tasks().length);
+        clearInterval(interval);
+      }
+    }, 50);
   }
 
   ngOnDestroy(): void {
@@ -83,7 +93,7 @@ export class ListComponent implements AfterViewInit, OnDestroy {
 
   pushToArray(text: string): void {
     if (text.length > 0) {
-      this.list.tasks.push(new TaskModel(text, this.list.tasks.length));
+      this.list.tasks.push(new TaskModel(text));
     }
   }
 }

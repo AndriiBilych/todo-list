@@ -1,9 +1,9 @@
 @if (selectedBoard && listAtMousePosition?.nativeElement && taskAtMousePosition?.nativeElement) {
   <div class="overflow-x-auto overflow-y-hidden board inline-flex mt-14" #board [id]="selectedBoard.id">
     @for (list of selectedBoard.lists; track list.id; let i = $index) {
-      @if (i === listDraggingService.draggedListNewIndex && listDraggingService.shouldInsert) {
+      @if (i === listDraggingService.targetListIndex && listDraggingService.shouldInsert) {
         <div class="width-230px relative h-min-content mt-2">
-          <app-list-placeholder [list]="listDraggingService.draggedListData"
+          <app-list-placeholder [list]="listDraggingService.sourceListData"
                     [hidden]="true"
           ></app-list-placeholder>
         </div>
@@ -17,9 +17,9 @@
                   [taskAtMousePosition]="taskAtMousePosition.nativeElement"
         ></app-list>
       </div>
-      @if (i === selectedBoard.lists.length - 1 && listDraggingService.draggedListNewIndex > i && listDraggingService.shouldInsert) {
+      @if (i === selectedBoard.lists.length - 1 && listDraggingService.targetListIndex > i && listDraggingService.shouldInsert) {
         <div class="width-230px relative h-min-content mt-2">
-          <app-list-placeholder [list]="listDraggingService.draggedListData"
+          <app-list-placeholder [list]="listDraggingService.sourceListData"
                                 [hidden]="true"
           ></app-list-placeholder>
         </div>
@@ -52,16 +52,16 @@
 
 <div #ListAtMousePosition class="width-230px fixed">
   <div id="list-at-mouse-position" class="width-230px relative">
-    @if (listDraggingService.draggedListVisual !== null) {
-      <app-list-placeholder [list]="listDraggingService.draggedListVisual"></app-list-placeholder>
+    @if (listDraggingService.sourceListPlaceholderData !== null) {
+      <app-list-placeholder [list]="listDraggingService.sourceListPlaceholderData"></app-list-placeholder>
     }
   </div>
 </div>
 
 <div #TaskAtMousePosition class="width-230px fixed">
   <div id="task-at-mouse-position" class="width-230px relative">
-    @if (taskDraggingService.draggedTaskVisual !== null) {
-      <app-task-placeholder [task]="taskDraggingService.draggedTaskVisual"></app-task-placeholder>
+    @if (taskDraggingService.sourceTaskPlaceholderData !== null) {
+      <app-task-placeholder [task]="taskDraggingService.sourceTaskPlaceholderData"></app-task-placeholder>
     }
   </div>
 </div>

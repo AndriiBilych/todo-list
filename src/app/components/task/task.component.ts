@@ -21,7 +21,9 @@ import { TaskDraggingService } from '../../services/task-dragging.service';
     @if (task) {
       <div #TaskContainer class="mt-2 mx-3.5 rounded cursor-pointer">
         <div #TitleRef
-             class="task flex justify-between rounded break-words bg-blue-100 h-auto p-1 group border-2 border-blue-100 hover:border-black">
+             class="task flex justify-between rounded break-words bg-blue-100 h-auto p-1 group border-2 border-blue-100 hover:border-black"
+             [id]="task.id"
+        >
           @if (!isChangingTask) {
             <div class="pl-2.5">{{ task.content }}</div>
             <button (click)="removeAction.emit()"
@@ -83,7 +85,9 @@ export class TaskComponent implements AfterViewInit, OnDestroy {
   }
 
   calculateBoundingInfo(): void {
+    console.log('task calculateBoundingInfo');
     if (this.taskContainer?.nativeElement && this.task?.id) {
+      console.log('task calculateBoundingInfo inside if');
       this.#calculationService.calculateTaskBoundingInfo(this.taskContainer.nativeElement, this.task.id, this.list.id);
     }
   }

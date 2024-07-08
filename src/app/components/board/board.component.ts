@@ -79,6 +79,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
         filter(isNotNullOrUndefined),
         map((boards: BoardModel[] | null) => boards.map((board) => {
           board.lists.map((list: ListModel) => {
+            list.tasks.forEach((task: TaskModel) => task.id = `task${task.id}`);
             list.id = 'list' + list.id;
             return list;
           });

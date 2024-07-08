@@ -16,10 +16,14 @@ export class ListDraggingService {
   readonly #onMoved = new Subject<boolean>();
   public onMoved$ = this.#onMoved.asObservable();
 
-  draggedListIndex: number | null = null;
-  draggedListNewIndex: number | null = null;
-  draggedListData: ListModel | null = null;
-  draggedListVisual: IList | null = null;
+  // The element being dragged
+  sourceListIndex: number | null = null;
+  // The new position of the dragged element
+  targetListIndex: number | null = null;
+  // The data spliced from the board data
+  sourceListData: ListModel | null = null;
+  // sourceListData can't be used because placeholder needs to appear before sourceListData is spliced from the board
+  sourceListPlaceholderData: IList | null = null;
 
   #document: Document = inject(DOCUMENT);
   #calculationService = inject(CalculationService);
@@ -40,10 +44,10 @@ export class ListDraggingService {
   private listMouseDown(element: HTMLElement, selectedBoard: BoardModel, listAtMousePosition: HTMLElement, clickCallback: (e: MouseEvent) => void): void {
     // console.log('[list mouse down]');
     const listId = getIdFromAttribute(element);
-    this.draggedListIndex = selectedBoard.lists.findIndex(({ id }) => id === listId);
-    this.draggedListVisual = { ...selectedBoard.lists[this.draggedListIndex] };
-    this.draggedListNewIndex = this.draggedListIndex;
-    this.draggedListData = selectedBoard.lists[this.draggedListIndex];
+    this.sourceListIndex = selectedBoard.lists.findIndex(({ id }) => id === listId);
+    this.sourceListPlaceholderData = { ...selectedBoard.lists[this.sourceListIndex] };
+    this.targetListIndex = this.sourceListIndex;
+    this.sourceListData = selectedBoard.lists[this.sourceListIndex];
 
     const controller = new AbortController();
     const { signal } = controller;
@@ -53,9 +57,9 @@ export class ListDraggingService {
 
   private listMouseMove(selectedBoard: BoardModel, listAtMousePosition: HTMLElement, event: MouseEvent): void {
     // console.log('[list mouse move]', this.draggedListNewIndex);
-    this.draggedListNewIndex = this.#calculationService.findListIndexByMouseX(event.clientX);
+    this.targetListIndex = this.#calculationService.findListIndexByMouseX(event.clientX);
     if (!this.shouldInsert) {
-      this.draggedListData = selectedBoard.lists.splice(this.draggedListIndex, 1)[0];
+      this.sourceListData = selectedBoard.lists.splice(this.sourceListIndex, 1)[0];
       this.shouldInsert = true;
     } else {
       listAtMousePosition.style.left = `${event.clientX}px`;
@@ -73,20 +77,20 @@ export class ListDraggingService {
     // console.log('[list mouse up]', this.shouldInsert);
     controller.abort();
     if (this.shouldInsert) {
-      selectedBoard.lists.splice(this.draggedListNewIndex, 0, this.draggedListData);
+      selectedBoard.lists.splice(this.targetListIndex, 0, this.sourceListData);
       this.#onMoved.next(true);
       this.shouldInsert = false;
     } else {
       clickCallback(event);
     }
-    this.draggedListData = null;
+    this.sourceListData = null;
     this.resetDraggingListStatus(listAtMousePosition);
   }
 
   private resetDraggingListStatus(listAtMousePosition: HTMLElement): void {
-    this.draggedListIndex = null;
-    this.draggedListNewIndex = null;
-    this.draggedListVisual = null;
+    this.sourceListIndex = null;
+    this.targetListIndex = null;
+    this.sourceListPlaceholderData = null;
     listAtMousePosition.style.removeProperty('top');
     listAtMousePosition.style.removeProperty('left');
   }
