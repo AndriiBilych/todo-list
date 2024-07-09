@@ -45,7 +45,7 @@ export class TaskDraggingService {
   }
 
   taskMouseDown(element: HTMLElement, selectedBoard: BoardModel, taskAtMousePosition: HTMLElement, clickCallback: (e: MouseEvent) => void): void {
-    console.log('[task mouse down]');
+    // console.log('[task mouse down]');
 
     const taskId = getIdFromAttribute(element);
     this.sourceListIndex = selectedBoard.lists.findIndex(({ tasks }) => {
@@ -87,7 +87,7 @@ export class TaskDraggingService {
     clickCallback: (e: MouseEvent) => void,
     event: MouseEvent
   ): void {
-    console.log('[task mouse up]');
+    // console.log('[task mouse up]');
 
     controller.abort();
     if (this.shouldInsert) {

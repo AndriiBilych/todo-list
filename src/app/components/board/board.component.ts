@@ -97,6 +97,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     });
 
     this.listDraggingService.onMoved$.pipe(this.takeUntil()).subscribe(() => this.initBoundingInfo());
+    this.taskDraggingService.onMoved$.pipe(this.takeUntil()).subscribe(() => this.initBoundingInfo());
   }
 
   initBoundingInfo() {
