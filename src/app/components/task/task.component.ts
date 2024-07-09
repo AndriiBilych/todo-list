@@ -71,7 +71,6 @@ export class TaskComponent implements AfterViewInit, OnDestroy {
     if (this.initListener && this.selectedBoard && this.taskAtMousePosition) {
       this.#taskDraggingService.initTaskMouseDownListener(this.titleRef.nativeElement, this.selectedBoard, this.taskAtMousePosition, () => this.onClick());
     }
-
   }
 
   ngOnDestroy(): void {
@@ -85,9 +84,7 @@ export class TaskComponent implements AfterViewInit, OnDestroy {
   }
 
   calculateBoundingInfo(): void {
-    console.log('task calculateBoundingInfo');
     if (this.taskContainer?.nativeElement && this.task?.id) {
-      console.log('task calculateBoundingInfo inside if');
       this.#calculationService.calculateTaskBoundingInfo(this.taskContainer.nativeElement, this.task.id, this.list.id);
     }
   }

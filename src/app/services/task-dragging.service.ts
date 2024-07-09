@@ -70,8 +70,7 @@ export class TaskDraggingService {
       selectedBoard.lists[this.targetListIndex].id,
       event.clientY
     );
-    console.log('[task mouse move]', this.targetListIndex, this.targetTaskIndex, this.shouldInsert,
-      this.#calculationService.listsBoundingInfo, event.clientX, event.clientY);
+    // console.log('[task mouse move]', this.targetListIndex, this.targetTaskIndex, this.shouldInsert);
     if (!this.shouldInsert) {
       this.sourceTaskData = selectedBoard.lists[this.sourceListIndex].tasks.splice(this.sourceTaskIndex, 1)[0];
       this.shouldInsert = true;

@@ -16,15 +16,7 @@
   </div>
 
   <div class="list bg-gray-100 my-0 mx-1.5 overflow-y-auto" [id]="list.id">
-    <app-task
-      *ngFor="let task of list.tasks; index as i"
-      [task]="task"
-      [list]="list"
-      [selectedBoard]="selectedBoard"
-      [taskAtMousePosition]="taskAtMousePosition"
-      [initListener]="true"
-      (removeAction)="list.tasks.splice(i, 1)"
-    ></app-task>
+    <ng-content></ng-content>
   </div>
 
   <div class="bg-gray-100 px-4 py-0 mx-1.5 my-0 rounded-b-xl" [id]="list.id">

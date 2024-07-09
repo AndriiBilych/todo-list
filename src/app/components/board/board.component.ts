@@ -22,6 +22,7 @@ import { ListDraggingService } from '../../services/list-dragging.service';
 import { ListComponent } from '../list/list.component';
 import { makeId } from '../../tools/make-id.tool';
 import { TaskDraggingService } from '../../services/task-dragging.service';
+import { TaskComponent } from '../task/task.component';
 
 @Component({
   selector: 'app-board',
@@ -48,6 +49,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   mouseStartingX: number;
   #scrollLeft = 0;
   lists = viewChildren(ListComponent);
+  tasks = viewChildren(TaskComponent);
 
   listDraggingService = inject(ListDraggingService);
   taskDraggingService = inject(TaskDraggingService);
@@ -99,8 +101,11 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
 
   initBoundingInfo() {
     if (this.selectedBoard.lists.length > 0) {
+      const taskCount = this.selectedBoard.lists.reduce(
+        (res, current) => res + current.tasks.length, 0
+      );
       const interval = setInterval(() => {
-        if (this.lists().length === this.selectedBoard.lists.length) {
+        if (this.lists().length === this.selectedBoard.lists.length && this.tasks().length === taskCount) {
           this.calculateBoundingInfoForAll();
           clearInterval(interval);
         }
@@ -140,14 +145,25 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   calculateBoundingInfoForAll(): void {
     this.#calculationService.listsBoundingInfo.clear();
     this.lists().forEach((list: ListComponent) => list.calculateBoundingInfo());
+    this.tasks().forEach((task: TaskComponent) => task.calculateBoundingInfo());
   }
 
   removeList(index: number): void {
-    const removed = this.selectedBoard.lists.splice(index, 1);
     const length = this.lists().length;
+    this.selectedBoard.lists.splice(index, 1);
     const interval = setInterval(() => {
       if (this.lists().length === length - 1) {
-        this.#calculationService.removeBoundingInfo(removed[0].id);
+        this.calculateBoundingInfoForAll();
+        clearInterval(interval);
+      }
+    }, 50);
+  }
+
+  removeTask(listIndex: number, taskIndex: number): void {
+    const length = this.tasks().length;
+    this.selectedBoard.lists[listIndex].tasks.splice(taskIndex, 1);
+    const interval = setInterval(() => {
+      if (this.tasks().length === length - 1) {
         this.calculateBoundingInfoForAll();
         clearInterval(interval);
       }

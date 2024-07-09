@@ -3,9 +3,7 @@
     @for (list of selectedBoard.lists; track list.id; let i = $index) {
       @if (i === listDraggingService.targetListIndex && listDraggingService.shouldInsert) {
         <div class="width-230px relative h-min-content mt-2">
-          <app-list-placeholder [list]="listDraggingService.sourceListData"
-                    [hidden]="true"
-          ></app-list-placeholder>
+          <app-list-placeholder [list]="listDraggingService.sourceListData" [hidden]="true"></app-list-placeholder>
         </div>
       }
       <div class="width-230px relative h-min-content mt-2">
@@ -14,8 +12,24 @@
                   [initListener]="true"
                   [selectedBoard]="selectedBoard"
                   [listAtMousePosition]="listAtMousePosition.nativeElement"
-                  [taskAtMousePosition]="taskAtMousePosition.nativeElement"
-        ></app-list>
+        >
+          @for (task of list.tasks; track task.id; let j = $index) {
+            @if (i === taskDraggingService.targetListIndex && j === taskDraggingService.targetTaskIndex && taskDraggingService.shouldInsert) {
+              <app-task-placeholder [task]="taskDraggingService.sourceTaskData" [hidden]="true"></app-task-placeholder>
+            }
+            <app-task
+              [task]="task"
+              [list]="list"
+              [selectedBoard]="selectedBoard"
+              [taskAtMousePosition]="taskAtMousePosition.nativeElement"
+              [initListener]="true"
+              (removeAction)="removeTask(i, j)"
+            ></app-task>
+            @if (i === taskDraggingService.targetListIndex && taskDraggingService.targetTaskIndex > j && listDraggingService.shouldInsert) {
+              <app-task-placeholder [task]="taskDraggingService.sourceTaskData" [hidden]="true"></app-task-placeholder>
+            }
+          }
+        </app-list>
       </div>
       @if (i === selectedBoard.lists.length - 1 && listDraggingService.targetListIndex > i && listDraggingService.shouldInsert) {
         <div class="width-230px relative h-min-content mt-2">

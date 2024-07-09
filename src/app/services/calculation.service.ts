@@ -24,6 +24,9 @@ export class CalculationService {
     const listBoundingInfo = this.listsBoundingInfo.get(listId);
     if (listBoundingInfo !== undefined) {
       const boundingRect = elem.getBoundingClientRect();
+      if (!listBoundingInfo.tasks) {
+        listBoundingInfo.tasks = new Map<string, IBoundingInfo>();
+      }
       listBoundingInfo.tasks.set(id, {
         x: boundingRect.x,
         y: boundingRect.y,
@@ -36,10 +39,6 @@ export class CalculationService {
     }
 
     throw new Error(`No list defined when calculating task ${id} bounding`);
-  }
-
-  public removeBoundingInfo(id: string): void {
-    this.listsBoundingInfo.delete(id);
   }
 
   public findListIndexByMouseX(clientX: number): number {
@@ -69,7 +68,6 @@ export class CalculationService {
     }
 
     const taskBoundingInfo = this.listsBoundingInfo.get(listId).tasks;
-
     if (!taskBoundingInfo || taskBoundingInfo.size === 0) {
       return 0;
     }
