@@ -19,23 +19,25 @@ import { TaskDraggingService } from '../../services/task-dragging.service';
   selector: 'app-task',
   template: `
     @if (task) {
-      <div #TaskContainer class="mt-2 mx-3.5 rounded cursor-pointer">
-        <div #TitleRef
-             class="task flex justify-between rounded break-words bg-blue-100 h-auto p-1 group border-2 border-blue-100 hover:border-black"
-             [id]="task.id"
-        >
-          @if (!isChangingTask) {
-            <div class="pl-2.5">{{ task.content }}</div>
-            <button (click)="removeAction.emit()"
-                    class="remove-task-button invisible border-none mb-auto"
-            >&times;
-            </button>
-          } @else {
-            <app-input-form
-              (textSubmissionAction)="toggle($event)"
-              [textToShow]="task.content"
-            ></app-input-form>
-          }
+      <div class="relative" #TaskContainer>
+        <div class="pt-2 px-3.5 rounded cursor-pointer">
+          <div #TitleRef
+               class="task flex justify-between rounded break-words bg-blue-100 h-auto p-1 group border-2 border-blue-100 hover:border-black"
+               [id]="task.id"
+          >
+            @if (!isChangingTask) {
+              <div class="pl-2.5">{{ task.content }}</div>
+              <button (click)="removeAction.emit()"
+                      class="remove-task-button invisible border-none mb-auto"
+              >&times;
+              </button>
+            } @else {
+              <app-input-form
+                (textSubmissionAction)="toggle($event)"
+                [textToShow]="task.content"
+              ></app-input-form>
+            }
+          </div>
         </div>
       </div>
     }

@@ -25,7 +25,7 @@
               [initListener]="true"
               (removeAction)="removeTask(i, j)"
             ></app-task>
-            @if (i === taskDraggingService.targetListIndex && taskDraggingService.targetTaskIndex > j && listDraggingService.shouldInsert) {
+            @if (i === taskDraggingService.targetListIndex && j === list.tasks.length - 1 && taskDraggingService.targetTaskIndex > j && taskDraggingService.shouldInsert) {
               <app-task-placeholder [task]="taskDraggingService.sourceTaskData" [hidden]="true"></app-task-placeholder>
             }
           }

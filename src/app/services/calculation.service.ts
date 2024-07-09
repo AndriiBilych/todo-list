@@ -28,10 +28,10 @@ export class CalculationService {
         listBoundingInfo.tasks = new Map<string, IBoundingInfo>();
       }
       listBoundingInfo.tasks.set(id, {
-        x: boundingRect.x,
-        y: boundingRect.y,
-        bottom: boundingRect.bottom,
-        right: boundingRect.right,
+        x: Number(boundingRect.x.toFixed(2)),
+        y: Number(boundingRect.y.toFixed(2)),
+        bottom: Number(boundingRect.bottom.toFixed(2)),
+        right: Number(boundingRect.right.toFixed(2)),
         id,
       });
       this.listsBoundingInfo.set(listId, listBoundingInfo);
