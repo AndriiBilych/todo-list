@@ -1,12 +1,13 @@
 import { inject, Injectable } from '@angular/core';
+import { DOCUMENT } from '@angular/common';
+import { Subject } from 'rxjs';
+
 import { EEvenType } from '../enums/even-type.enum';
 import { BoardModel } from '../models/board.model';
 import { getIdFromAttribute } from '../tools/html-element.tools';
-import { DOCUMENT } from '@angular/common';
 import { CalculationService } from './calculation.service';
 import { TaskModel } from '../models/task.model';
 import { ITask } from '../models/interfaces/task.interface';
-import { Subject } from 'rxjs';
 import { EdgeScrollingService } from './edge-scrolling.service';
 
 @Injectable({
