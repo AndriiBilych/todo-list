@@ -13,7 +13,6 @@ import { IList } from '../../models/interfaces/list.interface';
 import { ListDraggingService } from '../../services/list-dragging.service';
 import { BoardModel } from '../../models/board.model';
 import { CalculationService } from '../../services/calculation.service';
-import { TaskDraggingService } from '../../services/task-dragging.service';
 
 @Component({
   selector: 'app-list',
@@ -21,10 +20,6 @@ import { TaskDraggingService } from '../../services/task-dragging.service';
   styles: [`
     .list {
       max-height: calc(75vh + 5px);
-    }
-
-    .list-placeholder {
-      width: calc(100% - .85rem);
     }
 
     .group:hover .remove-list-button {

@@ -8,7 +8,7 @@ import { ITask } from '../../models/interfaces/task.interface';
     @if (task) {
       <div class="relative">
         <div class="mt-2 mx-3.5 rounded">
-          <div class="flex justify-between rounded break-words h-auto p-1 bg-blue-100 border-blue-100 border-2">
+          <div class="flex justify-between rounded break-words h-auto p-1 pr-2 bg-blue-100 border-blue-100 border-2">
             <div class="pl-2.5">{{ task.content }}</div>
           </div>
         </div>
