@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component, effect,
   ElementRef,
   HostListener, inject,
@@ -23,6 +24,8 @@ import { ListComponent } from '../list/list.component';
 import { makeId } from '../../tools/make-id.tool';
 import { TaskDraggingService } from '../../services/task-dragging.service';
 import { TaskComponent } from '../task/task.component';
+import { BoardDraggingService } from '../../services/board-dragging.service';
+import { onInterval } from '../../tools/interval.tool';
 
 @Component({
   selector: 'app-board',
@@ -33,7 +36,7 @@ import { TaskComponent } from '../task/task.component';
     }
   `]
 })
-export class BoardComponent extends ReactiveComponent implements OnInit, OnDestroy {
+export class BoardComponent extends ReactiveComponent implements OnInit, AfterViewInit, OnDestroy {
 
   selectedBoard: BoardModel;
   selectedTaskData: TaskModel;
@@ -48,12 +51,15 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
 
   mouseStartingX: number;
   #scrollLeft = 0;
+  #checkForScrollbarDrag = false;
+
   lists = viewChildren(ListComponent);
   tasks = viewChildren(TaskComponent);
 
   listDraggingService = inject(ListDraggingService);
   taskDraggingService = inject(TaskDraggingService);
   #calculationService = inject(CalculationService);
+  #boardDraggingService = inject(BoardDraggingService);
 
   constructor(
     private readonly boardStoreService: BoardStoreService,
@@ -100,6 +106,14 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
     this.taskDraggingService.onMoved$.pipe(this.takeUntil()).subscribe(() => this.initBoundingInfo());
   }
 
+  ngAfterViewInit(): void {
+    onInterval(
+      () => this.boardRef?.nativeElement,
+      () => this.#boardDraggingService.initBoardMouseDownListener(this.boardRef.nativeElement),
+      50
+    );
+  }
+
   initBoundingInfo() {
     if (this.selectedBoard.lists.length > 0) {
       const taskCount = this.selectedBoard.lists.reduce(
@@ -132,12 +146,14 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
   @HostListener('document:mousedown')
   onMousedown(): void {
     this.#scrollLeft = window.scrollX;
+    this.#checkForScrollbarDrag = true;
   }
 
   @HostListener('document:mouseup')
   onMouseup(): void {
-    if (window.scrollX !== this.#scrollLeft) {
+    if (this.#checkForScrollbarDrag && window.scrollX !== this.#scrollLeft) {
       this.calculateBoundingInfoForAll();
+      this.#checkForScrollbarDrag = false;
     }
   }
 
@@ -188,11 +204,5 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
 
     return newId;
   }
-
-  // boardMouseDown(event: MouseEvent): void {
-  //   this.isDraggingBoard = true;
-  //   this.mouseStartingX = event.clientX;
-  // }
-  //
 }
 
