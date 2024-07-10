@@ -7,6 +7,7 @@ import { CalculationService } from './calculation.service';
 import { TaskModel } from '../models/task.model';
 import { ITask } from '../models/interfaces/task.interface';
 import { Subject } from 'rxjs';
+import { EdgeScrollingService } from './edge-scrolling.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,6 +31,7 @@ export class TaskDraggingService {
 
   #document: Document = inject(DOCUMENT);
   #calculationService = inject(CalculationService);
+  #edgeScrollingService = inject(EdgeScrollingService);
   shouldInsert = false;
 
   public initTaskMouseDownListener(
@@ -61,6 +63,7 @@ export class TaskDraggingService {
     const { signal } = controller;
     this.#document.addEventListener(EEvenType.mousemove, this.taskMouseMove.bind(this, selectedBoard, taskAtMousePosition), { signal });
     this.#document.addEventListener(EEvenType.mouseup, this.taskMouseUp.bind(this, controller, selectedBoard, taskAtMousePosition, clickCallback), { signal });
+    this.#edgeScrollingService.initMouseMoveListener(signal);
   }
 
   private taskMouseMove(selectedBoard: BoardModel, taskAtMousePosition: HTMLElement, event: MouseEvent): void {
@@ -99,6 +102,7 @@ export class TaskDraggingService {
     }
     this.sourceTaskData = null;
     this.resetDraggingTaskStatus(taskAtMousePosition);
+    this.#edgeScrollingService.clear();
   }
 
   private resetDraggingTaskStatus(taskAtMousePosition: HTMLElement): void {

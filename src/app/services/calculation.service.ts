@@ -7,11 +7,11 @@ import { IBoundingInfo } from '../models/interfaces/bounding-info.interface';
 })
 export class CalculationService {
   // This holds bounding positions, ids of all lists and tasks
-  public listsBoundingInfo = new Map<string, IBoundingInfo>();
+  public boundingInfo = new Map<string, IBoundingInfo>();
 
   public calculateListBoundingInfo(elem: HTMLElement, id: string): void {
     const boundingRect = elem.getBoundingClientRect();
-    this.listsBoundingInfo.set(id, {
+    this.boundingInfo.set(id, {
       x: boundingRect.x,
       y: boundingRect.y,
       bottom: boundingRect.bottom,
@@ -21,7 +21,7 @@ export class CalculationService {
   }
 
   public calculateTaskBoundingInfo(elem: HTMLElement, id: string, listId: string): void {
-    const listBoundingInfo = this.listsBoundingInfo.get(listId);
+    const listBoundingInfo = this.boundingInfo.get(listId);
     if (listBoundingInfo !== undefined) {
       const boundingRect = elem.getBoundingClientRect();
       if (!listBoundingInfo.tasks) {
@@ -34,25 +34,36 @@ export class CalculationService {
         right: Number(boundingRect.right.toFixed(2)),
         id,
       });
-      this.listsBoundingInfo.set(listId, listBoundingInfo);
+      this.boundingInfo.set(listId, listBoundingInfo);
       return;
     }
 
     throw new Error(`No list defined when calculating task ${id} bounding`);
   }
 
+  public adjustBoundingInfoByScrollDelta(delta: number): void {
+    this.boundingInfo.forEach((value: IBoundingInfo) => {
+      value.x -= delta;
+      value.right -= delta;
+      value?.tasks?.forEach((value: IBoundingInfo) => {
+        value.x -= delta;
+        value.right -= delta;
+      });
+    });
+  }
+
   public findListIndexByMouseX(clientX: number): number {
-    if (!this.listsBoundingInfo || this.listsBoundingInfo.size === 0) {
+    if (!this.boundingInfo || this.boundingInfo.size === 0) {
       return 0;
     }
 
-    const values = [...this.listsBoundingInfo.values()];
+    const values = [...this.boundingInfo.values()];
     const index = values.findIndex(({ x, right }) => clientX >= x && clientX <= right);
     const first = values[0];
     const last = values[values.length - 1];
 
     if (clientX > last.right) {
-      return this.listsBoundingInfo.size - 1;
+      return this.boundingInfo.size - 1;
     }
 
     if (clientX < first.x) {
@@ -63,11 +74,11 @@ export class CalculationService {
   }
 
   public findTaskIndexByMouseY(listId: string, clientY: number): number {
-    if (!this.listsBoundingInfo || this.listsBoundingInfo.size === 0) {
+    if (!this.boundingInfo || this.boundingInfo.size === 0) {
       return 0;
     }
 
-    const taskBoundingInfo = this.listsBoundingInfo.get(listId).tasks;
+    const taskBoundingInfo = this.boundingInfo.get(listId).tasks;
     if (!taskBoundingInfo || taskBoundingInfo.size === 0) {
       return 0;
     }
@@ -78,7 +89,7 @@ export class CalculationService {
     const last = values[values.length - 1];
 
     if (clientY > last.bottom) {
-      return this.listsBoundingInfo.size - 1;
+      return this.boundingInfo.size - 1;
     }
 
     if (clientY < first.y) {

@@ -158,7 +158,7 @@ export class BoardComponent extends ReactiveComponent implements OnInit, AfterVi
   }
 
   calculateBoundingInfoForAll(): void {
-    this.#calculationService.listsBoundingInfo.clear();
+    this.#calculationService.boundingInfo.clear();
     this.lists().forEach((list: ListComponent) => list.calculateBoundingInfo());
     this.tasks().forEach((task: TaskComponent) => task.calculateBoundingInfo());
   }

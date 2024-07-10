@@ -8,6 +8,7 @@ import { getIdFromAttribute } from '../tools/html-element.tools';
 import { ListModel } from '../models/list.model';
 import { IList } from '../models/interfaces/list.interface';
 import { CalculationService } from './calculation.service';
+import { EdgeScrollingService } from './edge-scrolling.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,6 +28,7 @@ export class ListDraggingService {
 
   #document: Document = inject(DOCUMENT);
   #calculationService = inject(CalculationService);
+  #edgeScrollingService = inject(EdgeScrollingService);
   shouldInsert = false;
 
   public initListMouseDownListener(
@@ -41,7 +43,12 @@ export class ListDraggingService {
     );
   }
 
-  private listMouseDown(element: HTMLElement, selectedBoard: BoardModel, listAtMousePosition: HTMLElement, clickCallback: (e: MouseEvent) => void): void {
+  private listMouseDown(
+    element: HTMLElement,
+    selectedBoard: BoardModel,
+    listAtMousePosition: HTMLElement,
+    clickCallback: (e: MouseEvent) => void,
+  ): void {
     // console.log('[list mouse down]');
     const listId = getIdFromAttribute(element);
     this.sourceListIndex = selectedBoard.lists.findIndex(({ id }) => id === listId);
@@ -53,10 +60,15 @@ export class ListDraggingService {
     const { signal } = controller;
     this.#document.addEventListener(EEvenType.mousemove, this.listMouseMove.bind(this, selectedBoard, listAtMousePosition), { signal });
     this.#document.addEventListener(EEvenType.mouseup, this.listMouseUp.bind(this, controller, selectedBoard, listAtMousePosition, clickCallback), { signal });
+    this.#edgeScrollingService.initMouseMoveListener(signal);
   }
 
-  private listMouseMove(selectedBoard: BoardModel, listAtMousePosition: HTMLElement, event: MouseEvent): void {
-    // console.log('[list mouse move]', this.draggedListNewIndex);
+  private listMouseMove(
+    selectedBoard: BoardModel,
+    listAtMousePosition: HTMLElement,
+    event: MouseEvent
+  ): void {
+    // console.log('[list mouse move]', );
     this.targetListIndex = this.#calculationService.findListIndexByMouseX(event.clientX);
     if (!this.shouldInsert) {
       this.sourceListData = selectedBoard.lists.splice(this.sourceListIndex, 1)[0];
@@ -85,6 +97,7 @@ export class ListDraggingService {
     }
     this.sourceListData = null;
     this.resetDraggingListStatus(listAtMousePosition);
+    this.#edgeScrollingService.clear();
   }
 
   private resetDraggingListStatus(listAtMousePosition: HTMLElement): void {

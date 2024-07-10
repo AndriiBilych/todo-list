@@ -57,7 +57,12 @@ export class ListComponent implements AfterViewInit, OnDestroy {
     }
 
     if (this.initListener && this.selectedBoard && this.listAtMousePosition) {
-      this.#listDraggingService.initListMouseDownListener(this.titleRef.nativeElement, this.selectedBoard, this.listAtMousePosition, () => this.onClick());
+      this.#listDraggingService.initListMouseDownListener(
+        this.titleRef.nativeElement,
+        this.selectedBoard,
+        this.listAtMousePosition,
+        () => this.onClick(),
+      );
     }
   }
 
