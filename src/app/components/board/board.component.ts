@@ -105,12 +105,10 @@ export class BoardComponent extends ReactiveComponent implements OnInit, OnDestr
       const taskCount = this.selectedBoard.lists.reduce(
         (res, current) => res + current.tasks.length, 0
       );
-      const interval = setInterval(() => {
-        if (this.lists().length === this.selectedBoard.lists.length && this.tasks().length === taskCount) {
-          this.calculateBoundingInfoForAll();
-          clearInterval(interval);
-        }
-      }, 50);
+      onInterval(
+        () => this.lists().length === this.selectedBoard.lists.length && this.tasks().length === taskCount,
+        () => this.calculateBoundingInfoForAll(), 50
+      );
     }
   }
 

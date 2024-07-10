@@ -44,7 +44,7 @@ export class TaskDraggingService {
     );
   }
 
-  taskMouseDown(element: HTMLElement, selectedBoard: BoardModel, taskAtMousePosition: HTMLElement, clickCallback: (e: MouseEvent) => void): void {
+  private taskMouseDown(element: HTMLElement, selectedBoard: BoardModel, taskAtMousePosition: HTMLElement, clickCallback: (e: MouseEvent) => void): void {
     // console.log('[task mouse down]');
 
     const taskId = getIdFromAttribute(element);
@@ -63,7 +63,7 @@ export class TaskDraggingService {
     this.#document.addEventListener(EEvenType.mouseup, this.taskMouseUp.bind(this, controller, selectedBoard, taskAtMousePosition, clickCallback), { signal });
   }
 
-  taskMouseMove(selectedBoard: BoardModel, taskAtMousePosition: HTMLElement, event: MouseEvent): void {
+  private taskMouseMove(selectedBoard: BoardModel, taskAtMousePosition: HTMLElement, event: MouseEvent): void {
 
     this.targetListIndex = this.#calculationService.findListIndexByMouseX(event.clientX);
     this.targetTaskIndex = this.#calculationService.findTaskIndexByMouseY(
@@ -80,7 +80,7 @@ export class TaskDraggingService {
     }
   }
 
-  taskMouseUp(
+  private taskMouseUp(
     controller: AbortController,
     selectedBoard: BoardModel,
     taskAtMousePosition: HTMLElement,

@@ -39,7 +39,6 @@ export class ListComponent implements AfterViewInit, OnDestroy {
   @Input() list: IList;
   @Input() selectedBoard: BoardModel | null = null;
   @Input() listAtMousePosition!: HTMLElement;
-  // @Input() taskAtMousePosition!: HTMLElement;
   @Input() hidden = false;
   @Input() initListener = false;
 
