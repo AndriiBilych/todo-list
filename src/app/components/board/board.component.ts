@@ -157,6 +157,11 @@ export class BoardComponent extends ReactiveComponent implements OnInit, AfterVi
     }
   }
 
+  @HostListener('window:resize')
+  onResize(): void {
+    this.calculateBoundingInfoForAll();
+  }
+
   calculateBoundingInfoForAll(): void {
     this.#calculationService.boundingInfo.clear();
     this.lists().forEach((list: ListComponent) => list.calculateBoundingInfo());
