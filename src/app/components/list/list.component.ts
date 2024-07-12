@@ -13,6 +13,7 @@ import { IList } from '../../models/interfaces/list.interface';
 import { ListDraggingService } from '../../services/list-dragging.service';
 import { BoardModel } from '../../models/board.model';
 import { CalculationService } from '../../services/calculation.service';
+import { makeId } from '../../tools/make-id.tool';
 
 @Component({
   selector: 'app-list',
@@ -82,9 +83,27 @@ export class ListComponent implements AfterViewInit, OnDestroy {
     this.isChangingName = !this.isChangingName;
   }
 
-  pushToArray(text: string): void {
-    if (text.length > 0) {
-      this.list.tasks.push(new TaskModel(text));
+  onTextSubmissionAction(event: { text: string, keep: boolean }): void {
+    this.isAddingTask = !this.isAddingTask;
+    if (event?.text?.length) {
+      const newId = this.generateNewTaskId();
+      this.list.tasks.push(new TaskModel(event.text, newId));
+      this.isAddingTask = event.keep;
     }
+  }
+
+  private generateNewTaskId(): string {
+    let isPresent = false;
+    let newId = '';
+    do {
+      newId = makeId(4);
+      isPresent = this.selectedBoard.lists.findIndex(
+        ({tasks}) => {
+          return tasks.some(({id}) => id === newId);
+        }
+      ) !== -1;
+    } while (isPresent);
+
+    return newId;
   }
 }

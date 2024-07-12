@@ -5,9 +5,9 @@ export class TaskModel implements IDeserialize<ITask>, ITask {
   content: string;
   id: string;
 
-  constructor(text?: string) {
-    this.id = '';
-    this.content = text ?? '';
+  constructor(text?: string, id?: string) {
+    this.id = id;
+    this.content = text;
   }
 
   deserialize(input: ITask): this {

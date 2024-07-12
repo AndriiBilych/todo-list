@@ -190,16 +190,16 @@ export class BoardComponent extends ReactiveComponent implements OnInit, AfterVi
     }, 50);
   }
 
-  onTextSubmissionAction($event: { text: string, keep: boolean }) {
+  onTextSubmissionAction(event: { text: string, keep: boolean }) {
     this.isAddingList = !this.isAddingList;
-    if ($event?.text?.length) {
-      const newId = this.generateNewId();
-      this.selectedBoard.lists.push(new ListModel($event.text, newId));
-      this.isAddingList = $event.keep;
+    if (event?.text?.length) {
+      const newId = this.generateNewListId();
+      this.selectedBoard.lists.push(new ListModel(event.text, newId));
+      this.isAddingList = event.keep;
     }
   }
 
-  private generateNewId(): string {
+  private generateNewListId(): string {
     let isPresent = false;
     let newId = '';
     do {

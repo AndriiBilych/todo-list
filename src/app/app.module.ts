@@ -20,6 +20,7 @@ import { NotFoundPageComponent } from './components/not-found-page/not-found-pag
 import { ListPlaceholderComponent } from './components/list-placeholder/list-placeholder.component';
 import { AddListComponent } from './components/inputs/add-list/add-list.component';
 import { TaskPlaceholderComponent } from './components/task-placeholder/task-placeholder.component';
+import { AddTaskComponent } from './components/inputs/add-task/add-task.component';
 
 @NgModule({
   declarations: [
@@ -29,6 +30,7 @@ import { TaskPlaceholderComponent } from './components/task-placeholder/task-pla
     ControlPanelComponent,
     InputFormComponent,
     AddListComponent,
+    AddTaskComponent,
     TaskComponent,
     ColorPickerComponent,
     HomepageComponent,
@@ -37,7 +39,7 @@ import { TaskPlaceholderComponent } from './components/task-placeholder/task-pla
     HomepageListButtonComponent,
     NotFoundPageComponent,
     ListPlaceholderComponent,
-    TaskPlaceholderComponent
+    TaskPlaceholderComponent,
   ],
   bootstrap: [AppComponent],
   imports: [

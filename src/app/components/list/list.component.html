@@ -15,24 +15,21 @@
     </div>
   </div>
 
-  <div class="list bg-gray-100 my-0 mx-1.5 overflow-y-auto" [id]="list.id">
+  <div class="list bg-gray-100 my-0 mx-1.5 overflow-y-auto">
     <ng-content></ng-content>
   </div>
 
-  <div class="bg-gray-100 px-4 py-0 mx-1.5 my-0 rounded-b-xl" [id]="list.id">
+  <div class="bg-gray-100 px-4 py-0 mx-1.5 my-0 rounded-b-xl">
     <div class="mb-2 py-2.5 px-1.5">
-      <ng-container *ngIf="!isAddingTask; else taskInput">
+      @if (!isAddingTask) {
         <button (click)="isAddingTask = !isAddingTask"
                 class="border-none"
         >+ Add another task</button>
-      </ng-container>
-      <ng-template #taskInput>
-        <app-input-form
-          (textSubmissionAction)="pushToArray($event.text.length > 0 && $event.text !== '\n' ? $event.text : 'New Task');
-          isAddingTask = $event.keep"
-          [textToShow]="''"
-        ></app-input-form>
-      </ng-template>
+      } @else {
+        <app-add-task
+          (textSubmissionAction)="onTextSubmissionAction($event)"
+        ></app-add-task>
+      }
     </div>
   </div>
 </div>
