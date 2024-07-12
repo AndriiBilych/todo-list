@@ -26,7 +26,7 @@
               [selectedBoard]="selectedBoard"
               [taskAtMousePosition]="taskAtMousePosition.nativeElement"
               [initListener]="true"
-              (removeAction)="removeTask(i, j)"
+              (removeTaskAction)="removeTask(i, j)"
             ></app-task>
             @if (i === taskDraggingService.targetListIndex && j === list.tasks.length - 1 && taskDraggingService.targetTaskIndex > j && taskDraggingService.shouldInsert) {
               <app-task-placeholder [task]="taskDraggingService.sourceTaskData" [hidden]="true"></app-task-placeholder>

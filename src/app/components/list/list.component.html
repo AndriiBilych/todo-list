@@ -2,7 +2,7 @@
   <div class="mx-1.5 bg-gray-100 rounded-t-xl group">
     <div #TitleRef class="flex justify-between px-5 py-2.5" [id]="list.id">
       @if (!isChangingName) {
-        <div class="title ellipsis-box-1" [title]="list.title">{{list.title}}</div>
+        <div class="ellipsis-box-1" [title]="list.title">{{list.title}}</div>
         <button (mousedown)="removeListAction.emit()"
                 class="remove-list-button hidden border-none mb-auto"
         >&times;</button>

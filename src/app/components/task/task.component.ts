@@ -26,11 +26,10 @@ import { TaskDraggingService } from '../../services/task-dragging.service';
                [id]="task.id"
           >
             @if (!isChangingTask) {
-              <div class="pl-2.5">{{ task.content }}</div>
-              <button (click)="removeAction.emit()"
-                      class="remove-task-button invisible border-none mb-auto"
-              >&times;
-              </button>
+              <div class="pl-2.5" [title]="task.content">{{ task.content }}</div>
+              <button (mousedown)="removeTaskAction.emit(); $event.stopPropagation()"
+                      class="remove-task-button hidden border-none mb-auto"
+              >&times;</button>
             } @else {
               <app-input-form
                 (textSubmissionAction)="toggle($event)"
@@ -44,7 +43,7 @@ import { TaskDraggingService } from '../../services/task-dragging.service';
   `,
   styles: [`
     .group:hover .remove-task-button {
-      visibility: visible;
+      display: block;
     }
   `],
 })
@@ -57,7 +56,7 @@ export class TaskComponent implements AfterViewInit, OnDestroy {
   @Input() initListener = false;
   @Input() taskAtMousePosition!: HTMLElement;
 
-  @Output() removeAction = new EventEmitter();
+  @Output() removeTaskAction = new EventEmitter();
 
   @ViewChild('TitleRef') titleRef: ElementRef;
   @ViewChild('TaskContainer') taskContainer: ElementRef;
