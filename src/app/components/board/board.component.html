@@ -13,6 +13,9 @@
                   [selectedBoard]="selectedBoard"
                   [listAtMousePosition]="listAtMousePosition.nativeElement"
         >
+          @if (!list.tasks.length && i === taskDraggingService.targetListIndex && taskDraggingService.shouldInsert) {
+            <app-task-placeholder [task]="taskDraggingService.sourceTaskData" [hidden]="true"></app-task-placeholder>
+          }
           @for (task of list.tasks; track task.id; let j = $index) {
             @if (i === taskDraggingService.targetListIndex && j === taskDraggingService.targetTaskIndex && taskDraggingService.shouldInsert) {
               <app-task-placeholder [task]="taskDraggingService.sourceTaskData" [hidden]="true"></app-task-placeholder>
