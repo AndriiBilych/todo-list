@@ -22,7 +22,8 @@ import { TaskDraggingService } from '../../services/task-dragging.service';
       <div class="relative" #TaskContainer>
         <div class="pt-2 px-3.5 rounded cursor-pointer">
           <div #TitleRef
-               class="flex justify-between rounded break-words bg-blue-100 h-auto p-1 group border-2 border-blue-100 hover:border-black"
+               class="flex justify-between rounded break-words dark:bg-gray-400 dark:text-white bg-blue-100 h-auto p-1 group
+               border-2 dark:border-gray-400 border-blue-100 hover:border-black"
                [id]="task.id"
           >
             @if (!isChangingTask) {

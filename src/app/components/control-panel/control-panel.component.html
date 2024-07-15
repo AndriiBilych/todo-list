@@ -1,10 +1,10 @@
-<header class="bg-gray-100 h-14 fixed top-0 w-full">
+<header class="dark:bg-gray-600 bg-gray-100 h-14 fixed top-0 w-full">
   <nav class="px-4 h-full w-full flex items-center justify-between" aria-label="Global">
     <ng-container *ngIf="{board: boardStoreService.selectedBoard()} as obs">
       <div class="flex lg:flex-1 lg:gap-x-1 h-full">
         <ng-container *ngIf="obs.board">
           <div class="flex items-center text-sm font-semibold leading-6 h-full hover:bg-blue-100 hover:text-gray-500
-             transition px-4 rounded cursor-pointer w-200" [title]="obs.board.title">
+             dark:text-white transition px-4 rounded cursor-pointer w-200 dark:hover:text-black dark:hover:bg-gray-400" [title]="obs.board.title">
             <span (click)="toggleIsChangingName()" *ngIf="!isChangingName; else titleInput"
                class="ellipsis-box-1"
             >
@@ -13,24 +13,25 @@
           </div>
           <a (click)="DeleteModal.style.display = 'block'"
              class="flex items-center text-sm font-semibold leading-6 h-full hover:bg-blue-100 hover:text-gray-500
-             transition px-4 rounded cursor-pointer" title="Delete board"
+             transition px-4 rounded cursor-pointer dark:text-white dark:hover:text-black dark:hover:bg-gray-400" title="Delete board"
           >Delete board</a>
         </ng-container>
       </div>
       <div class="hidden lg:flex h-full">
         <a routerLink="/home"
            class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition
-           px-4 rounded cursor-pointer" title="Boards"
+           px-4 rounded cursor-pointer dark:text-white dark:hover:text-black dark:hover:bg-gray-400" title="Boards"
         >Boards</a>
       </div>
       <div class="hidden lg:flex lg:flex-1 lg:gap-x-1 lg:justify-end h-full">
         <a
           class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition
-          px-4 rounded cursor-pointer" title="Dark mode"
+          px-4 rounded cursor-pointer dark:text-white dark:hover:text-black dark:hover:bg-gray-400" title="Dark mode"
+          (click)="toggleDarkMode()"
         >Dark mode</a>
         <a (click)="AboutModal.style.display = 'block'"
           class="flex items-center justify-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500
-          transition px-4 rounded cursor-pointer" title="About"
+          transition px-4 rounded cursor-pointer dark:text-white dark:hover:text-black dark:hover:bg-gray-400" title="About"
         >About</a>
       </div>
     </ng-container>
@@ -104,9 +105,9 @@
      (click)="DeleteModal.style.display = 'none'">
   <div class="flex justify-center items-center w-full h-full">
     <ng-container *ngIf="boardStoreService.selectedBoard() as board">
-      <div class="bg-white p-5 max-w-xl w-3/5 rounded-xl relative" (click)="$event.stopPropagation()">
+      <div class="dark:bg-gray-600 dark:text-white bg-white p-5 max-w-xl w-3/5 rounded-xl relative" (click)="$event.stopPropagation()">
         <button
-          class="absolute top-3 right-3 text-xl font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition py-2 px-4 rounded cursor-pointer"
+          class="absolute top-3 right-3 text-xl font-semibold leading-6 dark:hover:bg-gray-400 dark:hover:text-black hover:bg-blue-100 hover:text-gray-500 transition py-2 px-4 rounded cursor-pointer"
           (click)="DeleteModal.style.display = 'none'"
         >&times;
         </button>
@@ -115,11 +116,11 @@
         </div>
         <div class="flex items-center justify-center gap-3.5 mt-3">
           <button
-            class="text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition py-3 px-6 rounded cursor-pointer"
+            class="text-sm font-semibold leading-6 dark:hover:bg-gray-400 dark:hover:text-black hover:bg-blue-100 hover:text-gray-500 transition py-3 px-6 rounded cursor-pointer"
             (click)="removeBoard(board.id); DeleteModal.style.display = 'none'">Yes
           </button>
           <button
-            class="text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition py-3 px-6 rounded cursor-pointer"
+            class="text-sm font-semibold leading-6 dark:hover:bg-gray-400 dark:hover:text-black hover:bg-blue-100 hover:text-gray-500 transition py-3 px-6 rounded cursor-pointer"
             (click)="DeleteModal.style.display = 'none'">No
           </button>
         </div>
@@ -130,9 +131,9 @@
 
 <div #AboutModal class="fixed hidden z-10 left-0 top-0 w-screen h-screen overflow-auto bg-black bg-opacity-40">
   <div class="flex justify-center items-center w-full h-full">
-    <div class="bg-white p-5 max-w-xl w-3/5 rounded-xl relative">
+    <div class="dark:bg-gray-600 dark:text-white bg-white p-5 max-w-xl w-3/5 rounded-xl relative">
 
-      <button class="absolute top-3 right-3 text-xl font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition py-2 px-4 rounded cursor-pointer"
+      <button class="absolute top-3 right-3 text-xl font-semibold leading-6 dark:hover:bg-gray-400 dark:hover:text-black hover:bg-blue-100 hover:text-gray-500 transition py-2 px-4 rounded cursor-pointer"
               (click)="AboutModal.style.display = 'none'"
       >
         &times;
@@ -164,9 +165,9 @@
         <div class="author">
           <div class="flex justify-center">Made by<strong>&nbsp;Andrii Bilych</strong></div>
           <div class="flex justify-center gap-3">
-            <a class="text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition py-3 px-6 rounded cursor-pointer"
+            <a class="text-sm font-semibold leading-6 hover:bg-blue-100 dark:hover:bg-gray-400 dark:hover:text-black hover:text-gray-500 transition py-3 px-6 rounded cursor-pointer"
               href="https://www.linkedin.com/in/andrii-bilych/" target="_blank">LinkedIn</a>
-            <a class="text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition py-3 px-6 rounded cursor-pointer"
+            <a class="text-sm font-semibold leading-6 hover:bg-blue-100 dark:hover:bg-gray-400 dark:hover:text-black hover:text-gray-500 transition py-3 px-6 rounded cursor-pointer"
               href="https://github.com/AndriiBilych" target="_blank">Github</a>
           </div>
         </div>

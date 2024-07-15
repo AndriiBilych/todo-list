@@ -1,6 +1,7 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ElementRef, inject, ViewChild } from '@angular/core';
 import { BoardStoreService } from '../../services/board-store.service';
 import { RoutingService } from '../../services/routing.service';
+import { DarkModeService } from '../../services/dark-mode.service';
 
 @Component({
   selector: 'app-control-panel',
@@ -9,6 +10,8 @@ import { RoutingService } from '../../services/routing.service';
 export class ControlPanelComponent {
   @ViewChild('DeleteModal') confirmation: ElementRef;
   #isChangingName = false;
+
+  #darkModeService = inject(DarkModeService);
 
   constructor(
     public readonly boardStoreService: BoardStoreService,
@@ -28,5 +31,9 @@ export class ControlPanelComponent {
 
   toggleIsChangingName(force?: boolean): void {
     this.#isChangingName = force ?? !this.#isChangingName;
+  }
+
+  toggleDarkMode(force?: boolean): void {
+    this.#darkModeService.toggleDarkMode(force);
   }
 }

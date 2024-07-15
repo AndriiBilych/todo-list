@@ -1,5 +1,5 @@
 <div class="relative" #ListContainer>
-  <div class="mx-1.5 bg-gray-100 rounded-t-xl group">
+  <div class="mx-1.5 dark:text-white dark:bg-gray-600 bg-gray-100 rounded-t-xl group">
     <div #TitleRef class="flex justify-between px-5 py-2.5" [id]="list.id">
       @if (!isChangingName) {
         <div class="ellipsis-box-1" [title]="list.title">{{list.title}}</div>
@@ -15,11 +15,11 @@
     </div>
   </div>
 
-  <div class="list bg-gray-100 my-0 mx-1.5 overflow-y-auto">
+  <div class="list bg-gray-100 dark:text-white dark:bg-gray-600 my-0 mx-1.5 overflow-y-auto">
     <ng-content></ng-content>
   </div>
 
-  <div class="bg-gray-100 px-4 py-0 mx-1.5 my-0 rounded-b-xl">
+  <div class="bg-gray-100 dark:text-white dark:bg-gray-600 px-4 py-0 mx-1.5 my-0 rounded-b-xl">
     <div class="mb-2 py-2.5 px-1.5">
       @if (!isAddingTask) {
         <button (click)="isAddingTask = !isAddingTask"
