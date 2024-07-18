@@ -23,7 +23,7 @@ import { RoutingService } from '../../services/routing.service';
               {{ board.description }}
             </ng-container>
             <ng-template #NoDescription>
-              No description
+              {{ 'noDescription' | translate }}
             </ng-template>
           </span>
       </span>

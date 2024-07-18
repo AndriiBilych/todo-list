@@ -1,5 +1,36 @@
 {
   "logo": {
     "title": "Boards"
+  },
+  "deleteBoard": "Delete board",
+  "about": "About",
+  "darkMode": "Dark mode",
+  "deleteModal": {
+    "question": "Are you sure you want to delete {{title}} board?",
+    "yes": "Yes",
+    "no": "No"
+  },
+  "aboutModal": {
+    "description": "Description",
+    "content1": "This website is a todo manager inspired by Trello.",
+    "content2": "It resembles a frontend prototype of a board styled list of lists, there is no database or backend server.\nData is currently only stored locally and in session. Created with Angular 11. Feel free to browse provided\nexamples of boards or create your own.",
+    "howToUse": "How to use",
+    "howToUse1": "Left mouse to drag tasks or lists",
+    "howToUse2": "Right click to edit tasks or list name",
+    "madeBy": "Made by"
+  },
+  "list": {
+    "addAnotherTask": "Add another task",
+    "addAnotherList": "Add another list"
+  },
+  "loading": "Loading",
+  "section": {
+    "title": "All boards",
+    "description": "Explore or create your own board"
+  },
+  "noDescription": "No description",
+  "addBoard": {
+    "title": "Add board",
+    "description": "Create a new board. Test it out. Saved only locally in memory."
   }
 }

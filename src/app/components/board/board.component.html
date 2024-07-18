@@ -47,7 +47,7 @@
         @if (!isAddingList) {
           <button (click)="isAddingList = !isAddingList"
                   class="border-none w-max"
-          >+ Add another list</button>
+          >+ {{ 'list.addAnotherList' | translate }}</button>
         } @else {
           <app-add-list
             (textSubmissionAction)="onTextSubmissionAction($event)"
@@ -63,7 +63,7 @@
   </div>
 } @else {
   <div class="pt-14 w-full h-screen flex justify-center items-center">
-    ...Loading
+    ...{{ 'loading' | translate }}
   </div>
 }
 

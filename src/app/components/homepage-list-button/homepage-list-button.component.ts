@@ -17,11 +17,11 @@ import { BoardStoreService } from '../../services/board-store.service';
               class="h-6 mr-1">
           <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
         </svg>
-        Add board
+        {{ 'addBoard.title' | translate }}
       </span>
       <span class="flex justify-center items-center sm:col-span-3">
         <span class="mt-1 text-sm leading-6 dark:text-gray-300 text-gray-700 ellipsis-box-3">
-          Create a new board. Test it out. Saved only locally in memory.
+          {{ 'addBoard.description' | translate }}
         </span>
       </span>
     </li>

@@ -24,7 +24,7 @@
       @if (!isAddingTask) {
         <button (click)="isAddingTask = !isAddingTask"
                 class="border-none"
-        >+ Add another task</button>
+        >+ {{ 'list.addAnotherTask' | translate }}</button>
       } @else {
         <app-add-task
           (textSubmissionAction)="onTextSubmissionAction($event)"

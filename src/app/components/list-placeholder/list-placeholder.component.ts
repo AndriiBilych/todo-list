@@ -22,7 +22,7 @@ import { IList } from '../../models/interfaces/list.interface';
         <div class="dark:text-white dark:bg-gray-600 bg-gray-100 px-4 py-0 mx-1.5 my-0 rounded-b-xl">
           <div class="mb-2 py-2.5 px-1.5">
             <button class="border-none"
-            >+ Add another task</button>
+            >+ {{ 'list.addAnotherTask' | translate }}</button>
           </div>
         </div>
         <div [class.hidden]="!hidden"
