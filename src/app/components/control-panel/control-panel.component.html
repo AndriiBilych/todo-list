@@ -1,4 +1,4 @@
-<header class="dark:bg-gray-600 bg-gray-100 h-14 fixed top-0 w-full">
+<header class="dark:bg-gray-600 bg-gray-100 h-14 fixed top-0 w-full z-10">
   <nav class="px-4 h-full w-full flex items-center justify-between" aria-label="Global">
     <ng-container *ngIf="{board: boardStoreService.selectedBoard()} as obs">
       <div class="flex lg:flex-1 lg:gap-x-1 h-full">
@@ -24,6 +24,28 @@
         >{{ 'logo.title' | translate }}</a>
       </div>
       <div class="hidden lg:flex lg:flex-1 lg:gap-x-1 lg:justify-end h-full">
+        <a
+          class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition
+          px-4 rounded cursor-pointer dark:text-white dark:hover:text-black dark:hover:bg-gray-400" title="Dark mode"
+        >
+          <app-dropdown>
+            <a title
+              class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition
+              px-4 rounded cursor-pointer dark:text-white dark:hover:text-black dark:hover:bg-gray-400"
+              id="menu-button" aria-expanded="true" aria-haspopup="true"
+            >{{ 'language' | translate }}</a>
+            <div content class="py-1" role="none">
+              <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900
+                  dark:text-white dark:hover:text-black dark:hover:bg-gray-400" [class.bg-gray-100]="isEnglish"
+                 (click)="useEnglish()"
+                 role="menuitem" tabindex="-1" id="menu-item-0">en</a>
+              <a class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900
+                  dark:text-white dark:hover:text-black dark:hover:bg-gray-400" [class.bg-gray-100]="isPolish"
+                 (click)="usePolish()"
+                 role="menuitem" tabindex="-1" id="menu-item-1">pl</a>
+            </div>
+          </app-dropdown>
+        </a>
         <a
           class="flex items-center text-sm font-semibold leading-6 hover:bg-blue-100 hover:text-gray-500 transition
           px-4 rounded cursor-pointer dark:text-white dark:hover:text-black dark:hover:bg-gray-400" title="Dark mode"

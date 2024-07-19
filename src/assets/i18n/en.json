@@ -29,6 +29,7 @@
     "description": "Explore or create your own board"
   },
   "noDescription": "No description",
+  "language": "Language",
   "addBoard": {
     "title": "Add board",
     "description": "Create a new board. Test it out. Saved only locally in memory."

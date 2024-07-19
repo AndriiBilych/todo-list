@@ -1,4 +1,6 @@
 import { Component, ElementRef, inject, ViewChild } from '@angular/core';
+import { TranslateService } from '@ngx-translate/core';
+
 import { BoardStoreService } from '../../services/board-store.service';
 import { RoutingService } from '../../services/routing.service';
 import { DarkModeService } from '../../services/dark-mode.service';
@@ -12,6 +14,7 @@ export class ControlPanelComponent {
   #isChangingName = false;
 
   #darkModeService = inject(DarkModeService);
+  #translateService = inject(TranslateService);
 
   constructor(
     public readonly boardStoreService: BoardStoreService,
@@ -35,5 +38,21 @@ export class ControlPanelComponent {
 
   toggleDarkMode(force?: boolean): void {
     this.#darkModeService.toggleDarkMode(force);
+  }
+
+  useEnglish(): void {
+    this.#translateService.use('en');
+  }
+
+  usePolish(): void {
+    this.#translateService.use('pl');
+  }
+
+  get isEnglish(): boolean {
+    return this.#translateService.currentLang === 'en';
+  }
+
+  get isPolish(): boolean {
+    return this.#translateService.currentLang === 'pl';
   }
 }

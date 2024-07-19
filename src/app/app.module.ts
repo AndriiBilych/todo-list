@@ -1,8 +1,10 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import { HttpClient, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -21,11 +23,8 @@ import { ListPlaceholderComponent } from './components/list-placeholder/list-pla
 import { AddListComponent } from './components/inputs/add-list/add-list.component';
 import { TaskPlaceholderComponent } from './components/task-placeholder/task-placeholder.component';
 import { AddTaskComponent } from './components/inputs/add-task/add-task.component';
+import { DropdownComponent } from './components/dropdown/dropdown.component';
 
-// import ngx-translate and the http loader
-import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-import {HttpClient} from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -45,6 +44,7 @@ import {HttpClient} from '@angular/common/http';
     NotFoundPageComponent,
     ListPlaceholderComponent,
     TaskPlaceholderComponent,
+    DropdownComponent
   ],
   bootstrap: [AppComponent],
   imports: [

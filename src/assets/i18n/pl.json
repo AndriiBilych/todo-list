@@ -1,0 +1,37 @@
+{
+  "logo": {
+    "title": "Boards"
+  },
+  "deleteBoard": "Usuń board",
+  "about": "O projekcie",
+  "darkMode": "Tryb ciemny",
+  "deleteModal": {
+    "question": "Czy na pewno chcesz usunąć {{title}} board?",
+    "yes": "Tak",
+    "no": "Nie"
+  },
+  "aboutModal": {
+    "description": "Opis",
+    "content1": "Ta witryna internetowa jest menedżerem zadań inspirowanym Trello.",
+    "content2": "Przypomina prototyp listy list w stylu tablicy, nie ma bazy danych ani serwera zaplecza.\nDane są obecnie przechowywane tylko lokalnie i w sesji. Utworzono w Angular 11. Zapraszam do przeglądania\nprzykłady tablic lub stwórz własną.",
+    "howToUse": "Jak korzystać",
+    "howToUse1": "Lewy przycisk myszy, aby przeciągnąć zadania lub listy",
+    "howToUse2": "Kliknij prawym przyciskiem myszy, aby edytować zadania lub nazwę listy",
+    "madeBy": "Zrobione przez"
+  },
+  "list": {
+    "addAnotherTask": "Dodaj kolejne zadanie",
+    "addAnotherList": "Dodaj kolejną listę"
+  },
+  "loading": "Ładowanie",
+  "section": {
+    "title": "Wszystkie boardy",
+    "description": "Przeglądaj lub twórz własny board"
+  },
+  "noDescription": "Brak opisu",
+  "language": "Język",
+  "addBoard": {
+    "title": "Dodaj board",
+    "description": "Stwórz nowy board. Przetestuj to. Zapisywane wyłącznie lokalnie w pamięci."
+  }
+}
