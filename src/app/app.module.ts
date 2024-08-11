@@ -5,6 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
+import { StoreModule } from '@ngrx/store';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -24,6 +25,7 @@ import { AddListComponent } from './components/inputs/add-list/add-list.componen
 import { TaskPlaceholderComponent } from './components/task-placeholder/task-placeholder.component';
 import { AddTaskComponent } from './components/inputs/add-task/add-task.component';
 import { DropdownComponent } from './components/dropdown/dropdown.component';
+import { reducer } from './state/reducer';
 
 
 @NgModule({
@@ -53,6 +55,9 @@ import { DropdownComponent } from './components/dropdown/dropdown.component';
     FormsModule,
     ReactiveFormsModule,
     BrowserAnimationsModule,
+    StoreModule.forRoot({
+      app: reducer
+    }),
 
     // ngx-translate and the loader module
     TranslateModule.forRoot({
